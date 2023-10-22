@@ -21,6 +21,7 @@ const ModalCreateShoeName = (props) => {
 
   const onFinish = async (values) => {
     const res = await callCreateNewShoeName(values.shoeName);
+    console.log("res callCreateNewShoeName: ", res);
     if (res?.data?.id) {
       message.success("Create new shoe name success");
       formCreateNewShoe.resetFields();

@@ -76,7 +76,7 @@ const callCreateNewShoeName = (name) => {
   const data = {
     name: name,
   };
-  return axios.post("/api/v1/shoe/addNewShoeName", data);
+  return axios.post("/api/v1/admin/shoe/addNewShoeName", data);
 };
 
 const callListNameShoe = () => {
