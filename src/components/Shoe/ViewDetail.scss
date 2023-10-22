@@ -1,0 +1,126 @@
+@import "react-image-gallery/styles/scss/image-gallery.scss";
+.add-to-cart {
+  display: flex;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  box-sizing: border-box;
+  border-radius: 2px;
+  justify-content: left;
+  text-transform: capitalize;
+  gap: 1em;
+
+  .btn-add-to-cart {
+    position: relative;
+    overflow: visible;
+    outline: 0;
+    background: #d0011b14;
+    flex-direction: row;
+    color: #d0011b;
+    border: 1px solid #d0011b;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
+    font-size: 16px;
+    height: 48px;
+    padding: 0 20px;
+    min-width: 80px;
+    max-width: 250px;
+  }
+  .btn-add-to-cart:hover {
+    cursor: pointer;
+    background: #f1b4bb2a;
+  }
+  .btn-paid {
+    min-width: 80px;
+    max-width: 250px;
+    font-size: 16px;
+    height: 48px;
+    padding: 0 20px;
+    background: #d41830;
+    border: 1px solid #d0011b;
+    color: white;
+  }
+
+  .btn-paid:hover {
+    cursor: pointer;
+  }
+}
+
+.quantity {
+  .right-side {
+    display: flex;
+    align-items: center;
+    button {
+      overflow: visible;
+    }
+
+    .btn {
+      outline: none;
+      cursor: pointer;
+      border: 0;
+      font-size: 0.875rem;
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+      border: 1px solid rgba(0, 0, 0, 0.09);
+      border-radius: 2px;
+      color: rgba(0, 0, 0, 0.8);
+      width: 32px;
+      height: 32px;
+      background-color: white;
+    }
+    .inp {
+      width: 50px;
+      height: 32px;
+      border-left: 0;
+      border-right: 0;
+      font-size: 16px;
+      font-weight: 400;
+      box-sizing: border-box;
+      text-align: center;
+      cursor: text;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+  }
+}
+.right-content {
+  .title {
+    font-size: 2rem;
+    font-weight: 500;
+    padding: 10px 0;
+  }
+  .rating {
+    display: flex;
+    padding: 10px 0;
+  }
+  .price {
+    // background-color: rgb(250, 250, 250);
+    background-color: white;
+    display: flex;
+    padding: 15px;
+    border-radius: 5px;
+    .currency {
+      font-size: 29px;
+      line-height: 36px;
+      font-weight: 500;
+      color: #d0011b;
+    }
+  }
+  .delivery {
+    display: flex;
+    padding: 15px 0;
+    gap: 2rem;
+  }
+  .quantity {
+    display: flex;
+    padding: 15px 0;
+    gap: 3rem;
+    align-items: center;
+  }
+  .add-to-cart {
+    padding: 2rem 0;
+  }
+}

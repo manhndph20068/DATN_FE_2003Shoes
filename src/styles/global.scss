@@ -1,0 +1,29 @@
+.popover-cart {
+  .pop-cart-content {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
+    padding-right: 5px;
+
+    .book-cart {
+      display: flex;
+      gap: 1em;
+      padding: 0.8em 0;
+      img {
+        width: 4rem;
+        height: 4rem;
+      }
+    }
+    .btn-view-cart {
+      padding: 8px;
+      color: white;
+      background-color: #d0011b;
+      border-radius: 4px;
+      justify-content: right;
+    }
+    .btn-view-cart:hover {
+      cursor: pointer;
+      background-color: #e52d4c;
+    }
+  }
+}

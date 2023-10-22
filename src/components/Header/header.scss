@@ -1,0 +1,138 @@
+.header-container {
+  .page-header {
+    display: flex;
+    height: 50px;
+    max-width: 1080px;
+
+    &__left {
+      display: flex;
+      width: 70%;
+      padding: 0 16px;
+    }
+    &__right {
+      display: flex;
+    }
+    &__toggle {
+      display: none;
+    }
+
+    .page-header__left {
+      .page-header__logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .logo {
+        cursor: pointer;
+        text-align: left;
+        color: #45bade;
+        padding-top: 5px;
+        margin-right: 1px;
+
+        .icon-react {
+          position: relative;
+          font-size: 30px;
+          top: 8px;
+        }
+      }
+
+      .input-search {
+        margin-left: 20px;
+        height: 20px;
+        border-radius: 6px;
+        outline: none;
+        border: 1px solid #ddd;
+        flex: 1;
+        padding: 5px 10px;
+        width: 600px;
+      }
+    }
+
+    .navigation {
+      padding-top: 1rem;
+      display: block;
+
+      &__item {
+        opacity: 0.8;
+        display: inline-block;
+        // padding: 0px 5px 1px 5px;
+
+        &:hover {
+          cursor: pointer;
+          opacity: 1;
+        }
+      }
+
+      .icon-cart {
+        font-size: 25px;
+        // padding-top: 10px;
+        position: relative;
+        color: #61dafb;
+      }
+      .account {
+        position: relative;
+        bottom: 3px;
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    .page-header {
+      display: flex;
+
+      .logo {
+        display: none;
+      }
+
+      &__toggle {
+        display: block;
+        font-size: 2em;
+        margin-right: 15px;
+      }
+
+      .page-header__bottom {
+        justify-content: center;
+        flex-grow: 1;
+      }
+
+      .page-header__left {
+        .input-search {
+          margin-left: 20px;
+          height: 20px;
+          border-radius: 6px;
+          outline: none;
+          border: 1px solid #ddd;
+          flex: 1;
+          padding: 5px 10px;
+          width: 200px;
+        }
+      }
+    }
+
+    .navigation {
+      display: block;
+      opacity: 1;
+      height: auto;
+
+      &__item {
+        opacity: 0.8;
+        display: inline-block;
+        padding-bottom: 5px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        &.mobile {
+          display: none;
+        }
+      }
+      .icon-cart {
+        font-size: 20px;
+        top: 1px;
+        position: relative;
+        color: #0b3540;
+      }
+    }
+  }
+}

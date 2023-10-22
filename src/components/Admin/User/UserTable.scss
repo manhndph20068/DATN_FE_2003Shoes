@@ -1,0 +1,14 @@
+.table-container {
+  padding: 15px 15px;
+
+  .table-button {
+    display: flex;
+
+    .table-button-reload {
+      position: absolute;
+      right: 0;
+      top: 2.5%;
+      padding-right: 1em;
+    }
+  }
+}
