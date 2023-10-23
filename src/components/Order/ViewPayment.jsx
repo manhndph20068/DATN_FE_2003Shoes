@@ -26,12 +26,18 @@ import { useEffect, useState } from "react";
 import {
   clearCart,
   doDeleteItemCartAction,
+  doInitalCartWithAccount,
   doUpdateCartAction,
 } from "../../redux/order/orderSlice.js";
 import TextArea from "antd/es/input/TextArea.js";
-import { callFetchAccount } from "../../services/api.jsx";
+import {
+  callDeleteCartDetail,
+  callFetchAccount,
+  callGetListCartDetailById,
+} from "../../services/api.jsx";
 const ViewPayment = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalMoneyOfProds, setTotalMoneyOfProds] = useState(0);
   const [shipPrice, setShipPrice] = useState(0);
   const [nextStep, setNextStep] = useState(0);
   const [listProvince, setListProvince] = useState([]);
@@ -43,11 +49,30 @@ const ViewPayment = (props) => {
   const { setCurrentStep } = props;
 
   const cart = useSelector((state) => state.order.cart);
+  const idCart = useSelector((state) => state.account.idCart);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
+  const handleDeleteCartDetail = async (idCart, idShoeDetail) => {
+    const res = await callDeleteCartDetail(idCart, idShoeDetail);
+    if (res?.status === 0) {
+      handleGetListCartDetailById(idCart);
+    }
+  };
+
+  const handleGetListCartDetailById = async (id) => {
+    const res = await callGetListCartDetailById(id);
+    if (res?.status === 0) {
+      dispatch(doInitalCartWithAccount(res.data));
+    }
+  };
+
   const confirmDelete = (item) => {
-    dispatch(doDeleteItemCartAction(item.id));
+    if (idCart !== null) {
+      handleDeleteCartDetail(+idCart, +item.id);
+    } else {
+      dispatch(doDeleteItemCartAction(item.id));
+    }
   };
 
   useEffect(() => {
@@ -56,13 +81,15 @@ const ViewPayment = (props) => {
       cart.map((item) => {
         sum += item.quantity * item.detail.priceInput;
       });
-      setTotalPrice(sum);
+      setTotalPrice(sum + shipPrice);
+      setTotalMoneyOfProds(sum);
       setNextStep(1);
     } else {
       setTotalPrice(0);
+      setTotalMoneyOfProds(0);
       setNextStep(0);
     }
-  }, [cart, nextStep]);
+  }, [cart, nextStep, shipPrice]);
 
   useEffect(() => {
     async function getDataProvince(url = "") {
@@ -148,7 +175,7 @@ const ViewPayment = (props) => {
 
   const onFinish = async (values) => {
     const { username, phone, address, typePaid } = values;
-    console.log("values", values);
+
     const detailOrder = cart.map((item) => {
       return {
         shoeName: item.detail.nameShoe,
@@ -164,6 +191,7 @@ const ViewPayment = (props) => {
       totalPrice: totalPrice,
       detail: detailOrder,
     };
+    console.log("values", data);
 
     // await callFetchAccount();
     // const res = await callCreateAnOrder(data);
@@ -400,13 +428,30 @@ const ViewPayment = (props) => {
                   initialValue={1}
                 >
                   <Radio.Group>
-                    <Radio value={1}>Thanh toán khi nhận hàng</Radio>
+                    <Radio value={1}>Thanh toán khi nhận hàng(COD)</Radio>
+                    <br />
+                    <Radio value={2}>Thẻ ATM / Thẻ tín dụng </Radio>
                   </Radio.Group>
                 </Form.Item>
                 <Divider />
-                <div className="order-ship">
-                  <span>
-                    Phí giao hàng:{" "}
+                <div
+                  className="order-total-money"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>Tổng tiền hàng: </span>
+                  <span style={{ fontSize: "1rem" }}>
+                    {Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(totalMoneyOfProds || 0)}
+                  </span>
+                </div>
+                <div
+                  className="order-ship"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>Phí giao hàng: </span>
+                  <span style={{ fontSize: "1rem" }}>
                     {provinceSelected &&
                     districtSelected &&
                     wardSelected &&
