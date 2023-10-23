@@ -51,7 +51,7 @@ instance.interceptors.response.use(
     console.log("res Intercepter Er:", error);
     if (+error.response.status === 500) {
       localStorage.removeItem("access_token");
-      window.location.reload();
+      // window.location.reload();
       // return instance.request(error.config);
     }
     if (
