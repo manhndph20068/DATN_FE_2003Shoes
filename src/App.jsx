@@ -144,7 +144,8 @@ export default function App() {
       {isLoading == false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
-      location.pathname.startsWith("/book/") ||
+      window.location.pathname === "/order" ||
+      location.pathname.startsWith("/shoe/") ||
       window.location.pathname === "/" ? (
         <RouterProvider router={router} />
       ) : (
