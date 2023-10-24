@@ -21,7 +21,9 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const Logout = async () => {
+    localStorage.removeItem("access_token");
     let res = await callLogout();
+    localStorage.removeItem("access_token");
     console.log("resLogout", res);
     if (res?.statusCode === 0) {
       message.success(res.message);

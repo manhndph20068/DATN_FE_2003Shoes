@@ -26,6 +26,7 @@ const handleRefreshToken = async () => {
   }
 };
 const NO_RETRY_HEADER = "x-no-retry";
+let isRefreshing = false;
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -49,9 +50,15 @@ instance.interceptors.response.use(
   async function (error) {
     // Do something with request error
     console.log("res Intercepter Er:", error);
-    if (+error.response.status === 500) {
-      localStorage.removeItem("access_token");
-      // window.location.reload();
+    if (
+      +error.response.status === 401 &&
+      error.config.url === "/api/v1/auth/refreshToken" &&
+      !error.config.headers[NO_RETRY_HEADER]
+    ) {
+      // localStorage.removeItem("access_token");
+      error.config.headers[NO_RETRY_HEADER] = true;
+      window.location.reload();
+      // error.config.headers[NO_RETRY_HEADER] = true;
     }
     if (
       error.config &&
@@ -65,12 +72,13 @@ instance.interceptors.response.use(
       if (access_token) {
         localStorage.setItem("access_token", access_token);
         error.config.headers["Authorization"] = `Bearer ${access_token}`;
+
         return instance.request(error.config);
       }
     }
-    if (error.config && error.response && +error.response.status === 403) {
-      window.location.reload();
-    }
+    // if (error.config && error.response && +error.response.status === 403) {
+    //   window.location.reload();
+    // }
     // return Promise.reject(error);
     return error && error.response && error.response.data
       ? error.response.data

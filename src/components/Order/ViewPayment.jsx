@@ -34,7 +34,10 @@ import {
   callDeleteCartDetail,
   callFetchAccount,
   callGetListCartDetailById,
+  callSubmitOrderVNPay,
 } from "../../services/api.jsx";
+import { v4 as uuidv4 } from "uuid";
+
 const ViewPayment = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalMoneyOfProds, setTotalMoneyOfProds] = useState(0);
@@ -173,6 +176,18 @@ const ViewPayment = (props) => {
     });
   }, [provinceSelected, districtSelected]);
 
+  const handleSubmitOrder = async () => {
+    console.log("totalPrice", totalPrice);
+    const orderTotal = totalPrice;
+    const orderInfo = "HD" + uuidv4();
+
+    let res = await callSubmitOrderVNPay(orderTotal, orderInfo);
+    console.log("res", res);
+    if (res !== null) {
+      window.location = res;
+    }
+  };
+
   const onFinish = async (values) => {
     const { username, phone, address, typePaid } = values;
 
@@ -191,7 +206,12 @@ const ViewPayment = (props) => {
       totalPrice: totalPrice,
       detail: detailOrder,
     };
-    console.log("values", data);
+    console.log("values", values);
+    if (typePaid === 2) {
+      handleSubmitOrder();
+    } else {
+      setCurrentStep(2);
+    }
 
     // await callFetchAccount();
     // const res = await callCreateAnOrder(data);

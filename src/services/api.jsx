@@ -186,6 +186,14 @@ const callDeleteCartDetail = (idCart, idShoeDetail) => {
   return axios.post("/api/v1/cart-detail/deleteCartDetail", data);
 };
 
+const callSubmitOrderVNPay = (orderTotal, orderInfo) => {
+  const data = {
+    orderTotal: orderTotal,
+    orderInfo: orderInfo,
+  };
+  return axios.post("/submitOrder", data);
+};
+
 const callImportUser = (data) => {
   return axios.post(`/api/v1/user/bulk-create`, data);
 };
@@ -313,4 +321,5 @@ export {
   callAddToCartAtCartPageWithAccount,
   callAddToCartAtViewPageItemWithAccount,
   callDeleteCartDetail,
+  callSubmitOrderVNPay,
 };

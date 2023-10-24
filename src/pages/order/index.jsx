@@ -36,6 +36,20 @@ const OrderPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const orderId = decodeURIComponent(urlParams.get("orderId"));
+    const totalPrice = decodeURIComponent(urlParams.get("totalPrice"));
+    const paymentTime = decodeURIComponent(urlParams.get("paymentTime"));
+    const transactionId = decodeURIComponent(urlParams.get("transactionId"));
+    console.log("urlParams", urlParams);
+    console.log("orderId", orderId.trim());
+    if (orderId.trim() !== "null") {
+      console.log("order success");
+      setCurrentStep(2);
+    }
+  }, []);
+
+  useEffect(() => {
     if (cart && cart.length > 0) {
       let sum = 0;
       cart.map((item) => {
