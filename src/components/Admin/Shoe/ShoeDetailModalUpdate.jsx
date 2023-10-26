@@ -15,19 +15,36 @@ import {
 import {
   callCreateBook,
   callGetListCategory,
+  callListNameShoe,
+  callListShoeBrand,
+  callListShoeCategory,
+  callListShoeColor,
+  callListShoeImages,
+  callListShoeSize,
+  callListShoeSole,
+  callListShoeThumbnail,
   callUpdateBook,
+  callUpdateShoeDetail,
   callUploadBookImg,
 } from "../../../services/api";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
+import { useSelector } from "react-redux";
 
-const BookModalUpdate = (props) => {
+const ShoeDetailModalUpdate = (props) => {
   const { openModalUpdate, setOpenModalUpdate, dataUpdate, setDataUpdate } =
     props;
+  const nameAccount = useSelector((state) => state.account.user.name);
   const [isSubmit, setIsSubmit] = useState(false);
 
   const [listCategory, setListCategory] = useState([]);
-  const [form] = Form.useForm();
+  const [listNameOfShoe, setListNameOfShoe] = useState([]);
+  const [listColor, setListColor] = useState([]);
+  const [listSize, setListSize] = useState([]);
+  const [listSole, setListSole] = useState([]);
+  const [listBrand, setListBrand] = useState([]);
+  const [listImage, setListImage] = useState([]);
+  const [listThumbnail, setListThumbnail] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [loadingSlider, setLoadingSlider] = useState(false);
@@ -42,60 +59,171 @@ const BookModalUpdate = (props) => {
   const [previewTitle, setPreviewTitle] = useState("");
 
   const [initForm, setInitForm] = useState(null);
+  const [form] = Form.useForm();
 
-  // useEffect(() => {
-  //   const fetchCategory = async () => {
-  //     const res = await callGetListCategory();
-  //     if (res && res.data) {
-  //       const d = res.data.map((item) => {
-  //         return { label: item, value: item };
-  //       });
-  //       setListCategory(d);
-  //     }
-  //   };
-  //   fetchCategory();
-  // }, []);
+  const fetchNameShoe = async () => {
+    const res = await callListNameShoe();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListNameOfShoe(newOption);
+    }
+  };
+  const fetchListColor = async () => {
+    const res = await callListShoeColor();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListColor(newOption);
+    }
+  };
+
+  const fetchListCategory = async () => {
+    const res = await callListShoeCategory();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListCategory(newOption);
+    }
+  };
+
+  const fetchListBrand = async () => {
+    const res = await callListShoeBrand();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListBrand(newOption);
+    }
+  };
+  const fetchListSize = async () => {
+    const res = await callListShoeSize();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListSize(newOption);
+    }
+  };
+
+  const fetchListSole = async () => {
+    const res = await callListShoeSole();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          id: item.id,
+          name: item.name,
+        };
+      });
+      setListSole(newOption);
+    }
+  };
+
+  const fetchListThumbnail = async () => {
+    const res = await callListShoeThumbnail();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          imgUrl: item.imgUrl,
+          imgName: item.imgName,
+        };
+      });
+      setListThumbnail(newOption);
+    }
+  };
+
+  const fetchListImages = async () => {
+    const res = await callListShoeImages();
+    if (res?.data) {
+      const newOption = res.data.map((item) => {
+        return {
+          imgUrl: item.imgUrl,
+          imgName: item.imgName,
+        };
+      });
+      setListImage(newOption);
+    }
+  };
 
   useEffect(() => {
-    if (dataUpdate?._id) {
+    fetchNameShoe();
+    fetchListColor();
+    fetchListCategory();
+    fetchListBrand();
+    fetchListSize();
+    fetchListSole();
+    fetchListThumbnail();
+    fetchListImages();
+  }, []);
+
+  useEffect(() => {
+    const findNameByUrl = (arr, url) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].imgUrl === url) {
+          return arr[i].imgName;
+        }
+      }
+      return null;
+    };
+
+    if (dataUpdate?.id) {
       console.log("dataUpdate", dataUpdate);
       const arrThumbnail = [
         {
           uid: uuidv4(),
-          name: dataUpdate.thumbnail,
+          name: findNameByUrl(listThumbnail, dataUpdate.thumbnail),
           status: "done",
-          url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${
-            dataUpdate.thumbnail
-          }`,
+          url: dataUpdate.thumbnail,
         },
       ];
 
-      const arrSlider = dataUpdate?.slider?.map((item) => {
+      const arrSlider = dataUpdate?.images?.map((item) => {
         return {
           uid: uuidv4(),
-          name: item,
+          name: findNameByUrl(listImage, item),
           status: "done",
-          url: `${import.meta.env.VITE_BACKEND_URL}/images/book/${item}`,
+          url: item,
         };
       });
+      console.log("dataUpdate", dataUpdate);
 
       const init = {
-        _id: dataUpdate._id,
-        mainText: dataUpdate.mainText,
-        author: dataUpdate.author,
-        price: dataUpdate.price,
+        id: dataUpdate.id,
+        shoe: dataUpdate.nameShoe,
+        size: dataUpdate.size,
+        color: dataUpdate.color,
+        price: dataUpdate.priceInput,
         category: dataUpdate.category,
-        quantity: dataUpdate.quantity,
+        quantity: dataUpdate.qty,
+        createdAt: dataUpdate.updatedAt,
         sold: dataUpdate.sold,
+        sole: dataUpdate.sole,
+        brand: dataUpdate.brand,
+        qrCode: dataUpdate.qrCode,
         thumbnail: { fileList: arrThumbnail },
         slider: { fileList: arrSlider },
       };
       setInitForm(init);
-      console.log("init", init);
       setDataThumbnail(arrThumbnail);
       setDataSlider(arrSlider);
-      console.log("dataThumbnail", dataThumbnail);
-      console.log("dataSlider", dataSlider);
       form.setFieldsValue(init);
     }
     return () => {
@@ -120,35 +248,68 @@ const BookModalUpdate = (props) => {
       return;
     }
 
-    const { mainText, author, price, sold, quantity, category } = values;
-    const thumbnail = dataThumbnail[0].name;
-    const slider = dataSlider.map((item) => item.name);
+    const findIdByName = (arr, name) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].name === name) {
+          return arr[i].id;
+        }
+      }
+      return null; // Trả về null nếu không tìm thấy
+    };
+
+    const {
+      shoe,
+      brand,
+      price,
+      size,
+      quantity,
+      category,
+      sole,
+      color,
+      qrCode,
+    } = values;
+    const thumbnail = [{ imgName: dataThumbnail[0].name }];
+    const slider = dataSlider.map((item) => ({ imgName: item.name }));
 
     console.log("values", values);
     console.log("thumbnail", thumbnail);
     console.log("slider", slider);
-    console.log("dataUpdate._id", dataUpdate._id);
+    console.log("dataUpdate._id", dataUpdate.id);
+    console.log("shoe", findIdByName(listNameOfShoe, shoe));
+    console.log("category", findIdByName(listCategory, category));
+    console.log("sole", findIdByName(listSole, sole));
+    console.log("size", findIdByName(listSize, size));
+    console.log("brand", findIdByName(listBrand, brand));
+    console.log("color", findIdByName(listColor, color));
+    console.log("qrCode", qrCode);
+    console.log("price", price);
 
     setIsSubmit(true);
-    const res = await callUpdateBook(
-      dataUpdate._id,
-      thumbnail,
-      slider,
-      mainText,
-      author,
+    const res = await callUpdateShoeDetail(
+      dataUpdate.id,
+      findIdByName(listNameOfShoe, shoe),
       price,
-      sold,
       quantity,
-      category
+      dataUpdate.createdAt,
+      findIdByName(listColor, color),
+      findIdByName(listCategory, category),
+      findIdByName(listBrand, brand),
+      findIdByName(listSize, size),
+      findIdByName(listSole, sole),
+      qrCode,
+      "createdBy",
+      nameAccount,
+      thumbnail,
+      slider
     );
     console.log("res", res);
-    if (res && res.data) {
-      message.success("Update book thành công");
+    if (res && res.status === 0) {
+      message.success("Update shoedetail thành công");
       form.resetFields();
       setDataSlider([]);
       setDataThumbnail([]);
       setOpenModalUpdate(false);
-      await props.fetchAllBooks();
+      await props.fetchAllShoes();
     } else {
       notification.error({
         message: "Đã có lỗi xảy ra",
@@ -194,11 +355,12 @@ const BookModalUpdate = (props) => {
   };
 
   const handleUploadFileThumbnail = async ({ file, onSuccess, onError }) => {
-    const res = await callUploadBookImg(file);
-    if (res && res.data) {
+    console.log("file", file.name);
+    if (file?.name !== null) {
       setDataThumbnail([
+        // ...dataThumbnail,
         {
-          name: res.data.fileUploaded,
+          name: file.name,
           uid: file.uid,
         },
       ]);
@@ -209,13 +371,11 @@ const BookModalUpdate = (props) => {
   };
 
   const handleUploadFileSlider = async ({ file, onSuccess, onError }) => {
-    const res = await callUploadBookImg(file);
-    if (res && res.data) {
-      //copy previous state => upload multiple images
+    if (file?.name !== null) {
       setDataSlider((dataSlider) => [
         ...dataSlider,
         {
-          name: res.data.fileUploaded,
+          name: file.name,
           uid: file.uid,
         },
       ]);
@@ -258,7 +418,7 @@ const BookModalUpdate = (props) => {
   return (
     <>
       <Modal
-        title="Update book"
+        title="Update Shoe Detail"
         open={openModalUpdate}
         onOk={() => {
           form.submit();
@@ -283,26 +443,36 @@ const BookModalUpdate = (props) => {
             <Col span={12}>
               <Form.Item
                 labelCol={{ span: 24 }}
-                label="Tên sách"
-                name="mainText"
+                label="Tên Giày"
+                name="shoe"
                 rules={[
                   { required: true, message: "Vui lòng nhập tên hiển thị!" },
                 ]}
               >
-                <Input />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                labelCol={{ span: 24 }}
-                label="Tác giả"
-                name="author"
-                rules={[{ required: true, message: "Vui lòng nhập tác giả!" }]}
-              >
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col span={6}>
+              <Form.Item
+                labelCol={{ span: 24 }}
+                label="Size"
+                name="size"
+                rules={[{ required: true, message: "Vui lòng chọn thể loại!" }]}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                labelCol={{ span: 24 }}
+                label="Color"
+                name="color"
+                rules={[{ required: true, message: "Vui lòng chọn thể loại!" }]}
+              >
+                <Input disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
               <Form.Item
                 labelCol={{ span: 24 }}
                 label="Giá tiền"
@@ -319,23 +489,8 @@ const BookModalUpdate = (props) => {
                 />
               </Form.Item>
             </Col>
-            <Col span={6}>
-              <Form.Item
-                labelCol={{ span: 24 }}
-                label="Thể loại"
-                name="category"
-                rules={[{ required: true, message: "Vui lòng chọn thể loại!" }]}
-              >
-                <Select
-                  defaultValue={null}
-                  showSearch
-                  allowClear
-                  //  onChange={handleChange}
-                  options={listCategory}
-                />
-              </Form.Item>
-            </Col>
-            <Col span={6}>
+
+            <Col span={12}>
               <Form.Item
                 labelCol={{ span: 24 }}
                 label="Số lượng"
@@ -345,22 +500,7 @@ const BookModalUpdate = (props) => {
                 <InputNumber min={1} style={{ width: "100%" }} />
               </Form.Item>
             </Col>
-            <Col span={6}>
-              <Form.Item
-                labelCol={{ span: 24 }}
-                label="Đã bán"
-                name="sold"
-                rules={[
-                  { required: true, message: "Vui lòng nhập số lượng đã bán!" },
-                ]}
-              >
-                <InputNumber
-                  min={0}
-                  defaultValue={0}
-                  style={{ width: "100%" }}
-                />
-              </Form.Item>
-            </Col>
+
             <Col span={12}>
               <Form.Item
                 labelCol={{ span: 24 }}
@@ -412,6 +552,10 @@ const BookModalUpdate = (props) => {
                 </Upload>
               </Form.Item>
             </Col>
+            <Form.Item name="category"></Form.Item>
+            <Form.Item name="sole"></Form.Item>
+            <Form.Item name="brand"></Form.Item>
+            <Form.Item name="qrCode"></Form.Item>
           </Row>
         </Form>
       </Modal>
@@ -426,4 +570,4 @@ const BookModalUpdate = (props) => {
     </>
   );
 };
-export default BookModalUpdate;
+export default ShoeDetailModalUpdate;

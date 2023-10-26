@@ -52,11 +52,12 @@ instance.interceptors.response.use(
     console.log("res Intercepter Er:", error);
     if (
       +error.response.status === 401 &&
-      error.config.url === "/api/v1/auth/refreshToken" &&
-      !error.config.headers[NO_RETRY_HEADER]
+      error.config.url === "/api/v1/auth/refreshToken"
+      // &&
+      // !error.config.headers[NO_RETRY_HEADER]
     ) {
       // localStorage.removeItem("access_token");
-      error.config.headers[NO_RETRY_HEADER] = true;
+      // error.config.headers[NO_RETRY_HEADER] = true;
       window.location.reload();
       // error.config.headers[NO_RETRY_HEADER] = true;
     }

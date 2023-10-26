@@ -119,7 +119,7 @@ const ViewBookDetail = (props) => {
             {moment(dataViewDetail.updatedAt).format("DD-MM-YYYY HH:mm:ss")}
           </Descriptions.Item>
           <Descriptions.Item label="QrCode" span={3}>
-            <img height={150} src={dataViewDetail.qrCode} />
+            <img height={125} src={dataViewDetail.qrCode} />
           </Descriptions.Item>
         </Descriptions>
         <Divider orientation="left">Ảnh Giày</Divider>

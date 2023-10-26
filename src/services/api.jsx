@@ -194,6 +194,14 @@ const callSubmitOrderVNPay = (orderTotal, orderInfo) => {
   return axios.post("/submitOrder", data);
 };
 
+const callListShoeImages = () => {
+  return axios.get(`/api/v1/images/getAllImages`);
+};
+
+const callListShoeThumbnail = () => {
+  return axios.get(`/api/v1/thumbnail/getAllThumbnail`);
+};
+
 const callImportUser = (data) => {
   return axios.post(`/api/v1/user/bulk-create`, data);
 };
@@ -208,6 +216,46 @@ const callUpdateUser = (_id, fullName, phone) => {
 
 const callGetListCategory = () => {
   return axios.get(`/api/v1/category/getAllCategory`);
+};
+
+const callUpdateShoeDetail = (
+  id,
+  shoe,
+  priceInput,
+  quantity,
+  createdAt,
+  color,
+  category,
+  brand,
+  size,
+  sole,
+  qrCode,
+  createdBy,
+  updatedBy,
+  thumbnails,
+  images
+) => {
+  const data = {
+    id: id,
+    shoe: { id: shoe },
+    priceInput: priceInput,
+    quantity: quantity,
+    createdAt: createdAt,
+    updatedAt: null,
+    status: 1,
+    color: { id: color },
+    category: { id: category },
+    brand: { id: brand },
+    size: { id: size },
+    sole: { id: sole },
+    qrCode: qrCode,
+    createdBy: createdBy,
+    updatedBy: updatedBy,
+    thumbnails: thumbnails,
+    images: images,
+  };
+  console.log("data", data);
+  return axios.post("/api/v1/shoe-detail/updateShoeDetail", data);
 };
 
 const callDeletetUser = (_id) => {
@@ -322,4 +370,7 @@ export {
   callAddToCartAtViewPageItemWithAccount,
   callDeleteCartDetail,
   callSubmitOrderVNPay,
+  callListShoeImages,
+  callListShoeThumbnail,
+  callUpdateShoeDetail,
 };

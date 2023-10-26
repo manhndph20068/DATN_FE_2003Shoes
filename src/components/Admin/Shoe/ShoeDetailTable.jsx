@@ -25,7 +25,7 @@ import {
 } from "antd";
 import * as XLSX from "xlsx";
 import BookModalCreate from "./ShoeDetailModalCreate";
-import BookModalUpdate from "./ShoeDetailModalUpdate";
+import ShoeDetailModalUpdate from "./ShoeDetailModalUpdate";
 
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
@@ -277,7 +277,7 @@ const ShoeDetailTable = () => {
         setModalCreateShoeDetailOpen={setModalCreateShoeDetailOpen}
         fetchAllShoes={fetchAllShoes}
       />
-      <BookModalUpdate
+      <ShoeDetailModalUpdate
         openModalUpdate={openModalUpdate}
         setOpenModalUpdate={setOpenModalUpdate}
         dataUpdate={dataUpdate}
