@@ -28,6 +28,7 @@ import ShoeDetailTable from "./components/Admin/Shoe/ShoeDetailTable";
 import CreateShoeDetail from "./components/Admin/Shoe/CreateShoeDetail";
 import OrderPage from "./pages/order";
 import { doInitalCartWithAccount } from "./redux/order/orderSlice";
+import ShoppingCounter from "./components/Admin/Shopping/ShoppingCounter";
 
 const Layout = () => {
   return (
@@ -134,6 +135,10 @@ export default function App() {
         {
           path: "shoe/create",
           element: <CreateShoeDetail />,
+        },
+        {
+          path: "shopping-counter",
+          element: <ShoppingCounter />,
         },
       ],
     },

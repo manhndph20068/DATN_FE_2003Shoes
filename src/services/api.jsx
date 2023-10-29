@@ -258,6 +258,36 @@ const callUpdateShoeDetail = (
   return axios.post("/api/v1/shoe-detail/updateShoeDetail", data);
 };
 
+const callGetListOrderAtCounter = () => {
+  return axios.post(`/api/v1/admin/order/get-order-by-status`);
+};
+
+const callGetOrderDetailAtCounterById = (id) => {
+  return axios.get(`/api/v1/admin/order-detail/list-order-detail/${id}`);
+};
+
+const callListShoeDetailAtCounter = () => {
+  const data = {
+    status: 1,
+  };
+  return axios.post(`/api/v1/shoe-detail/getAllCustom`, data);
+};
+
+const callAddOrderDetailAtCounter = (data) => {
+  return axios.post(`/api/v1/admin/order-detail/add`, data);
+};
+
+const callDeleteOrderDetailAtCounter = (data) => {
+  return axios.post(`/api/v1/admin/order-detail/delete`, data);
+};
+
+const callUpdateOrderDetailAtCounter = (data) => {
+  return axios.post(`/api/v1/admin/order-detail/update`, data);
+};
+const callAddNewOrderAtCounter = (data) => {
+  return axios.post(`/api/v1/admin/order/add`, data);
+};
+
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
@@ -373,4 +403,11 @@ export {
   callListShoeImages,
   callListShoeThumbnail,
   callUpdateShoeDetail,
+  callGetListOrderAtCounter,
+  callGetOrderDetailAtCounterById,
+  callListShoeDetailAtCounter,
+  callAddOrderDetailAtCounter,
+  callDeleteOrderDetailAtCounter,
+  callUpdateOrderDetailAtCounter,
+  callAddNewOrderAtCounter,
 };
