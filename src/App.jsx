@@ -29,6 +29,7 @@ import CreateShoeDetail from "./components/Admin/Shoe/CreateShoeDetail";
 import OrderPage from "./pages/order";
 import { doInitalCartWithAccount } from "./redux/order/orderSlice";
 import ShoppingCounter from "./components/Admin/Shopping/ShoppingCounter";
+import ManageOrder from "./components/Admin/Order/ManageOrder";
 
 const Layout = () => {
   return (
@@ -139,6 +140,10 @@ export default function App() {
         {
           path: "shopping-counter",
           element: <ShoppingCounter />,
+        },
+        {
+          path: "order",
+          element: <ManageOrder />,
         },
       ],
     },

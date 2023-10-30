@@ -26,6 +26,7 @@ import TableProductDetail from "./TableProductDetail";
 import SearchProductInput from "./SearchProductInput";
 import { useSelector } from "react-redux";
 import SearchAddressInput from "./SearchAddressInput";
+import ScanQrCode from "./ScanQr";
 
 const defaultPanes = new Array(2).fill(null).map((_, index) => {
   const id = String(index + 1);
@@ -43,7 +44,7 @@ const ShoppingCounter = () => {
   const [listOrderDetail, setListOrderDetail] = useState(null);
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [refund, setRefund] = useState(0);
-
+  const [openScanQr, setOpenScanQr] = useState(false);
   const [shipPrice, setShipPrice] = useState(0);
   const [listProvince, setListProvince] = useState([]);
   const [provinceSelected, setProvinceSelected] = useState(201);
@@ -192,6 +193,7 @@ const ShoppingCounter = () => {
     const { typeOfSale } = values;
     console.log("values", values);
     console.log("typeOfSale", typeOfSale);
+    console.log("shipPrice", shipPrice);
   };
 
   const handleCalTotalPrice = () => {
@@ -249,6 +251,10 @@ const ShoppingCounter = () => {
     handleCalTotalPriceOrder();
   }, [shipPrice]);
 
+  const handleScanQr = () => {
+    setOpenScanQr(true);
+  };
+
   return (
     <div style={{ padding: "1.5rem" }}>
       <div style={{ marginBottom: 16 }}>
@@ -292,6 +298,8 @@ const ShoppingCounter = () => {
                       scrollToFirstError={true}
                       layout={"vertical"}
                     >
+                      <Form.Item name="code" initialValue={pane.code} hidden />
+                      <Form.Item name="id" initialValue={pane.id} hidden />
                       <Form.Item
                         label="Hình thức bán hàng"
                         name="typeOfSale"
@@ -434,6 +442,14 @@ const ShoppingCounter = () => {
                               </div>
                             </Col>
                           </Row>
+                          <Form.Item
+                            label="Note"
+                            name="note"
+                            labelCol={{ span: 24 }}
+                            labelAlign="left"
+                          >
+                            <Input style={{ width: "100%" }} />
+                          </Form.Item>
                           <Divider />
                           <div
                             style={{
@@ -561,6 +577,14 @@ const ShoppingCounter = () => {
                               </div>
                             </Col>
                           </Row>
+                          <Form.Item
+                            label="Note"
+                            name="note"
+                            labelCol={{ span: 24 }}
+                            labelAlign="left"
+                          >
+                            <Input style={{ width: "100%" }} />
+                          </Form.Item>
                         </>
                       )}
 
@@ -586,7 +610,11 @@ const ShoppingCounter = () => {
                       <h2>Hoá Đơn Chi Tiết</h2>
                     </span>
                     <span>
-                      <Button type="primary" icon={<QrcodeOutlined />}>
+                      <Button
+                        type="primary"
+                        icon={<QrcodeOutlined />}
+                        onClick={() => handleScanQr()}
+                      >
                         Quét mã QrCode
                       </Button>
                     </span>
@@ -619,11 +647,9 @@ const ShoppingCounter = () => {
               </div>
             </TabPane>
           ))}
-          {/* <TabPane tab="Tab 1" key="1">
-            1st TAB PANE Content
-          </TabPane> */}
         </Tabs>
       </div>
+      <ScanQrCode openScanQr={openScanQr} setOpenScanQr={setOpenScanQr} />
     </div>
   );
 };

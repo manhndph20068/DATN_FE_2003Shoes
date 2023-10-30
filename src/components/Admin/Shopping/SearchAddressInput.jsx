@@ -123,7 +123,7 @@ const SearchAddressInput = (props) => {
           justifyContent: "space-between",
         }}
       >
-        <Col span={7}>
+        <Col span={7.5}>
           <Form.Item
             label="Tỉnh/Thành Phố"
             name="province"
@@ -145,7 +145,7 @@ const SearchAddressInput = (props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={7}>
+        <Col span={7.5}>
           <Form.Item
             label="Quận/Huyện"
             name="district"
@@ -168,7 +168,7 @@ const SearchAddressInput = (props) => {
             />
           </Form.Item>
         </Col>
-        <Col span={7}>
+        <Col span={7.5}>
           <Form.Item
             label="Phường/Xã"
             name="ward"
@@ -194,7 +194,7 @@ const SearchAddressInput = (props) => {
       </Row>
       <Form.Item
         width="100%"
-        label="Địa chỉ"
+        label="Địa chỉ cụ thể"
         name="address"
         labelCol={{ span: 24 }}
         rules={[
