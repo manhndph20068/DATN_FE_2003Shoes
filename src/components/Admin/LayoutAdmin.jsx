@@ -11,6 +11,7 @@ import {
   MenuUnfoldOutlined,
   DownOutlined,
   ShoppingCartOutlined,
+  TagsOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Dropdown, Space, message, Avatar } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -24,6 +25,11 @@ const items = [
     label: <Link to="/admin">Dashboard</Link>,
     key: "dashboard",
     icon: <AppstoreOutlined />,
+  },
+  {
+    label: <Link to="/admin/shopping-counter">Sale in counter</Link>,
+    key: "counter",
+    icon: <ShoppingCartOutlined />,
   },
   {
     label: <span>Manage Users</span>,
@@ -60,9 +66,9 @@ const items = [
     icon: <DollarCircleOutlined />,
   },
   {
-    label: <Link to="/admin/shopping-counter">Sale in counter</Link>,
-    key: "counter",
-    icon: <ShoppingCartOutlined />,
+    label: <Link to="/admin/manage-voucher">Manage Voucher</Link>,
+    key: "voucher",
+    icon: <TagsOutlined />,
   },
 ];
 

@@ -30,6 +30,7 @@ import OrderPage from "./pages/order";
 import { doInitalCartWithAccount } from "./redux/order/orderSlice";
 import ShoppingCounter from "./components/Admin/Shopping/ShoppingCounter";
 import ManageOrder from "./components/Admin/Order/ManageOrder";
+import ManageVoucher from "./components/Admin/Voucher/ManageVoucher";
 
 const Layout = () => {
   return (
@@ -144,6 +145,10 @@ export default function App() {
         {
           path: "order",
           element: <ManageOrder />,
+        },
+        {
+          path: "manage-voucher",
+          element: <ManageVoucher />,
         },
       ],
     },

@@ -28,15 +28,6 @@ import { useSelector } from "react-redux";
 import SearchAddressInput from "./SearchAddressInput";
 import ScanQrCode from "./ScanQr";
 
-const defaultPanes = new Array(2).fill(null).map((_, index) => {
-  const id = String(index + 1);
-  return {
-    label: `Tab ${id}`,
-    children: `Content of Tab Pane ${index + 1}`,
-    key: id,
-  };
-});
-
 const ShoppingCounter = () => {
   const [listOrderAtCounter, setListOrderAtCounter] = useState([]);
   const [typeOfSales, setTypeOfSales] = useState(1);
@@ -52,6 +43,7 @@ const ShoppingCounter = () => {
   const [districtSelected, setDistrictSelected] = useState(null);
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
+  const [listShoeDataQR, setListShoeDataQR] = useState([]);
 
   const [form] = Form.useForm();
 
@@ -125,9 +117,11 @@ const ShoppingCounter = () => {
             1,
         };
       });
+      setListShoeDataQR(res.data);
       setListShoeDetail(list);
     } else {
       setListShoeDetail([]);
+      setListShoeDataQR([]);
     }
   };
 
@@ -189,11 +183,32 @@ const ShoppingCounter = () => {
     },
   ];
 
+  const optionTypeOfMethodPaymentOrderOnline = [
+    {
+      label: "Thanh toán khi nhận hàng",
+      value: "Thanh toán khi nhận hàng",
+    },
+    {
+      label: "Thanh toán tại quầy",
+      value: "Thanh toán tại quầy",
+    },
+  ];
+
   const onFinish = (values) => {
     const { typeOfSale } = values;
     console.log("values", values);
     console.log("typeOfSale", typeOfSale);
     console.log("shipPrice", shipPrice);
+    if (typeOfSale === 2) {
+      const province = listProvince.filter(
+        (item) => item.value == provinceSelected
+      )[0].label;
+      const district = listDistrict.filter(
+        (item) => item.value === districtSelected
+      )[0].label;
+      const ward = listWard.filter((item) => item.value === wardSelected)[0]
+        .label;
+    }
   };
 
   const handleCalTotalPrice = () => {
@@ -389,7 +404,7 @@ const ShoppingCounter = () => {
                               justifyContent: "space-between",
                             }}
                           >
-                            <Col span={10}>
+                            <Col span={10.5}>
                               <Form.Item
                                 label="Hình thức thanh toán"
                                 // style={{ fontSize: "3rem" }}
@@ -405,7 +420,9 @@ const ShoppingCounter = () => {
                                 ]}
                                 initialValue={"Thanh toán khi nhận hàng"}
                               >
-                                <Input disabled />
+                                <Select
+                                  options={optionTypeOfMethodPaymentOrderOnline}
+                                />
                               </Form.Item>
                             </Col>
                             <Col span={5.5}>
@@ -649,7 +666,13 @@ const ShoppingCounter = () => {
           ))}
         </Tabs>
       </div>
-      <ScanQrCode openScanQr={openScanQr} setOpenScanQr={setOpenScanQr} />
+      <ScanQrCode
+        openScanQr={openScanQr}
+        setOpenScanQr={setOpenScanQr}
+        listShoeDataQR={listShoeDataQR}
+        activeKey={activeKey}
+        setListOrderDetail={setListOrderDetail}
+      />
     </div>
   );
 };
