@@ -288,6 +288,28 @@ const callAddNewOrderAtCounter = (data) => {
   return axios.post(`/api/v1/admin/order/add`, data);
 };
 
+const callUpdateNewOrderAtCounter = (data) => {
+  return axios.post(`/api/v1/admin/order/update`, data);
+};
+
+const callGetListVoucher = (data) => {
+  return axios.post(`/api/v1/admin/voucher-order/get-all`, data);
+};
+
+const callImportFileVoucher = (file) => {
+  const bodyFormData = new FormData();
+  bodyFormData.append("file", file);
+  bodyFormData.append("type", 0);
+  return axios({
+    method: "post",
+    url: "http://localhost:8080/api/v1/admin/voucher-order/import",
+    data: bodyFormData,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+};
+
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
@@ -404,10 +426,13 @@ export {
   callListShoeThumbnail,
   callUpdateShoeDetail,
   callGetListOrderAtCounter,
+  callUpdateNewOrderAtCounter,
   callGetOrderDetailAtCounterById,
   callListShoeDetailAtCounter,
   callAddOrderDetailAtCounter,
   callDeleteOrderDetailAtCounter,
   callUpdateOrderDetailAtCounter,
   callAddNewOrderAtCounter,
+  callGetListVoucher,
+  callImportFileVoucher,
 };

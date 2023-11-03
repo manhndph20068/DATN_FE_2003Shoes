@@ -20,6 +20,7 @@ import {
   Input,
   Modal,
   Popconfirm,
+  Row,
   Select,
   Space,
   Upload,
@@ -424,311 +425,314 @@ const ModalCreateShoeProperties = (props) => {
       <Form
         form={form}
         name="wrap"
-        labelCol={{ flex: "110px" }}
         labelAlign="left"
-        labelWrap
-        wrapperCol={{ flex: 1 }}
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
         colon={false}
         style={{ width: "90%" }}
         onFinish={onFinish}
       >
-        <Form.Item
-          label="Loại giày"
-          name="shoeCategory"
-          rules={[
-            {
-              required: true,
-              message: "Please input your shoe category!",
-            },
-          ]}
-        >
-          <Select
-            style={{ width: 300 }}
-            placeholder="Chọn loại giày!"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <Input
-                    placeholder="Please enter item"
-                    value={addNameCategory}
-                    onChange={(e) => {
-                      setAddNameCategory(e.target.value);
-                    }}
-                  />
-                  <Popconfirm
-                    placement="bottomLeft"
-                    title={"Are you sure to add new item?"}
-                    onConfirm={() => handleAddNewCategory()}
-                    onCancel={() => setAddNameCategory(null)}
-                    okText="Yes"
-                    cancelText="No"
-                    disabled={
-                      addNameCategory === null || addNameCategory.trim() === ""
-                        ? true
-                        : false
-                    }
-                  >
-                    <Button
-                      type="text"
-                      icon={<PlusOutlined />}
-                      style={{ gap: 3 }}
+        <div className="item-select">
+          <Form.Item
+            span={3}
+            label="Loại giày"
+            name="shoeCategory"
+            rules={[
+              {
+                required: true,
+                message: "Please input your shoe category!",
+              },
+            ]}
+          >
+            <Select
+              style={{ width: 250 }}
+              placeholder="Chọn loại giày!"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <Input
+                      placeholder="Please enter item"
+                      value={addNameCategory}
+                      onChange={(e) => {
+                        setAddNameCategory(e.target.value);
+                      }}
+                    />
+                    <Popconfirm
+                      placement="bottomLeft"
+                      title={"Are you sure to add new item?"}
+                      onConfirm={() => handleAddNewCategory()}
+                      onCancel={() => setAddNameCategory(null)}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={
+                        addNameCategory === null ||
+                        addNameCategory.trim() === ""
+                          ? true
+                          : false
+                      }
                     >
-                      Add item
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </>
-            )}
-            options={nameCategoryOptions}
-            onChange={(value) => props.setCategorySelected(value)}
-            onDropdownVisibleChange={(open) => {
-              if (!open) {
-                setAddNameCategory(null);
-              }
-            }}
-          />
-        </Form.Item>
+                      <Button
+                        type="text"
+                        icon={<PlusOutlined />}
+                        style={{ gap: 3 }}
+                      >
+                        Add item
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </>
+              )}
+              options={nameCategoryOptions}
+              onChange={(value) => props.setCategorySelected(value)}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setAddNameCategory(null);
+                }
+              }}
+            />
+          </Form.Item>
 
-        <Form.Item
-          label="Brand"
-          name="shoeBrand"
-          rules={[
-            {
-              required: true,
-              message: "Please input your shoe brand!",
-            },
-          ]}
-        >
-          <Select
-            style={{ width: 300 }}
-            placeholder="Chọn Brand!"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <Input
-                    placeholder="Please enter item"
-                    value={addNameBrand}
-                    onChange={(e) => {
-                      setAddNameBrand(e.target.value);
-                    }}
-                  />
-                  <Popconfirm
-                    placement="bottomLeft"
-                    title={"Are you sure to add new item?"}
-                    onConfirm={() => handleAddNewBrand()}
-                    onCancel={() => setAddNameBrand(null)}
-                    okText="Yes"
-                    cancelText="No"
-                    disabled={
-                      addNameBrand === null || addNameBrand.trim() === ""
-                        ? true
-                        : false
-                    }
-                  >
-                    <Button
-                      type="text"
-                      icon={<PlusOutlined />}
-                      style={{ gap: 3 }}
+          <Form.Item
+            label="Brand"
+            name="shoeBrand"
+            rules={[
+              {
+                required: true,
+                message: "Please input your shoe brand!",
+              },
+            ]}
+          >
+            <Select
+              style={{ width: 250 }}
+              placeholder="Chọn Brand!"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <Input
+                      placeholder="Please enter item"
+                      value={addNameBrand}
+                      onChange={(e) => {
+                        setAddNameBrand(e.target.value);
+                      }}
+                    />
+                    <Popconfirm
+                      placement="bottomLeft"
+                      title={"Are you sure to add new item?"}
+                      onConfirm={() => handleAddNewBrand()}
+                      onCancel={() => setAddNameBrand(null)}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={
+                        addNameBrand === null || addNameBrand.trim() === ""
+                          ? true
+                          : false
+                      }
                     >
-                      Add item
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </>
-            )}
-            options={nameBrandOptions}
-            onChange={(value) => props.setBrandSelected(value)}
-            onDropdownVisibleChange={(open) => {
-              if (!open) {
-                setAddNameBrand(null);
-              }
-            }}
-          />
-        </Form.Item>
+                      <Button
+                        type="text"
+                        icon={<PlusOutlined />}
+                        style={{ gap: 3 }}
+                      >
+                        Add item
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </>
+              )}
+              options={nameBrandOptions}
+              onChange={(value) => props.setBrandSelected(value)}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setAddNameBrand(null);
+                }
+              }}
+            />
+          </Form.Item>
 
-        <Form.Item
-          label="Sole"
-          name="shoeSole"
-          rules={[
-            {
-              required: true,
-              message: "Please input your shoe sole!",
-            },
-          ]}
-        >
-          <Select
-            style={{ width: 300 }}
-            placeholder="Chọn sole!"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <Input
-                    placeholder="Please enter item"
-                    value={addNameSole}
-                    onChange={(e) => {
-                      setAddNameSole(e.target.value);
-                    }}
-                  />
-                  <Popconfirm
-                    placement="bottomLeft"
-                    title={"Are you sure to add new item?"}
-                    onConfirm={() => handleAddNewSole()}
-                    onCancel={() => setAddNameSole(null)}
-                    okText="Yes"
-                    cancelText="No"
-                    disabled={
-                      addNameSole === null || addNameSole.trim() === ""
-                        ? true
-                        : false
-                    }
-                  >
-                    <Button
-                      type="text"
-                      icon={<PlusOutlined />}
-                      style={{ gap: 3 }}
+          <Form.Item
+            label="Sole"
+            name="shoeSole"
+            rules={[
+              {
+                required: true,
+                message: "Please input your shoe sole!",
+              },
+            ]}
+          >
+            <Select
+              style={{ width: 250 }}
+              placeholder="Chọn sole!"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <Input
+                      placeholder="Please enter item"
+                      value={addNameSole}
+                      onChange={(e) => {
+                        setAddNameSole(e.target.value);
+                      }}
+                    />
+                    <Popconfirm
+                      placement="bottomLeft"
+                      title={"Are you sure to add new item?"}
+                      onConfirm={() => handleAddNewSole()}
+                      onCancel={() => setAddNameSole(null)}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={
+                        addNameSole === null || addNameSole.trim() === ""
+                          ? true
+                          : false
+                      }
                     >
-                      Add item
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </>
-            )}
-            options={nameSoleOptions}
-            onChange={(value) => props.setSoleSelected(value)}
-            onDropdownVisibleChange={(open) => {
-              if (!open) {
-                setAddNameSole(null);
-              }
-            }}
-          />
-        </Form.Item>
+                      <Button
+                        type="text"
+                        icon={<PlusOutlined />}
+                        style={{ gap: 3 }}
+                      >
+                        Add item
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </>
+              )}
+              options={nameSoleOptions}
+              onChange={(value) => props.setSoleSelected(value)}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setAddNameSole(null);
+                }
+              }}
+            />
+          </Form.Item>
 
-        <Form.Item
-          label="Color"
-          name="shoeColor"
-          rules={[
-            {
-              required: true,
-              message: "Please input your shoe color!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            style={{ width: 300 }}
-            placeholder="Chọn color!"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <Input
-                    placeholder="Please enter item"
-                    value={addNameColor}
-                    onChange={(e) => {
-                      setAddNameColor(e.target.value);
-                    }}
-                  />
-                  <Popconfirm
-                    placement="bottomLeft"
-                    title={"Are you sure to add new item?"}
-                    onConfirm={() => handleAddNewColor()}
-                    onCancel={() => setAddNameColor(null)}
-                    okText="Yes"
-                    cancelText="No"
-                    disabled={
-                      addNameColor === null || addNameColor.trim() === ""
-                        ? true
-                        : false
-                    }
-                  >
-                    <Button
-                      type="text"
-                      icon={<PlusOutlined />}
-                      style={{ gap: 3 }}
+          <Form.Item
+            label="Color"
+            name="shoeColor"
+            rules={[
+              {
+                required: true,
+                message: "Please input your shoe color!",
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              style={{ width: 250 }}
+              placeholder="Chọn color!"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <Input
+                      placeholder="Please enter item"
+                      value={addNameColor}
+                      onChange={(e) => {
+                        setAddNameColor(e.target.value);
+                      }}
+                    />
+                    <Popconfirm
+                      placement="bottomLeft"
+                      title={"Are you sure to add new item?"}
+                      onConfirm={() => handleAddNewColor()}
+                      onCancel={() => setAddNameColor(null)}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={
+                        addNameColor === null || addNameColor.trim() === ""
+                          ? true
+                          : false
+                      }
                     >
-                      Add item
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </>
-            )}
-            options={nameColorOptions}
-            onChange={(value) => props.setColorSelected(value)}
-            onDropdownVisibleChange={(open) => {
-              if (!open) {
-                setAddNameColor(null);
-              }
-            }}
-          />
-        </Form.Item>
+                      <Button
+                        type="text"
+                        icon={<PlusOutlined />}
+                        style={{ gap: 3 }}
+                      >
+                        Add item
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </>
+              )}
+              options={nameColorOptions}
+              onChange={(value) => props.setColorSelected(value)}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setAddNameColor(null);
+                }
+              }}
+            />
+          </Form.Item>
 
-        <Form.Item
-          label="Size"
-          name="shoeSize"
-          rules={[
-            {
-              required: true,
-              message: "Please input your shoe size!",
-            },
-          ]}
-        >
-          <Select
-            mode="multiple"
-            ref={selectRef}
-            style={{ width: 300 }}
-            placeholder="Chọn size!"
-            dropdownRender={(menu) => (
-              <>
-                {menu}
-                <Divider style={{ margin: "8px 0" }} />
-                <Space style={{ padding: "0 8px 4px" }}>
-                  <Input
-                    placeholder="Please enter item"
-                    value={addNameSize}
-                    onChange={(e) => {
-                      setAddNameSize(e.target.value);
-                    }}
-                  />
-                  <Popconfirm
-                    placement="bottomLeft"
-                    title={"Are you sure to add new item?"}
-                    onConfirm={() => handleAddNewSize()}
-                    onCancel={() => setAddNameSize(null)}
-                    okText="Yes"
-                    cancelText="No"
-                    disabled={
-                      addNameSize === null || addNameSize.trim() === ""
-                        ? true
-                        : false
-                    }
-                  >
-                    <Button
-                      type="text"
-                      icon={<PlusOutlined />}
-                      style={{ gap: 3 }}
+          <Form.Item
+            label="Size"
+            name="shoeSize"
+            rules={[
+              {
+                required: true,
+                message: "Please input your shoe size!",
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              ref={selectRef}
+              style={{ width: 250 }}
+              placeholder="Chọn size!"
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Space style={{ padding: "0 8px 4px" }}>
+                    <Input
+                      placeholder="Please enter item"
+                      value={addNameSize}
+                      onChange={(e) => {
+                        setAddNameSize(e.target.value);
+                      }}
+                    />
+                    <Popconfirm
+                      placement="bottomLeft"
+                      title={"Are you sure to add new item?"}
+                      onConfirm={() => handleAddNewSize()}
+                      onCancel={() => setAddNameSize(null)}
+                      okText="Yes"
+                      cancelText="No"
+                      disabled={
+                        addNameSize === null || addNameSize.trim() === ""
+                          ? true
+                          : false
+                      }
                     >
-                      Add item
-                    </Button>
-                  </Popconfirm>
-                </Space>
-              </>
-            )}
-            options={nameSizeOptions}
-            onChange={(value) => props.setSizeSelected(value)}
-            onDropdownVisibleChange={(open) => {
-              if (!open) {
-                setAddNameSize(null);
-              }
-            }}
-          />
-        </Form.Item>
+                      <Button
+                        type="text"
+                        icon={<PlusOutlined />}
+                        style={{ gap: 3 }}
+                      >
+                        Add item
+                      </Button>
+                    </Popconfirm>
+                  </Space>
+                </>
+              )}
+              options={nameSizeOptions}
+              onChange={(value) => props.setSizeSelected(value)}
+              onDropdownVisibleChange={(open) => {
+                if (!open) {
+                  setAddNameSize(null);
+                }
+              }}
+            />
+          </Form.Item>
+        </div>
 
         <div className="img-list-shoe-item">
           {props.colorSelected &&

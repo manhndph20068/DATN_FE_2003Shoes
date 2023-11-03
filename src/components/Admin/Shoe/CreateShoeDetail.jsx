@@ -4,6 +4,7 @@ import { callListNameShoe } from "../../../services/api";
 import { PlusCircleTwoTone } from "@ant-design/icons";
 import ModalCreateShoeName from "./ModalCreateShoeName";
 import ModalCreateShoeProperties from "./ModalCreateShoeProperties";
+import "./CreateShoeDetail.scss";
 
 const CreateShoeDetail = () => {
   const [nameShoeOptions, setNameShoeOptions] = useState([]);
@@ -167,7 +168,17 @@ const CreateShoeDetail = () => {
         />
       </div>
       <div className="properties">
-        <div className="properties-item">Thuoc tinh</div>
+        {shoeNameSelected && (
+          <>
+            <div className="properties-item-title">
+              <div className="title">
+                {" "}
+                <p>Thuộc tính sản phẩm</p>
+              </div>
+            </div>
+          </>
+        )}
+
         {shoeNameSelected && (
           <div className="properties-item">
             <ModalCreateShoeProperties

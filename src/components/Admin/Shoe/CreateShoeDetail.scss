@@ -1,0 +1,38 @@
+.properties {
+  border: 1px solid #ccc;
+  //   padding: 0 24.9rem;
+  .properties-item-title {
+    // margin: 0 24.8rem;
+
+    // border: 1px solid #af5a5a;
+    // height: 2rem;
+    display: flex;
+    // max-width: 31.2rem;
+
+    // background-color: #ebeaea;
+    // border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    // padding: 0 36.7rem;
+
+    .title {
+      border-radius: 5px;
+      display: flex;
+      width: 540px;
+      justify-content: center;
+      padding: 0.3rem;
+      align-items: center;
+      background-color: #e3e2e2;
+    }
+  }
+  .properties-item {
+    display: flex;
+
+    justify-content: center;
+    .item-select {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

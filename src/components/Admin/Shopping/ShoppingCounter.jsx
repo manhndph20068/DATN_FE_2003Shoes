@@ -19,6 +19,7 @@ import {
   callGetListOrderAtCounter,
   callGetOrderDetailAtCounterById,
   callListShoeDetailAtCounter,
+  callUpdateNewOrderAtCounter,
 } from "../../../services/api";
 import "./ShoppingCounter.scss";
 import TextArea from "antd/es/input/TextArea";
@@ -27,6 +28,7 @@ import SearchProductInput from "./SearchProductInput";
 import { useSelector } from "react-redux";
 import SearchAddressInput from "./SearchAddressInput";
 import ScanQrCode from "./ScanQr";
+import SearchCustomerInput from "./SearchCustomerInput";
 
 const ShoppingCounter = () => {
   const [listOrderAtCounter, setListOrderAtCounter] = useState([]);
@@ -100,6 +102,8 @@ const ShoppingCounter = () => {
     if (res.data.length > 0) {
       const list = res.data.map((item) => {
         return {
+          price: item.priceInput,
+          thumbnail: item.thumbnail,
           label: item.code,
           value:
             item.id +
@@ -145,6 +149,8 @@ const ShoppingCounter = () => {
       "ward",
       "address",
       "moneyPaid",
+      "note",
+      "typeOfMethodPaymentOnlineOrder",
     ]);
     form.setFieldsValue({ typeOfSale: 1 });
     setRefund(0);
@@ -195,7 +201,16 @@ const ShoppingCounter = () => {
   ];
 
   const onFinish = (values) => {
-    const { typeOfSale } = values;
+    const {
+      typeOfSale,
+      code,
+      id,
+      customerName,
+      note,
+      phone,
+      typeOfMethodPaymentOnlineOrder,
+      address,
+    } = values;
     console.log("values", values);
     console.log("typeOfSale", typeOfSale);
     console.log("shipPrice", shipPrice);
@@ -208,7 +223,32 @@ const ShoppingCounter = () => {
       )[0].label;
       const ward = listWard.filter((item) => item.value === wardSelected)[0]
         .label;
+
+      const data = {
+        id: activeKey,
+        idVoucher: null,
+        idAccount: null,
+        code: code,
+        type: typeOfMethodPaymentOnlineOrder,
+        customerName: customerName,
+        phoneNumber: phone,
+        address: province + ", " + district + ", " + ward + ", " + address,
+        shipFee: shipPrice,
+        moneyReduce: 0,
+        totalMoney: handleCalTotalPrice() + shipPrice,
+        payDate: null,
+        shipDate: null,
+        desiredDate: null,
+        receiveDate: null,
+        updatedBy: staffName,
+        note: note,
+        status:
+          typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 2 : 1,
+      };
+      console.log("data", data);
     }
+
+    // callUpdateNewOrderAtCounter;
   };
 
   const handleCalTotalPrice = () => {
@@ -338,6 +378,7 @@ const ShoppingCounter = () => {
 
                       {typeOfSales === 2 ? (
                         <>
+                          <SearchCustomerInput />
                           <Row
                             style={{
                               display: "flex",
@@ -624,7 +665,7 @@ const ShoppingCounter = () => {
                     }}
                   >
                     <span>
-                      <h2>Hoá Đơn Chi Tiết</h2>
+                      <h2>Giỏ Hàng</h2>
                     </span>
                     <span>
                       <Button

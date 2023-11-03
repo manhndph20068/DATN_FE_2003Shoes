@@ -1,4 +1,4 @@
-import { Col, Row, Select, Form, message } from "antd";
+import { Col, Row, Select, Form, message, Space } from "antd";
 import {
   callAddOrderDetailAtCounter,
   callGetListOrderAtCounter,
@@ -53,9 +53,36 @@ const SearchProductInput = (props) => {
                     .toLowerCase()
                     .localeCompare((optionB?.label ?? "").toLowerCase())
                 }
-                options={listShoeDetail}
+                // options={listShoeDetail}
                 onChange={(value) => handleChangeShoeDetail(value)}
-              />
+              >
+                {listShoeDetail.map((item) => {
+                  return (
+                    <Option value={item.value} label={item.label}>
+                      <div
+                        style={{
+                          gap: "3rem",
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <span>
+                          <img
+                            src={item.thumbnail}
+                            alt={item.thumbnail}
+                            style={{ height: "3rem", width: "3rem" }}
+                          />{" "}
+                        </span>
+
+                        <span>Mã sp: {item.label}</span>
+                        <span>Giá: {item.price}</span>
+                      </div>
+                    </Option>
+                  );
+                })}
+              </Select>
+              {/* <Select options={listShoeDetail}>hi</Select> */}
             </Form.Item>
           </Col>
         </Row>
