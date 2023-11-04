@@ -5,7 +5,8 @@ import { callImportFileVoucher } from "../../../services/api";
 import { useState } from "react";
 
 const ImportVoucher = (props) => {
-  const { isModalImportOpen, setIsModalImportOpen } = props;
+  const { isModalImportOpen, setIsModalImportOpen, handleFetchAllListVoucher } =
+    props;
   const [resultImport, setResultImport] = useState({});
 
   const handleCancel = () => {
@@ -61,6 +62,7 @@ const ImportVoucher = (props) => {
         message.success(`${info.file.name} file uploaded successfully.`);
         console.log(info.file.response, info.fileList);
         setResultImport(info.file.response);
+        handleFetchAllListVoucher();
       } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);
       }

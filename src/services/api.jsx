@@ -310,6 +310,10 @@ const callImportFileVoucher = (file) => {
   });
 };
 
+const callAddVoucher = (data) => {
+  return axios.post(`/api/v1/admin/voucher-order/addNewVoucherOrder`, data);
+};
+
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
@@ -435,4 +439,5 @@ export {
   callAddNewOrderAtCounter,
   callGetListVoucher,
   callImportFileVoucher,
+  callAddVoucher,
 };

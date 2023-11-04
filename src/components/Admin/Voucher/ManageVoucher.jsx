@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Popconfirm, Space, Table, Tag, Tooltip } from "antd";
+import { Button, Col, Popconfirm, Row, Space, Table, Tag, Tooltip } from "antd";
 import { callGetListVoucher } from "../../../services/api";
 import "./ManageVoucher.scss";
 import ViewDetailVoucher from "./ViewDetailVoucher";
@@ -12,6 +12,8 @@ import {
   ReloadOutlined,
 } from "@ant-design/icons";
 import ImportVoucher from "./ImportVoucher";
+import InputSearchVoucher from "./InputSearchVoucher";
+import ModalCreateVoucher from "./ModalCreateVoucher";
 
 const ManageVoucher = () => {
   const [current, setCurrent] = useState(1);
@@ -22,17 +24,19 @@ const ManageVoucher = () => {
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [isModalImportOpen, setIsModalImportOpen] = useState(false);
+  const [filter, setFilter] = useState({
+    page: current,
+    size: pageSize,
+  });
 
   const handleFetchAllListVoucher = async () => {
-    const data = {
-      page: current,
-      size: pageSize,
-    };
-    const res = await callGetListVoucher(data);
+    const res = await callGetListVoucher(filter);
     console.log("res callGetListVoucher", res);
     if (res?.data) {
+      let index = 1;
       res.data.forEach((item) => {
         item.key = item.id;
+        item.index = index++;
       });
       setListVoucher(res.data);
       setTotal(res.total);
@@ -41,9 +45,14 @@ const ManageVoucher = () => {
 
   useEffect(() => {
     handleFetchAllListVoucher();
-  }, [current, pageSize]);
+  }, [filter]);
 
   const columns = [
+    {
+      title: "STT",
+      dataIndex: "index",
+      key: "index",
+    },
     {
       title: "Mã Voucher",
       dataIndex: "code",
@@ -102,7 +111,8 @@ const ManageVoucher = () => {
         <>
           {record.status === 0 && <Tag color="cyan">Chờ kích hoạt</Tag>}
           {record.status === 1 && <Tag color="green">Đang hoạt động</Tag>}
-          {record.status === 2 && <Tag color="red">Hết hạn</Tag>}
+          {record.status === 2 && <Tag color="gold">Hết hạn</Tag>}
+          {record.status === 3 && <Tag color="red">Huỷ</Tag>}
         </>
       ),
     },
@@ -172,10 +182,12 @@ const ManageVoucher = () => {
             <Button
               shape="circle"
               icon={<ReloadOutlined />}
-              // onClick={() => {
-              //   setFilter("");
-              //   setQuery("");
-              // }}
+              onClick={() => {
+                setFilter({
+                  page: current,
+                  size: pageSize,
+                });
+              }}
             />
           </Tooltip>
         </span>
@@ -187,30 +199,49 @@ const ManageVoucher = () => {
     console.log("params", pagination, filters, sorter, extra);
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
+      setFilter({
+        page: pagination.current,
+        size: pageSize,
+      });
     }
     if (pagination && pagination.pageSize !== pageSize) {
       setCurrent(1);
       setPageSize(pagination.pageSize);
+      setFilter({
+        page: 1,
+        size: pagination.pageSize,
+      });
     }
   };
 
   return (
     <>
-      <div className="content-container"></div>
-      <div className="table-list-voucher">
-        <Table
-          columns={columns}
-          title={renderHeaderTable}
-          dataSource={listVoucher}
-          onChange={onChange}
-          pagination={{
-            current: current,
-            pageSize: pageSize,
-            total: total,
-            showSizeChanger: true,
-          }}
-        />
+      <div className="content-container">
+        <div className="input-search-voucher">
+          <Row
+            style={{ justifyContent: "center", padding: "20px 0px 20px 0px" }}
+          >
+            <Col span={23}>
+              <InputSearchVoucher setFilter={setFilter} filter={filter} />
+            </Col>
+          </Row>
+        </div>
+        <div className="table-list-voucher">
+          <Table
+            columns={columns}
+            title={renderHeaderTable}
+            dataSource={listVoucher}
+            onChange={onChange}
+            pagination={{
+              current: current,
+              pageSize: pageSize,
+              total: total,
+              showSizeChanger: true,
+            }}
+          />
+        </div>
       </div>
+
       <ViewDetailVoucher
         openViewDetail={openViewDetail}
         setOpenViewDetail={setOpenViewDetail}
@@ -219,6 +250,12 @@ const ManageVoucher = () => {
       <ImportVoucher
         isModalImportOpen={isModalImportOpen}
         setIsModalImportOpen={setIsModalImportOpen}
+        handleFetchAllListVoucher={handleFetchAllListVoucher}
+      />
+      <ModalCreateVoucher
+        setIsModalCreateOpen={setIsModalCreateOpen}
+        isModalCreateOpen={isModalCreateOpen}
+        handleFetchAllListVoucher={handleFetchAllListVoucher}
       />
     </>
   );
