@@ -41,19 +41,6 @@ const InputSearchVoucher = (props) => {
     };
     console.log("newFilter", newFilter);
     setFilter(newFilter);
-    // let query = "";
-    // if (values.nameShoe) {
-    //   query += `&nameShoe=${values.nameShoe}`;
-    // }
-    // if (values.size) {
-    //   query += `&sizeShoe=${values.size}`;
-    // }
-    // if (values.brand) {
-    //   query += `&brandShoe=${values.brand}`;
-    // }
-    // if (query) {
-    //   props.handleFilter(query);
-    // }
   };
 
   const optionStatusVoucher = [

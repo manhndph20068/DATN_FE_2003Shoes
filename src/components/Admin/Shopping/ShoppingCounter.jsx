@@ -15,6 +15,7 @@ import {
 import { QrcodeOutlined, ShoppingOutlined } from "@ant-design/icons";
 import TabPane from "antd/es/tabs/TabPane";
 import {
+  callAddMethodPayment,
   callAddNewOrderAtCounter,
   callGetListOrderAtCounter,
   callGetOrderDetailAtCounterById,
@@ -29,11 +30,13 @@ import { useSelector } from "react-redux";
 import SearchAddressInput from "./SearchAddressInput";
 import ScanQrCode from "./ScanQr";
 import SearchCustomerInput from "./SearchCustomerInput";
+import moment from "moment";
 
 const ShoppingCounter = () => {
   const [listOrderAtCounter, setListOrderAtCounter] = useState([]);
   const [typeOfSales, setTypeOfSales] = useState(1);
   const [activeKey, setActiveKey] = useState(null);
+  const [tabCode, setTabCode] = useState(null);
   const [listOrderDetail, setListOrderDetail] = useState(null);
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [refund, setRefund] = useState(0);
@@ -54,7 +57,11 @@ const ShoppingCounter = () => {
   const onChange = (key) => {
     setActiveKey(key);
     console.log("key", key);
-    handleGetOrderDetailById(key);
+    //handleGetOrderDetailById(key);
+    form.setFieldValue("id", key);
+    const code = listOrderAtCounter?.filter((item) => item.id == key)[0].code;
+    console.log("code", code);
+    form.setFieldValue("code", code);
     console.log("listOrderDetail", listOrderDetail);
     setShipPrice(0);
     getTotalPriceShip();
@@ -64,9 +71,11 @@ const ShoppingCounter = () => {
   };
 
   const handleGetOrderDetailById = async (id) => {
+    console.log("handleGetOrderDetailById id ", id);
+    console.log("handleGetOrderDetailById a ", activeKey);
     const res = await callGetOrderDetailAtCounterById(id);
     setListOrderDetail(res.data);
-    console.log("handleGetOrderDetailById ");
+    console.log("handleGetOrderDetailById b ", activeKey);
   };
 
   const addNewOrder = async () => {
@@ -78,11 +87,20 @@ const ShoppingCounter = () => {
     if (res.status === 0) {
       const rescallGetListOrder = await callGetListOrderAtCounter();
       if (rescallGetListOrder.data.length > 0) {
-        setListOrderAtCounter(rescallGetListOrder.data);
+        const res = await callGetListOrderAtCounter();
+        if (res.data.length > 0) {
+          const newData = res.data;
+          setListOrderAtCounter(res.data);
+          setActiveKey(String(res.data[res.data.length - 1].id));
+          form.setFieldValue("id", res.data[res.data.length - 1].id);
+          console.log("listOrderAtCounter", listOrderAtCounter);
+          const code = newData?.filter(
+            (item) => item.id == res.data[res.data.length - 1].id
+          )[0].code;
+
+          form.setFieldValue("code", code);
+        }
       }
-      setActiveKey(String(res.data.id));
-      console.log("res.data.id", String(res.data.id));
-      console.log("activeKey d", activeKey);
     } else {
       message.error(res.mess);
     }
@@ -90,9 +108,23 @@ const ShoppingCounter = () => {
 
   const fetchListOrderAtCounter = async () => {
     const res = await callGetListOrderAtCounter();
-    if (res.data.length > 0) {
+    if (res?.data?.length > 0) {
       setListOrderAtCounter(res.data);
       setActiveKey(String(res.data[0].id));
+      form.setFieldValue("id", res.data[0].id);
+      console.log("listOrderAtCounter", listOrderAtCounter);
+      const code = listOrderAtCounter?.filter(
+        (item) => item.id == res.data[0].id
+      )[0].code;
+      form.setFieldValue("code", code);
+      // setActiveKey(String(activeKey));
+    } else {
+      if (!localStorage.getItem("reloaded")) {
+        localStorage.setItem("reloaded", true);
+        window.location.reload();
+      } else {
+        localStorage.removeItem("reloaded");
+      }
     }
   };
 
@@ -129,15 +161,17 @@ const ShoppingCounter = () => {
     }
   };
 
-  useEffect(() => {
-    fetchListShoeDetailAtCounter();
-    handleGetOrderDetailById(activeKey);
-    setShipPrice(0);
-  }, [activeKey]);
+  // useEffect(() => {
+  //   fetchListShoeDetailAtCounter();
+  //   handleGetOrderDetailById(activeKey);
+  //   console.log("activeKey 1", activeKey);
+  //   setShipPrice(0);
+  // }, [activeKey]);
 
   useEffect(() => {
     fetchListOrderAtCounter();
     fetchListShoeDetailAtCounter();
+    console.log("activeKey 1", activeKey);
   }, []);
 
   useEffect(() => {
@@ -160,6 +194,11 @@ const ShoppingCounter = () => {
     setProvinceSelected(201);
     setDistrictSelected(null);
     setWardSelected(null);
+    console.log("activeKey 2", activeKey);
+
+    fetchListShoeDetailAtCounter();
+    handleGetOrderDetailById(activeKey);
+    console.log("activeKey 3", activeKey);
   }, [activeKey]);
 
   const optionTypeSales = [
@@ -200,7 +239,11 @@ const ShoppingCounter = () => {
     },
   ];
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
+    if (handleCalTotalPrice() <= 0) {
+      message.error("Giỏ hàng không được để trống!");
+      return;
+    }
     const {
       typeOfSale,
       code,
@@ -209,6 +252,7 @@ const ShoppingCounter = () => {
       note,
       phone,
       typeOfMethodPaymentOnlineOrder,
+      typeOfMethodPayment,
       address,
     } = values;
     console.log("values", values);
@@ -225,18 +269,21 @@ const ShoppingCounter = () => {
         .label;
 
       const data = {
-        id: activeKey,
+        id: id,
         idVoucher: null,
         idAccount: null,
         code: code,
-        type: typeOfMethodPaymentOnlineOrder,
+        type: typeOfSale,
         customerName: customerName,
         phoneNumber: phone,
         address: province + ", " + district + ", " + ward + ", " + address,
         shipFee: shipPrice,
         moneyReduce: 0,
         totalMoney: handleCalTotalPrice() + shipPrice,
-        payDate: null,
+        payDate:
+          typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy"
+            ? new Date().toISOString()
+            : null,
         shipDate: null,
         desiredDate: null,
         receiveDate: null,
@@ -246,6 +293,60 @@ const ShoppingCounter = () => {
           typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 2 : 1,
       };
       console.log("data", data);
+      const res = await callUpdateNewOrderAtCounter(data);
+      if (res.status === 0) {
+        message.success("Thanh toán thành công!");
+        fetchListOrderAtCounter();
+        await callAddMethodPayment({
+          orderId: id,
+          method: typeOfMethodPaymentOnlineOrder,
+          total: handleCalTotalPrice() + shipPrice,
+          note: `Nhân viên ${staffName} xác nhận `,
+          status: 1,
+        });
+      } else {
+        message.error(res.mess);
+      }
+    }
+    if (typeOfSale === 1) {
+      const data = {
+        id: id,
+        idVoucher: null,
+        idAccount: null,
+        code: code,
+        type: typeOfSale,
+        customerName: customerName ?? "Khách lẻ",
+        phoneNumber: null,
+        address: null,
+        shipFee: null,
+        moneyReduce: 0,
+        totalMoney: handleCalTotalPrice() + shipPrice,
+        payDate: new Date().toISOString(),
+        shipDate: null,
+        desiredDate: null,
+        receiveDate: null,
+        updatedBy: staffName,
+        note: note
+          ? `Nhân viên ${staffName} xác nhận thanh toán, ${note}`
+          : `Nhân viên ${staffName} xác nhận thanh toán`,
+        status: 2,
+      };
+      console.log("data", data);
+      const res = await callUpdateNewOrderAtCounter(data);
+      if (res.status === 0) {
+        message.success("Thanh toán thành công!");
+        fetchListOrderAtCounter();
+        // handleGetOrderDetailById(res.data[0].id);
+        await callAddMethodPayment({
+          orderId: id,
+          method: typeOfMethodPayment,
+          total: handleCalTotalPrice() + shipPrice,
+          note: `Nhân viên ${staffName} xác nhận thanh toán`,
+          status: 1,
+        });
+      } else {
+        message.error(res.mess);
+      }
     }
 
     // callUpdateNewOrderAtCounter;
@@ -333,12 +434,12 @@ const ShoppingCounter = () => {
           // onEdit={onEdit}
           // items={items}
         >
-          {listOrderAtCounter.map((pane) => (
-            <TabPane tab={pane.code} key={pane.id}>
+          {listOrderAtCounter?.map((pane) => (
+            <TabPane tab={pane?.code} key={pane?.id}>
               <div className="tab-container">
                 <div className="tab-left-content">
                   <div className="title-order">
-                    <h2>Hoá Đơn {pane.code}</h2>
+                    <h2>Hoá Đơn {pane?.code}</h2>
                   </div>
                   <div className="title-order-infor">
                     <h3>Thông Tin Khách Hàng</h3>
@@ -353,8 +454,12 @@ const ShoppingCounter = () => {
                       scrollToFirstError={true}
                       layout={"vertical"}
                     >
-                      <Form.Item name="code" initialValue={pane.code} hidden />
-                      <Form.Item name="id" initialValue={pane.id} hidden />
+                      <Form.Item name="code" initialValue={pane?.code} hidden>
+                        <Input value={pane?.code} />
+                      </Form.Item>
+                      <Form.Item name="id" initialValue={pane?.id} hidden>
+                        <Input value={pane?.id} />
+                      </Form.Item>
                       <Form.Item
                         label="Hình thức bán hàng"
                         name="typeOfSale"

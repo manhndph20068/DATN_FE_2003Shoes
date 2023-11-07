@@ -26,6 +26,7 @@ const ModalCreateVoucher = (props) => {
   };
 
   const handleCancel = () => {
+    form.resetFields();
     setIsModalCreateOpen(false);
   };
 

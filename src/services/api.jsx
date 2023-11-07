@@ -314,6 +314,31 @@ const callAddVoucher = (data) => {
   return axios.post(`/api/v1/admin/voucher-order/addNewVoucherOrder`, data);
 };
 
+const callGetListOrder = (data) => {
+  return axios.post(`/api/v1/admin/order/get-all`, data);
+};
+
+const callGetListOrderHistoryById = (id) => {
+  return axios.get(`/api/v1/admin/order-history/get-one/${id}`);
+};
+
+const callGetOrderByCode = (id) => {
+  return axios.get(`/api/v1/admin/order/get-one/${id}`);
+};
+
+const callAddMethodPayment = (data) => {
+  return axios.post("/api/v1/admin/payment-method/add", data);
+};
+
+const callListMethodPayment = (code) => {
+  const data = {
+    orderCode: code,
+    page: 0,
+    size: 10,
+  };
+  return axios.post(`/api/v1/admin/payment-method/get-all`, data);
+};
+
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
@@ -440,4 +465,9 @@ export {
   callGetListVoucher,
   callImportFileVoucher,
   callAddVoucher,
+  callGetListOrder,
+  callGetListOrderHistoryById,
+  callGetOrderByCode,
+  callAddMethodPayment,
+  callListMethodPayment,
 };
