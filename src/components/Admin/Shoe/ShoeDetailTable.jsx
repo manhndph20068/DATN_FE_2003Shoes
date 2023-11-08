@@ -30,7 +30,7 @@ import ShoeDetailModalUpdate from "./ShoeDetailModalUpdate";
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(2);
+  const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [filter, setFilter] = useState("");
   const [querySort, setQuerySort] = useState("");

@@ -1,6 +1,11 @@
 import React from "react";
 import { Timeline, TimelineEvent } from "@mailtop/horizontal-timeline";
 import { FaBug, FaRegCalendarCheck, FaRegFileAlt } from "react-icons/fa";
+import {
+  AiOutlineFileSync,
+  AiOutlineFileAdd,
+  AiOutlineFileExcel,
+} from "react-icons/ai";
 import "./OrderDetail.scss";
 import {
   callGetListOrderHistoryById,
@@ -12,11 +17,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Divider, Row, Table, Tag } from "antd";
+import ModalShowDetailOrder from "./ModalShowDetailOrder";
 const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
   const [historyOrder, setHistoryOrder] = useState([]);
   const [paymentMethodOrder, setPaymentMethodOrder] = useState([]);
   const [listOrderDetail, setListOrderDetail] = useState([]);
+  const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
+    useState(false);
+
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
   const navigate = useNavigate();
@@ -167,6 +176,48 @@ const OrderDetail = () => {
     return total;
   };
 
+  const handleGetColorTimeline = (type) => {
+    if (type === "Created") {
+      return "green";
+    } else if (type === "Updated") {
+      return "orange";
+    } else if (type === "Canceled") {
+      return "red";
+    } else {
+      return "white";
+    }
+  };
+
+  const handleGetIconTimeline = (type) => {
+    if (type === "Created") {
+      return AiOutlineFileAdd;
+    } else if (type === "Updated") {
+      return AiOutlineFileSync;
+    } else if (type === "Canceled") {
+      return AiOutlineFileExcel;
+    } else {
+      return null;
+    }
+  };
+
+  const handleGetTypeOfOrder = (type) => {
+    if (type === 1) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="geekblue">
+          Tại quầy
+        </Tag>
+      );
+    } else if (type === 2) {
+      return "Online";
+    } else {
+      return null;
+    }
+  };
+
+  const showModalDetailOrder = () => {
+    setOpenModalShowOrderDetail(true);
+  };
+
   return (
     <div style={{ padding: "1rem" }}>
       <div className="order-detail-container">
@@ -190,13 +241,13 @@ const OrderDetail = () => {
               return (
                 <div>
                   <TimelineEvent
-                    color="green"
-                    icon={FaRegFileAlt}
+                    color={handleGetColorTimeline(item.type)}
+                    icon={handleGetIconTimeline(item.type)}
                     title={
                       <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span style={{ fontSize: "16px" }}>{item.type}</span>
-                        <span style={{ fontSize: "15px" }}>{item.note}</span>
-                        <span style={{ fontSize: "14px" }}>
+                        <span style={{ fontSize: "15px" }}>{item.type}</span>
+                        <span style={{ fontSize: "14px" }}>{item.note}</span>
+                        <span style={{ fontSize: "13px" }}>
                           {item.createdTime}
                         </span>
                         <span style={{ fontSize: "13px" }}>
@@ -217,7 +268,9 @@ const OrderDetail = () => {
             </Button>
           </span>
           <span>
-            <Button type="primary">Chi tiết</Button>
+            <Button type="primary" onClick={() => showModalDetailOrder()}>
+              Chi tiết
+            </Button>
           </span>
         </div>
         <div className="order-infor">
@@ -228,7 +281,10 @@ const OrderDetail = () => {
             <p>Mã code: {dataOrder?.code}</p>
             <p>Trạng thái: {dataOrder?.status}</p>
             <p>Họ và tên: {dataOrder?.customerName}</p>
-            <p>Loại đơn: {dataOrder?.type}</p>
+            <p>
+              Loại đơn:{" "}
+              {dataOrder?.type ? handleGetTypeOfOrder(+dataOrder.type) : "N/A"}
+            </p>
           </div>
         </div>
         <div className="order-infor">
@@ -281,7 +337,7 @@ const OrderDetail = () => {
                 }).format(dataOrder?.shipFee ?? 0)}
               </p>
               <br />
-              <p style={{ color: "red" }}>
+              <p style={{ color: "red", fontWeight: "bold" }}>
                 Tổng tiền:&nbsp;&nbsp;&nbsp;
                 {Intl.NumberFormat("vi-VN", {
                   style: "currency",
@@ -292,6 +348,11 @@ const OrderDetail = () => {
           </Col>
         </Row>
       </div>
+      <ModalShowDetailOrder
+        openModalShowOrderDetail={openModalShowOrderDetail}
+        setOpenModalShowOrderDetail={setOpenModalShowOrderDetail}
+        historyOrder={historyOrder}
+      />
     </div>
   );
 };
