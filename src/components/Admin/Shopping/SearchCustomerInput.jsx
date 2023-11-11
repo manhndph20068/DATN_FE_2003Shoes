@@ -17,6 +17,7 @@ const SearchCustomerInput = (props) => {
             name="searchCustomer"
             labelCol={{ span: 24 }}
             labelAlign="left"
+            hidden
           >
             <Select
               allowClear={true}
@@ -30,6 +31,7 @@ const SearchCustomerInput = (props) => {
             label="Khách hàng"
             name="customerName"
             labelCol={{ span: 24 }}
+            hidden
           >
             <Input style={{ width: "100%" }} />
           </Form.Item>

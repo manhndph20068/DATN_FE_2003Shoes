@@ -82,7 +82,7 @@ const OrderDetail = () => {
 
   const columnsPaymentMetod = [
     {
-      width: "25%",
+      width: "20%",
       title: "Số tiền",
       dataIndex: "total",
       key: "total",
@@ -97,22 +97,42 @@ const OrderDetail = () => {
         ) : null,
     },
     {
-      width: "25%",
+      width: "20%",
       title: "Thời gian",
       dataIndex: "paymentTime",
       key: "paymentTime",
     },
     {
-      width: "25%",
+      width: "20%",
       title: "Phương thức thanh toán",
       dataIndex: "method",
       key: "method",
     },
     {
-      width: "25%",
-      title: "Nhân viên xác nhận",
+      width: "20%",
+      title: "Người xác nhận",
       key: "note",
       dataIndex: "note",
+    },
+    {
+      width: "20%",
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (_, record) =>
+        _ === 1 ? (
+          <>
+            <Tag style={{ fontSize: "medium" }} color="green">
+              Đã thanh toán
+            </Tag>
+          </>
+        ) : (
+          <>
+            <Tag style={{ fontSize: "medium" }} color="orange">
+              Chưa thanh toán
+            </Tag>
+          </>
+        ),
     },
   ];
 
@@ -208,7 +228,11 @@ const OrderDetail = () => {
         </Tag>
       );
     } else if (type === 2) {
-      return "Online";
+      return (
+        <Tag style={{ fontSize: "small" }} color="orange">
+          Online
+        </Tag>
+      );
     } else {
       return null;
     }
@@ -216,6 +240,42 @@ const OrderDetail = () => {
 
   const showModalDetailOrder = () => {
     setOpenModalShowOrderDetail(true);
+  };
+
+  const handleGetStatusOfOrder = (type) => {
+    if (type === 0) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="cyan">
+          Hoá đơn chờ
+        </Tag>
+      );
+    } else if (type === 1) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="gold">
+          Chờ thanh toán
+        </Tag>
+      );
+    } else if (type === 2) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="green">
+          Đã thanh toán
+        </Tag>
+      );
+    } else if (type === 3) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="red">
+          Huỷ
+        </Tag>
+      );
+    } else if (type === 4) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="blue">
+          Chờ xác nhận
+        </Tag>
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -279,12 +339,25 @@ const OrderDetail = () => {
           </div>
           <div className="infor-order">
             <p>Mã code: {dataOrder?.code}</p>
-            <p>Trạng thái: {dataOrder?.status}</p>
+            <p>
+              Trạng thái:{" "}
+              {dataOrder?.status
+                ? handleGetStatusOfOrder(dataOrder?.status)
+                : "N/A"}
+            </p>
             <p>Họ và tên: {dataOrder?.customerName}</p>
             <p>
               Loại đơn:{" "}
               {dataOrder?.type ? handleGetTypeOfOrder(+dataOrder.type) : "N/A"}
             </p>
+            {+dataOrder.type === 2 ? (
+              <>
+                <p>Số điện thoại: {dataOrder?.phoneNumber}</p>
+                <p>Địa chỉ: {dataOrder?.address}</p>
+              </>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <div className="order-infor">
@@ -320,7 +393,7 @@ const OrderDetail = () => {
           <Col span={6}>
             <div
               className="money"
-              style={{ fontSize: "large", padding: "80px 25px" }}
+              style={{ fontSize: "large", padding: "68px 25px" }}
             >
               <p>
                 Tiền hàng:&nbsp;&nbsp;
@@ -335,6 +408,14 @@ const OrderDetail = () => {
                   style: "currency",
                   currency: "VND",
                 }).format(dataOrder?.shipFee ?? 0)}
+              </p>
+
+              <p>
+                Voucher giảm giá:&nbsp;&nbsp;&nbsp;&nbsp;
+                {Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                }).format(dataOrder?.moneyReduce ?? 0)}
               </p>
               <br />
               <p style={{ color: "red", fontWeight: "bold" }}>

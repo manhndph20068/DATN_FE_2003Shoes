@@ -128,6 +128,11 @@ const ManageOrder = () => {
               Huỷ
             </Tag>
           )}
+          {record.status === 4 && (
+            <Tag style={{ fontSize: "small" }} color="blue">
+              Chờ xác nhận
+            </Tag>
+          )}
         </div>
       ),
     },

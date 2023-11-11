@@ -19,6 +19,7 @@ import {
   callAddNewOrderAtCounter,
   callGetListOrderAtCounter,
   callGetOrderDetailAtCounterById,
+  callGetVouchersByTotalMoney,
   callListShoeDetailAtCounter,
   callUpdateNewOrderAtCounter,
 } from "../../../services/api";
@@ -36,9 +37,11 @@ const ShoppingCounter = () => {
   const [listOrderAtCounter, setListOrderAtCounter] = useState([]);
   const [typeOfSales, setTypeOfSales] = useState(1);
   const [activeKey, setActiveKey] = useState(null);
-  const [tabCode, setTabCode] = useState(null);
+  const [discountVoucher, setDiscountVoucher] = useState(0);
   const [listOrderDetail, setListOrderDetail] = useState(null);
   const [listShoeDetail, setListShoeDetail] = useState([]);
+  const [totalMoney, setTotalMoney] = useState(0);
+  const [listVoucher, setListVoucher] = useState([]);
   const [refund, setRefund] = useState(0);
   const [openScanQr, setOpenScanQr] = useState(false);
   const [shipPrice, setShipPrice] = useState(0);
@@ -59,7 +62,7 @@ const ShoppingCounter = () => {
     console.log("key", key);
     //handleGetOrderDetailById(key);
     form.setFieldValue("id", key);
-    const code = listOrderAtCounter?.filter((item) => item.id == key)[0].code;
+    const code = listOrderAtCounter?.filter((item) => item.id == key)[0]?.code;
     console.log("code", code);
     form.setFieldValue("code", code);
     console.log("listOrderDetail", listOrderDetail);
@@ -115,7 +118,7 @@ const ShoppingCounter = () => {
       console.log("listOrderAtCounter", listOrderAtCounter);
       const code = listOrderAtCounter?.filter(
         (item) => item.id == res.data[0].id
-      )[0].code;
+      )[0]?.code;
       form.setFieldValue("code", code);
       // setActiveKey(String(activeKey));
     } else {
@@ -185,6 +188,7 @@ const ShoppingCounter = () => {
       "moneyPaid",
       "note",
       "typeOfMethodPaymentOnlineOrder",
+      "voucher",
     ]);
     form.setFieldsValue({ typeOfSale: 1 });
     setRefund(0);
@@ -254,6 +258,7 @@ const ShoppingCounter = () => {
       typeOfMethodPaymentOnlineOrder,
       typeOfMethodPayment,
       address,
+      voucher,
     } = values;
     console.log("values", values);
     console.log("typeOfSale", typeOfSale);
@@ -278,8 +283,8 @@ const ShoppingCounter = () => {
         phoneNumber: phone,
         address: province + ", " + district + ", " + ward + ", " + address,
         shipFee: shipPrice,
-        moneyReduce: 0,
-        totalMoney: handleCalTotalPrice() + shipPrice,
+        moneyReduce: discountVoucher,
+        totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
         payDate:
           typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy"
             ? new Date().toISOString()
@@ -288,7 +293,9 @@ const ShoppingCounter = () => {
         desiredDate: null,
         receiveDate: null,
         updatedBy: staffName,
-        note: note,
+        note: note
+          ? `Nhân viên ${staffName} xác nhận thanh toán, ${note}`
+          : `Nhân viên ${staffName} xác nhận thanh toán`,
         status:
           typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 2 : 1,
       };
@@ -300,9 +307,10 @@ const ShoppingCounter = () => {
         await callAddMethodPayment({
           orderId: id,
           method: typeOfMethodPaymentOnlineOrder,
-          total: handleCalTotalPrice() + shipPrice,
+          total: handleCalTotalPrice() + shipPrice - discountVoucher,
           note: `Nhân viên ${staffName} xác nhận `,
-          status: 1,
+          status:
+            typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 1 : 0,
         });
       } else {
         message.error(res.mess);
@@ -311,7 +319,7 @@ const ShoppingCounter = () => {
     if (typeOfSale === 1) {
       const data = {
         id: id,
-        idVoucher: null,
+        idVoucher: voucher,
         idAccount: null,
         code: code,
         type: typeOfSale,
@@ -319,8 +327,8 @@ const ShoppingCounter = () => {
         phoneNumber: null,
         address: null,
         shipFee: null,
-        moneyReduce: 0,
-        totalMoney: handleCalTotalPrice() + shipPrice,
+        moneyReduce: discountVoucher,
+        totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
         payDate: new Date().toISOString(),
         shipDate: null,
         desiredDate: null,
@@ -340,7 +348,7 @@ const ShoppingCounter = () => {
         await callAddMethodPayment({
           orderId: id,
           method: typeOfMethodPayment,
-          total: handleCalTotalPrice() + shipPrice,
+          total: handleCalTotalPrice() + shipPrice - discountVoucher,
           note: `Nhân viên ${staffName} xác nhận thanh toán`,
           status: 1,
         });
@@ -352,16 +360,28 @@ const ShoppingCounter = () => {
     // callUpdateNewOrderAtCounter;
   };
 
+  useEffect(() => {
+    const total = handleCalTotalPrice();
+    setTotalMoney(total);
+  }, [listOrderDetail]);
+
+  useEffect(() => {
+    handleGetListVoucher(totalMoney);
+    form.resetFields(["voucher", "moneyPaid"]);
+    setDiscountVoucher(0);
+  }, [totalMoney, listOrderDetail]);
+
   const handleCalTotalPrice = () => {
     let total = 0;
     listOrderDetail?.forEach((item) => {
       total += item.price * item.quantity;
     }) ?? 0;
+
     return total;
   };
 
   const handleCalRefund = (value) => {
-    setRefund(value - handleCalTotalPrice());
+    setRefund(value - handleCalTotalPrice() + discountVoucher);
     console.log("value", value);
     console.log("handleCalTotalPrice", handleCalTotalPrice());
     console.log("refund", refund);
@@ -409,6 +429,25 @@ const ShoppingCounter = () => {
 
   const handleScanQr = () => {
     setOpenScanQr(true);
+  };
+
+  const handleGetListVoucher = async (total) => {
+    const data = {
+      totalMoneyMyOrder: total,
+    };
+    const res = await callGetVouchersByTotalMoney(data);
+    if (res?.status === 0) {
+      setListVoucher(res?.data);
+    }
+  };
+
+  const handleOnChangeVoucher = (value) => {
+    console.log("value", value);
+    const voucher = listVoucher?.filter((item) => item.id === value)[0];
+    console.log("voucher", voucher);
+    setDiscountVoucher(voucher?.discountAmount ?? 0);
+    form.resetFields(["moneyPaid"]);
+    setRefund(0);
   };
 
   return (
@@ -606,6 +645,53 @@ const ShoppingCounter = () => {
                             </Col>
                           </Row>
                           <Form.Item
+                            label="Voucher"
+                            name="voucher"
+                            labelCol={{ span: 24 }}
+                            labelAlign="left"
+                          >
+                            <Select
+                              style={{ width: "100%" }}
+                              allowClear
+                              onChange={(item) => {
+                                handleOnChangeVoucher(item);
+                              }}
+                            >
+                              {listVoucher.map((item) => {
+                                return (
+                                  <Option value={item.id} label={item.name}>
+                                    <div
+                                      style={{
+                                        gap: "2rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "row",
+                                      }}
+                                    >
+                                      <span>Mã vc: {item.code}</span>
+
+                                      <span>
+                                        Giá trị giảm:{" "}
+                                        {Intl.NumberFormat("vi-VN", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.discountAmount)}
+                                      </span>
+
+                                      <span>
+                                        Giá trị đơn tối thiểu:{" "}
+                                        {Intl.NumberFormat("vi-VN", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.minBillValue)}
+                                      </span>
+                                    </div>
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
+                          <Form.Item
                             label="Note"
                             name="note"
                             labelCol={{ span: 24 }}
@@ -628,7 +714,11 @@ const ShoppingCounter = () => {
                               {Intl.NumberFormat("vi-VN", {
                                 style: "currency",
                                 currency: "VND",
-                              }).format(handleCalTotalPriceOrder())}
+                              }).format(
+                                handleCalTotalPrice() -
+                                  discountVoucher +
+                                  shipPrice
+                              )}
                             </span>
                           </div>
                         </>
@@ -672,7 +762,9 @@ const ShoppingCounter = () => {
                                   {Intl.NumberFormat("vi-VN", {
                                     style: "currency",
                                     currency: "VND",
-                                  }).format(handleCalTotalPrice())}
+                                  }).format(
+                                    handleCalTotalPrice() - discountVoucher
+                                  )}
                                 </span>
                               </div>
                             </Col>
@@ -698,7 +790,10 @@ const ShoppingCounter = () => {
                                   },
                                   {
                                     validator: (rule, value) => {
-                                      if (value < handleCalTotalPrice()) {
+                                      if (
+                                        value <
+                                        handleCalTotalPrice() - discountVoucher
+                                      ) {
                                         return Promise.reject(
                                           "Số tiền khách đưa phải lớn hơn tổng giá trị đơn hàng"
                                         );
@@ -740,6 +835,53 @@ const ShoppingCounter = () => {
                               </div>
                             </Col>
                           </Row>
+                          <Form.Item
+                            label="Voucher"
+                            name="voucher"
+                            labelCol={{ span: 24 }}
+                            labelAlign="left"
+                          >
+                            <Select
+                              style={{ width: "100%" }}
+                              allowClear
+                              onChange={(item) => {
+                                handleOnChangeVoucher(item);
+                              }}
+                            >
+                              {listVoucher.map((item) => {
+                                return (
+                                  <Option value={item.id} label={item.name}>
+                                    <div
+                                      style={{
+                                        gap: "2rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "row",
+                                      }}
+                                    >
+                                      <span>Mã vc: {item.code}</span>
+
+                                      <span>
+                                        Giá trị giảm:{" "}
+                                        {Intl.NumberFormat("vi-VN", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.discountAmount)}
+                                      </span>
+
+                                      <span>
+                                        Giá trị đơn tối thiểu:{" "}
+                                        {Intl.NumberFormat("vi-VN", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.minBillValue)}
+                                      </span>
+                                    </div>
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
                           <Form.Item
                             label="Note"
                             name="note"
@@ -795,6 +937,7 @@ const ShoppingCounter = () => {
                       listOrderDetail={listOrderDetail}
                       setListOrderDetail={setListOrderDetail}
                       activeKey={activeKey}
+                      handleGetListVoucher={handleGetListVoucher}
                     />
                   </div>
                   <div className="total-money">

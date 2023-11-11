@@ -26,17 +26,26 @@ import { useEffect, useState } from "react";
 import {
   clearCart,
   doDeleteItemCartAction,
+  doDeleteItemCartAfterDoOrder,
   doInitalCartWithAccount,
+  doInitalTempData,
   doUpdateCartAction,
 } from "../../redux/order/orderSlice.js";
 import TextArea from "antd/es/input/TextArea.js";
 import {
+  callAddMethodPayment,
   callDeleteCartDetail,
+  callDoOrderByCustomer,
+  callDoOrderByGuest,
   callFetchAccount,
+  callGetCartByAccountId,
   callGetListCartDetailById,
+  callGetVouchersByTotalMoney,
   callSubmitOrderVNPay,
 } from "../../services/api.jsx";
 import { v4 as uuidv4 } from "uuid";
+import { BiArrowBack } from "react-icons/bi";
+import { doAddIdCart } from "../../redux/account/accountSlice.js";
 
 const ViewPayment = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -46,12 +55,15 @@ const ViewPayment = (props) => {
   const [listProvince, setListProvince] = useState([]);
   const [provinceSelected, setProvinceSelected] = useState(201);
   const [listDistrict, setListDistrict] = useState([]);
+  const [listVoucher, setListVoucher] = useState([]);
   const [districtSelected, setDistrictSelected] = useState(null);
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
+  const [discountVoucher, setDiscountVoucher] = useState(0);
   const { setCurrentStep } = props;
 
   const cart = useSelector((state) => state.order.cart);
+  const dataAcc = useSelector((state) => state?.account?.user);
   const idCart = useSelector((state) => state.account.idCart);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -79,11 +91,14 @@ const ViewPayment = (props) => {
   };
 
   useEffect(() => {
-    if (cart && cart.length > 0) {
+    handleGetListVoucher();
+    if (cart && cart.filter((item) => item.status === 1).length > 0) {
       let sum = 0;
-      cart.map((item) => {
-        sum += item.quantity * item.detail.priceInput;
-      });
+      cart
+        .filter((item) => item.status === 1)
+        .map((item) => {
+          sum += item.quantity * item.detail.priceInput;
+        });
       setTotalPrice(sum + shipPrice);
       setTotalMoneyOfProds(sum);
       setNextStep(1);
@@ -176,10 +191,11 @@ const ViewPayment = (props) => {
     });
   }, [provinceSelected, districtSelected]);
 
-  const handleSubmitOrder = async () => {
-    console.log("totalPrice", totalPrice);
-    const orderTotal = totalPrice;
-    const orderInfo = "HD" + uuidv4();
+  const handleSubmitOrderVnPay = async () => {
+    const orderTotal = totalPrice - discountVoucher;
+    const orderInfo = "VNPAY" + uuidv4();
+    console.log("orderInfo", orderInfo);
+    console.log("orderTotal", orderTotal);
 
     let res = await callSubmitOrderVNPay(orderTotal, orderInfo);
     console.log("res", res);
@@ -189,28 +205,87 @@ const ViewPayment = (props) => {
   };
 
   const onFinish = async (values) => {
-    const { username, phone, address, typePaid } = values;
+    const { username, phone, address, typePaid, voucher, email } = values;
+    const id = +dataAcc.id !== 0 ? dataAcc.id : null;
+    const province = listProvince.filter(
+      (item) => item.value == provinceSelected
+    )[0].label;
+    const district = listDistrict.filter(
+      (item) => item.value === districtSelected
+    )[0].label;
+    const ward = listWard.filter((item) => item.value === wardSelected)[0]
+      .label;
+    console.log("address", province, district, ward);
 
-    const detailOrder = cart.map((item) => {
-      return {
-        shoeName: item.detail.nameShoe,
-        quantity: item.quantity,
-        id: item.id,
-      };
-    });
+    const detailOrder = cart
+      .filter((item) => item.status === 1)
+      .map((item) => {
+        console.log("item", item);
+        return {
+          shoeName: item.detail.nameShoe,
+          status: item.status,
+          quantity: item.quantity,
+          priceInput: item.detail.priceInput,
+          id: item.id,
+        };
+      });
 
     const data = {
-      name: username,
-      address: address,
-      phone: phone,
-      totalPrice: totalPrice,
-      detail: detailOrder,
+      idVoucher: voucher ?? null,
+      idAccount: id,
+      email: email,
+      customerName: username,
+      phoneNumber: phone,
+      address: province + ", " + district + ", " + ward + ", " + address,
+      shipFee: shipPrice,
+      moneyReduce: discountVoucher,
+      totalMoney: totalPrice - discountVoucher,
+      note: "Đơn khách đặt",
+      shoeDetailListRequets: detailOrder,
     };
+
     console.log("values", values);
     if (typePaid === 2) {
-      handleSubmitOrder();
+      dispatch(doInitalTempData(data));
+      handleSubmitOrderVnPay();
     } else {
-      setCurrentStep(2);
+      if (idCart !== null) {
+        console.log("data", data);
+        const res = await callDoOrderByCustomer(data);
+        if (res?.status === 0) {
+          setCurrentStep(2);
+          await callAddMethodPayment({
+            orderId: res?.data?.id,
+            method: "Thanh toán khi nhận hàng",
+            total: totalPrice - discountVoucher,
+            note: `Khách hàng đặt`,
+            status: 0,
+          });
+          if (dataAcc.id !== null) {
+            handleGetCartByAccountId(dataAcc.id);
+          } else {
+            dispatch(doDeleteItemCartAfterDoOrder());
+          }
+        } else {
+          message.error("Đặt hàng thất bại");
+        }
+      } else {
+        console.log("data", data);
+        const res = await callDoOrderByGuest(data);
+        if (res?.status === 0) {
+          setCurrentStep(2);
+          await callAddMethodPayment({
+            orderId: res?.data?.id,
+            method: "Thanh toán khi nhận hàng",
+            total: totalPrice - discountVoucher,
+            note: `Khách hàng đặt`,
+            status: 0,
+          });
+          dispatch(doDeleteItemCartAfterDoOrder());
+        } else {
+          message.error("Đặt hàng thất bại");
+        }
+      }
     }
 
     // await callFetchAccount();
@@ -264,47 +339,96 @@ const ViewPayment = (props) => {
     currency: "VND",
   });
 
+  const handleGetListVoucher = async () => {
+    const data = {
+      totalMoneyMyOrder: totalPrice,
+    };
+    const res = await callGetVouchersByTotalMoney(data);
+    if (res?.status === 0) {
+      setListVoucher(res?.data);
+    }
+  };
+
+  const handleOnChangeVoucher = (value) => {
+    console.log("item", value);
+    const voucher = listVoucher?.filter((item) => item.id === value)[0];
+    console.log("voucher", voucher);
+    setDiscountVoucher(voucher?.discountAmount ?? 0);
+  };
+
+  const handleGetListCartDetail = async (id) => {
+    const res = await callGetListCartDetailById(id);
+    console.log("res handleGetListCartDetailById", res);
+    if (res?.status === 0) {
+      dispatch(doInitalCartWithAccount(res.data));
+    }
+  };
+
+  const handleGetCartByAccountId = async (id) => {
+    const res = await callGetCartByAccountId(id);
+    console.log("res handleGetCartBtAccountId", res);
+    if (res?.status === 0) {
+      handleGetListCartDetail(res?.data?.id);
+      dispatch(doAddIdCart(res?.data?.id));
+    }
+  };
+
   return (
     <>
       <Row gutter={[20, 20]} style={{ justifyContent: "space-between" }}>
         <Col lg={15} md={15} xs={24} className="order-left-content">
+          <div className="header-content" style={{ textAlign: "center" }}>
+            <span style={{ margin: "3px 3px 0 0" }}>
+              <BiArrowBack />
+            </span>
+            <span
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setCurrentStep(0);
+              }}
+            >
+              Trang đặt hàng
+            </span>
+          </div>
           {cart?.length > 0 &&
-            cart.map((item, index) => {
-              return (
-                <div className="cart-item" key={`id${index}`}>
-                  <img className="item-img" src={item.detail.thumbnail} />
-                  <div className="item-name">{item.detail.code}</div>
-                  <div className="item-price">
-                    {Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(item.detail.priceInput)}
-                  </div>
+            cart
+              .filter((item) => item.status === 1)
+              ?.map((item, index) => {
+                return (
+                  <div className="cart-item" key={`id${index}`}>
+                    <img className="item-img" src={item.detail.thumbnail} />
+                    <div className="item-name">{item.detail.code}</div>
+                    <div className="item-price">
+                      {Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(item.detail.priceInput)}
+                    </div>
 
-                  <div style={{ width: "100px" }}>
-                    Số lượng: {item.quantity}
+                    <div style={{ width: "100px" }}>
+                      Số lượng: {item.quantity}
+                    </div>
+                    <div className="item-total-price">
+                      Tổng:&nbsp;
+                      {Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(item.detail.priceInput * item.quantity)}
+                    </div>
+                    <div className="item-delete">
+                      {/* <Popconfirm
+                        placement="top"
+                        title={`Bạn có muốn xoá sản phẩm này không?`}
+                        onConfirm={() => confirmDelete(item)}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <DeleteOutlined />
+                      </Popconfirm> */}
+                    </div>
                   </div>
-                  <div className="item-total-price">
-                    Tổng:
-                    {Intl.NumberFormat("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    }).format(item.detail.priceInput * item.quantity)}
-                  </div>
-                  <div className="item-delete">
-                    <Popconfirm
-                      placement="top"
-                      title={`Bạn có muốn xoá sản phẩm này không?`}
-                      onConfirm={() => confirmDelete(item)}
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <DeleteOutlined />
-                    </Popconfirm>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
         </Col>
         <Col lg={9} md={9} xs={24} className="order-right-content">
           <div className="order-content">
@@ -349,6 +473,26 @@ const ViewPayment = (props) => {
                 >
                   <Input style={{ width: "100%" }} />
                 </Form.Item>
+
+                {idCart === null && (
+                  <>
+                    {" "}
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      labelCol={{ span: 24 }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Email không được để trống!",
+                          type: "email",
+                        },
+                      ]}
+                    >
+                      <Input style={{ width: "100%" }} />
+                    </Form.Item>
+                  </>
+                )}
 
                 <Row
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -437,6 +581,54 @@ const ViewPayment = (props) => {
                 </Form.Item>
 
                 <Form.Item
+                  label="Voucher"
+                  name="voucher"
+                  labelCol={{ span: 24 }}
+                  labelAlign="left"
+                >
+                  <Select
+                    style={{ width: "100%" }}
+                    allowClear
+                    onChange={(item) => {
+                      handleOnChangeVoucher(item);
+                    }}
+                  >
+                    {listVoucher.map((item) => {
+                      return (
+                        <Option value={item.id} label={item.name}>
+                          <div
+                            style={{
+                              justifyContent: "space-between",
+                              display: "flex",
+                              alignItems: "center",
+                              flexDirection: "row",
+                            }}
+                          >
+                            <span>{item.code}</span>
+
+                            <span>
+                              Giá trị giảm:{" "}
+                              {Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              }).format(item.discountAmount)}
+                            </span>
+
+                            {/* <span>
+                              Đơn tối thiểu:{" "}
+                              {Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              }).format(item.minBillValue)}
+                            </span> */}
+                          </div>
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
                   name="typePaid"
                   label="Hình thức thanh toán"
                   rules={[
@@ -466,6 +658,7 @@ const ViewPayment = (props) => {
                     }).format(totalMoneyOfProds || 0)}
                   </span>
                 </div>
+
                 <div
                   className="order-ship"
                   style={{ display: "flex", justifyContent: "space-between" }}
@@ -480,13 +673,25 @@ const ViewPayment = (props) => {
                       : formatterPrice.format(shipPrice)}
                   </span>
                 </div>
+                <div
+                  className="order-total-money"
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <span>Voucher giảm giá: </span>
+                  <span style={{ fontSize: "1rem" }}>
+                    {Intl.NumberFormat("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    }).format(discountVoucher || 0)}
+                  </span>
+                </div>
                 <div className="order-tong">
                   <span>Tổng tiền:</span>
                   <span style={{ color: "red", fontSize: "1.5rem" }}>
                     {Intl.NumberFormat("vi-VN", {
                       style: "currency",
                       currency: "VND",
-                    }).format(totalPrice || 0)}
+                    }).format(totalPrice - discountVoucher || 0)}
                   </span>
                 </div>
                 <Divider />
@@ -497,7 +702,8 @@ const ViewPayment = (props) => {
                     onClick={() => form.submit()}
                   >
                     <span className="order-btn-paid-title">
-                      Đặt Hàng({cart?.length ?? 0})
+                      Đặt Hàng(
+                      {cart?.filter((item) => item.status === 1).length ?? 0})
                     </span>
                   </div>
                 ) : (

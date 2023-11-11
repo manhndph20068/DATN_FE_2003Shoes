@@ -7,7 +7,12 @@ import {
 } from "../../../services/api";
 
 const TableProductDetail = (props) => {
-  const { listOrderDetail, activeKey, setListOrderDetail } = props;
+  const {
+    listOrderDetail,
+    activeKey,
+    setListOrderDetail,
+    handleGetListVoucher,
+  } = props;
 
   const confirmDelete = async (item) => {
     console.log("item", item);
@@ -18,6 +23,7 @@ const TableProductDetail = (props) => {
     const res = await callDeleteOrderDetailAtCounter(data);
     if (res.status === 0) {
       fetchListOrderDetail();
+      handleGetListVoucher(0);
       message.success("Xóa thành công");
     }
   };

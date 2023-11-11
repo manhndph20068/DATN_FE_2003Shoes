@@ -1,4 +1,13 @@
-import { Col, Divider, Empty, InputNumber, Popconfirm, Row, Steps } from "antd";
+import {
+  Col,
+  Divider,
+  Empty,
+  InputNumber,
+  Popconfirm,
+  Row,
+  Steps,
+  Checkbox,
+} from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,6 +28,7 @@ import {
   callAddToCartAtCartPageWithAccount,
   callDeleteCartDetail,
   callGetListCartDetailById,
+  callUpdateCartDetailStatus,
 } from "../../services/api.jsx";
 
 const ViewOrder = (props) => {
@@ -35,6 +45,13 @@ const ViewOrder = (props) => {
       idShoeDetail,
       qty
     );
+    if (res?.status === 0) {
+      handleGetListCartDetailById(idCart);
+    }
+  };
+
+  const handleUpdateStatusCart = async (idCart, idShoeDetail, status) => {
+    const res = await callUpdateCartDetailStatus(idCart, idShoeDetail, status);
     if (res?.status === 0) {
       handleGetListCartDetailById(idCart);
     }
@@ -69,7 +86,12 @@ const ViewOrder = (props) => {
     } else {
       if (!isNaN(value)) {
         dispatch(
-          doUpdateCartAction({ quantity: value, detail: item, id: item.id })
+          doUpdateCartAction({
+            quantity: value,
+            detail: item,
+            id: item.id,
+            status: item.status,
+          })
         );
       }
     }
@@ -78,6 +100,7 @@ const ViewOrder = (props) => {
   const confirmDelete = (item) => {
     if (idCart !== null) {
       handleDeleteCartDetail(+idCart, +item.id);
+      // handleGetListCartDetailById(idCart);
     } else {
       dispatch(doDeleteItemCartAction(item.id));
     }
@@ -86,9 +109,12 @@ const ViewOrder = (props) => {
   useEffect(() => {
     if (cart && cart.length > 0) {
       let sum = 0;
-      cart.map((item) => {
-        sum += item.quantity * item.detail.priceInput;
-      });
+      cart
+        .filter((item) => item.status === 1)
+        .map((item) => {
+          sum += item.quantity * item.detail.priceInput;
+        });
+
       setTotalPrice(sum);
       setNextStep(1);
     } else {
@@ -100,14 +126,56 @@ const ViewOrder = (props) => {
   const handlePayment = () => {
     setCurrentStep(1);
   };
+
+  const handleChangeCheckBox = (value, item) => {
+    console.log("---------");
+    console.log("value", value.target.checked);
+    console.log("item", item);
+    console.log("idCart", idCart);
+    console.log("idShoeDetail", item.detail.id);
+    if (value.target.checked) {
+      if (idCart !== null) {
+        handleUpdateStatusCart(idCart, +item.detail.id, 1);
+      } else {
+        dispatch(
+          doUpdateCartAction({
+            quantity: item.quantity,
+            detail: item,
+            id: item.id,
+            status: 1,
+          })
+        );
+      }
+    } else {
+      if (idCart !== null) {
+        handleUpdateStatusCart(idCart, +item.detail.id, 0);
+      } else {
+        dispatch(
+          doUpdateCartAction({
+            quantity: item.quantity,
+            detail: item,
+            id: item.id,
+            status: 0,
+          })
+        );
+      }
+    }
+  };
   return (
     <>
       <Row gutter={[20, 20]} style={{ justifyContent: "space-between" }}>
         <Col lg={17} md={15} xs={24} className="order-left-content">
+          <div className="header-content">sd</div>
           {cart?.length && nextStep > 0 ? (
             cart.map((item, index) => {
               return (
                 <div className="cart-item" key={`id${index}`}>
+                  <div className="item-check-box">
+                    <Checkbox
+                      checked={item.status === 1 ? true : false}
+                      onChange={(value) => handleChangeCheckBox(value, item)}
+                    ></Checkbox>
+                  </div>
                   <img className="item-img" src={item.detail.thumbnail} />
                   <div className="item-name">{item.detail.code}</div>
                   <div className="item-price">
@@ -179,10 +247,11 @@ const ViewOrder = (props) => {
               </span>
             </div>
             <Divider />
-            {nextStep > 0 ? (
+            {totalPrice > 0 ? (
               <div className="order-btn-paid" onClick={() => handlePayment()}>
                 <span className="order-btn-paid-title">
-                  Mua Hàng({cart?.length ?? 0})
+                  Mua Hàng(
+                  {cart?.filter((item) => item.status === 1)?.length ?? 0})
                 </span>
               </div>
             ) : (
@@ -191,7 +260,8 @@ const ViewOrder = (props) => {
                 style={{ backgroundColor: "grey" }}
               >
                 <span className="order-btn-paid-title">
-                  Mua Hàng({cart?.length ?? 0})
+                  Mua Hàng(
+                  {cart?.filter((item) => item.status === 1)?.length ?? 0})
                 </span>
               </div>
             )}

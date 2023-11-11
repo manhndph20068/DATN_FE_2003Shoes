@@ -28,6 +28,7 @@ const Header = () => {
     if (res?.statusCode === 0) {
       message.success(res.message);
       dispatch(doLogout());
+      dispatch(clearCart());
       navigate("/");
     }
   };

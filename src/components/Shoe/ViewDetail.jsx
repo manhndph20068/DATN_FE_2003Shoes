@@ -95,7 +95,14 @@ const ViewDetail = (props) => {
       handleAddToCartWithAccount(idCart, +shoe.id, +qty);
       setCurrentQuantity(1);
     } else {
-      dispatch(doAddToCartAction({ quantity: qty, detail: shoe, id: shoe.id }));
+      dispatch(
+        doAddToCartAction({
+          quantity: qty,
+          detail: shoe,
+          id: shoe.id,
+          status: 0,
+        })
+      );
     }
   };
 

@@ -32,6 +32,7 @@ import ShoppingCounter from "./components/Admin/Shopping/ShoppingCounter";
 import ManageOrder from "./components/Admin/Order/ManageOrder";
 import ManageVoucher from "./components/Admin/Voucher/ManageVoucher";
 import OrderDetail from "./components/Admin/Order/OrderDetail";
+import SuccessOrder from "./pages/resultOrder/SuccessOrder";
 
 const Layout = () => {
   return (
@@ -59,8 +60,8 @@ export default function App() {
     const res = await callGetCartByAccountId(id);
     console.log("res handleGetCartBtAccountId", res);
     if (res?.status === 0) {
-      handleGetListCartDetailById(res.data.id);
-      dispatch(doAddIdCart(res.data.id));
+      handleGetListCartDetailById(res?.data?.id);
+      dispatch(doAddIdCart(res?.data?.id));
     }
   };
 
@@ -94,6 +95,7 @@ export default function App() {
           path: "order",
           element: <OrderPage />,
         },
+
         {
           path: "contact",
           element: <ContactPage />,
@@ -111,6 +113,10 @@ export default function App() {
     {
       path: "/register",
       element: <RegisterPage />,
+    },
+    {
+      path: "order-success",
+      element: <SuccessOrder />,
     },
 
     {
@@ -165,6 +171,7 @@ export default function App() {
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname === "/order" ||
+      window.location.pathname === "/order-success" ||
       location.pathname.startsWith("/shoe/") ||
       window.location.pathname === "/" ? (
         <RouterProvider router={router} />

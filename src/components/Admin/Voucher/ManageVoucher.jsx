@@ -96,7 +96,7 @@ const ManageVoucher = () => {
     {
       title: "Giá trị đơn hàng tối thiểu",
       key: "minBillValue",
-      dataIndex: "discountAmount",
+      dataIndex: "minBillValue",
     },
     {
       title: "Giá trị Giảm tối đa",

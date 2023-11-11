@@ -314,6 +314,13 @@ const callAddVoucher = (data) => {
   return axios.post(`/api/v1/admin/voucher-order/addNewVoucherOrder`, data);
 };
 
+const callGetVouchersByTotalMoney = (data) => {
+  return axios.post(
+    `/api/v1/admin/voucher-order/searchTotalMoneyMyOrder`,
+    data
+  );
+};
+
 const callGetListOrder = (data) => {
   return axios.post(`/api/v1/admin/order/get-all`, data);
 };
@@ -337,6 +344,23 @@ const callListMethodPayment = (code) => {
     size: 10,
   };
   return axios.post(`/api/v1/admin/payment-method/get-all`, data);
+};
+
+const callUpdateCartDetailStatus = (idCart, idShoeDetail, status) => {
+  const data = {
+    idCart: idCart,
+    idShoeDetail: idShoeDetail,
+    status: status,
+  };
+  return axios.post("/api/v1/cart-detail/updateStatusCartDetail", data);
+};
+
+const callDoOrderByCustomer = (data) => {
+  return axios.post("/api/v1/customer/order/save", data);
+};
+
+const callDoOrderByGuest = (data) => {
+  return axios.post("/api/v1/customer-no-login/order/save", data);
 };
 
 const callDeletetUser = (_id) => {
@@ -470,4 +494,8 @@ export {
   callGetOrderByCode,
   callAddMethodPayment,
   callListMethodPayment,
+  callGetVouchersByTotalMoney,
+  callUpdateCartDetailStatus,
+  callDoOrderByCustomer,
+  callDoOrderByGuest,
 };
