@@ -310,6 +310,7 @@ const ShoeDetailModalUpdate = (props) => {
       setDataThumbnail([]);
       setOpenModalUpdate(false);
       await props.fetchAllShoes();
+      window.location.reload();
     } else {
       notification.error({
         message: "Đã có lỗi xảy ra",

@@ -112,7 +112,7 @@ const ShoeDetailTable = () => {
       },
     },
     {
-      title: "Thumbnail",
+      title: "Ảnh",
       dataIndex: "thumbnail",
       render: (text, record, index) => {
         return <img src={`${record.thumbnail}`} style={{ height: "80px" }} />;
@@ -124,28 +124,28 @@ const ShoeDetailTable = () => {
       sorter: true,
     },
     {
-      title: "Brand",
+      title: "Thương hiệu",
       dataIndex: "brand",
       sorter: true,
     },
     {
-      title: "Category",
+      title: "Loại giày",
       dataIndex: "category",
       sorter: true,
     },
     {
-      title: "priceInput",
+      title: "Giá tiền",
       dataIndex: "priceInput",
       sorter: true,
     },
     {
-      title: "Code",
+      title: "Mã sản phẩm",
       dataIndex: "code",
       sorter: true,
     },
     {
-      title: "Sole",
-      dataIndex: "sole",
+      title: "Số lượng",
+      dataIndex: "qty",
       sorter: true,
     },
     {

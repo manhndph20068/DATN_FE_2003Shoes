@@ -22,6 +22,7 @@ const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
   const [historyOrder, setHistoryOrder] = useState([]);
   const [paymentMethodOrder, setPaymentMethodOrder] = useState([]);
+  const [btnCancel, setBtnCancel] = useState(false);
   const [listOrderDetail, setListOrderDetail] = useState([]);
   const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
     useState(false);
@@ -56,13 +57,6 @@ const OrderDetail = () => {
       }
     }
   };
-
-  // const fetchListOrderDetail = async () => {
-  //   const resCallGetOrderDetail = await callGetOrderDetailAtCounterById(
-  //     activeKey
-  //   );
-  //   setListOrderDetail(resCallGetOrderDetail.data);
-  // };
 
   const handleGetMethodPayment = async (code) => {
     const res = await callListMethodPayment(code);
@@ -278,6 +272,14 @@ const OrderDetail = () => {
     }
   };
 
+  const handleGetStatusBtn = () => {
+    if (dataOrder?.status === 0) {
+      setBtnCancel(false);
+    } else {
+      setBtnCancel(true);
+    }
+  };
+
   return (
     <div style={{ padding: "1rem" }}>
       <div className="order-detail-container">
@@ -323,12 +325,32 @@ const OrderDetail = () => {
         </div>
         <div className="action-button">
           <span>
-            <Button type="primary" danger>
+            <Button type="primary" danger disabled={btnCancel}>
               Huỷ đơn
             </Button>
           </span>
           <span>
-            <Button type="primary" onClick={() => showModalDetailOrder()}>
+            <Button type="primary" success>
+              Xác nhận đơn
+            </Button>
+          </span>
+          <span>
+            <Button type="primary" style={{ backgroundColor: "brown" }}>
+              Chờ giao hàng
+            </Button>
+          </span>
+          <span>
+            <Button type="primary" style={{ backgroundColor: "green" }}>
+              Đã giao hàng
+            </Button>
+          </span>
+
+          <span>
+            <Button
+              type="primary"
+              style={{ backgroundColor: "grey" }}
+              onClick={() => showModalDetailOrder()}
+            >
               Chi tiết
             </Button>
           </span>

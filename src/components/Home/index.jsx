@@ -29,7 +29,7 @@ const Home = () => {
   const [listColor, setListColor] = useState([]);
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [current, setCurrent] = useState(1);
-  const [pageSize, setPageSize] = useState(6);
+  const [pageSize, setPageSize] = useState(8);
   const [total, setTotal] = useState(0);
   const [loadingProd, setLoadingProd] = useState(false);
   const [sortQuery, setSortQuery] = useState("sort=-sold");
@@ -105,32 +105,30 @@ const Home = () => {
     fetchListColor();
   }, []);
 
-  useEffect(() => {
-    // let query = `current=${current}&pageSize=${pageSize}`;
-    // if (sortQuery) {
-    //   query += `&${sortQuery}`;
-    // }
-    // if (filter) {
-    //   query += `&${filter}`;
-    // }
-    const fetchAllShoeHomePage = async () => {
-      setLoadingProd(true);
-      let res = await callListShoeDetailHomePage(
-        current,
-        pageSize,
-        filterCategory,
-        filterColor
-      );
-      console.log("res", res);
-      if (res?.data?.length > 0) {
-        setListShoeDetail(res.data);
-        setTotal(res.total);
-        setLoadingProd(false);
-      }
-    };
+  const fetchAllShoeHomePage = async () => {
+    setLoadingProd(true);
+    let res = await callListShoeDetailHomePage(
+      current,
+      pageSize,
+      filterCategory,
+      filterColor
+    );
+    console.log("res", res);
+    if (res?.data?.length > 0) {
+      setListShoeDetail(res.data);
+      setTotal(res.total);
+      setLoadingProd(false);
+    }
+  };
 
+  useEffect(() => {
     fetchAllShoeHomePage();
   }, [current, pageSize, sortQuery, filterCategory, filterColor]);
+
+  useEffect(() => {
+    setCurrent(1);
+    fetchAllShoeHomePage();
+  }, [filterCategory, filterColor]);
 
   const items = [
     {
@@ -417,6 +415,7 @@ const Home = () => {
             <Row style={{ display: "flex", justifyContent: "center" }}>
               <Pagination
                 defaultCurrent={current}
+                current={current}
                 total={total}
                 responsive
                 pageSize={pageSize}
