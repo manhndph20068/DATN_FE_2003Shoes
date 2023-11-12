@@ -33,6 +33,10 @@ import ManageOrder from "./components/Admin/Order/ManageOrder";
 import ManageVoucher from "./components/Admin/Voucher/ManageVoucher";
 import OrderDetail from "./components/Admin/Order/OrderDetail";
 import SuccessOrder from "./pages/resultOrder/SuccessOrder";
+import StatisticalChart from "./components/Admin/Statistical/StatisticalChart";
+import AdminTable from "./components/Admin/User/AdminTable";
+import StaffTable from "./components/Admin/User/StaffTable";
+import CustomerTable from "./components/Admin/User/CustomerTable";
 
 const Layout = () => {
   return (
@@ -138,6 +142,18 @@ export default function App() {
           element: <UserTable />,
         },
         {
+          path: "admin-table",
+          element: <AdminTable />,
+        },
+        {
+          path: "customer-table",
+          element: <CustomerTable />,
+        },
+        {
+          path: "staff-table",
+          element: <StaffTable />,
+        },
+        {
           path: "shoe",
           element: <ShoeDetailTable />,
         },
@@ -160,6 +176,10 @@ export default function App() {
         {
           path: "manage-voucher",
           element: <ManageVoucher />,
+        },
+        {
+          path: "statistics",
+          element: <StatisticalChart />,
         },
       ],
     },

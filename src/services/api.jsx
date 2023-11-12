@@ -51,12 +51,21 @@ const callListShoeDetailAdmin = (query) => {
   return axios.get(`/api/v1/shoe-detail/getAllShoeDetailWithPaginate?${query}`);
 };
 
-const callListShoeDetailHomePage = (current, page, category, color) => {
+const callListShoeDetailHomePage = (
+  current,
+  page,
+  category,
+  color,
+  minPrice,
+  maxPrice
+) => {
   const data = {
     page: current,
     pageSize: page,
     categoryList: category,
     colorList: color,
+    minPrice: minPrice ?? null,
+    maxPrice: maxPrice ?? null,
   };
   console.log(data);
   return axios.post(`/api/v1/shoe-detail/getAllHomePage`, data);
@@ -296,6 +305,10 @@ const callGetListVoucher = (data) => {
   return axios.post(`/api/v1/admin/voucher-order/get-all`, data);
 };
 
+const callDoExportOrder = (data) => {
+  return axios.post(`/api/v1/admin/order/export-order`, data);
+};
+
 const callImportFileVoucher = (file) => {
   const bodyFormData = new FormData();
   bodyFormData.append("file", file);
@@ -361,6 +374,10 @@ const callDoOrderByCustomer = (data) => {
 
 const callDoOrderByGuest = (data) => {
   return axios.post("/api/v1/customer-no-login/order/save", data);
+};
+
+const callGetListAccount = (data) => {
+  return axios.post("/api/v1/account/get-all", data);
 };
 
 const callDeletetUser = (_id) => {
@@ -498,4 +515,6 @@ export {
   callUpdateCartDetailStatus,
   callDoOrderByCustomer,
   callDoOrderByGuest,
+  callDoExportOrder,
+  callGetListAccount,
 };

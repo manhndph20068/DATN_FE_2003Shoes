@@ -71,16 +71,33 @@ const Home = () => {
     }
   };
 
-  const onFinish = (values) => {
-    console.log(">>> check onFinish", values);
-
-    if (values?.range?.from >= 0 && values?.range?.to >= 0) {
-      let f = `price>=${values?.range?.from}&price<=${values?.range?.to}`;
-      if (values?.category?.length) {
-        const cate = values?.category?.join(",");
-        f += `&category=${cate}`;
+  const onFinish = async (values) => {
+    if (
+      values?.range?.from >= 0 &&
+      values?.range?.to >= 0 &&
+      values?.range?.to > values?.range?.from
+    ) {
+      // let f = `price>=${values?.range?.from}&price<=${values?.range?.to}`;
+      // if (values?.category?.length) {
+      //   const cate = values?.category?.join(",");
+      //   f += `&category=${cate}`;
+      // }
+      // setFilter(f);
+      console.log(">>> check onFinish", values);
+      let res = await callListShoeDetailHomePage(
+        current,
+        pageSize,
+        values.category,
+        values.color,
+        values?.range?.from,
+        values?.range?.to
+      );
+      console.log("res", res);
+      if (res?.data?.length > 0) {
+        setListShoeDetail(res.data);
+        setTotal(res.total);
+        setLoadingProd(false);
       }
-      setFilter(f);
     }
   };
 

@@ -3,7 +3,17 @@ import { GiOpenBook } from "react-icons/gi";
 import { BiCart } from "react-icons/bi";
 import "./header.scss";
 import { DownOutlined } from "@ant-design/icons";
-import { Divider, Badge, Drawer, message, Popover, Row, Col } from "antd";
+import {
+  Divider,
+  Badge,
+  Drawer,
+  message,
+  Popover,
+  Row,
+  Col,
+  Form,
+  Select,
+} from "antd";
 import { Dropdown, Space, Avatar } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +29,7 @@ const Header = () => {
   const cart = useSelector((state) => state.order.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [form] = Form.useForm();
 
   const Logout = async () => {
     localStorage.removeItem("access_token");
@@ -127,7 +138,62 @@ const Header = () => {
                   <img src={urlLogo} alt="logo" style={{ height: "2.5rem" }} />
                 </Link>
               </div>
-              <input className="input-search" type="text"></input>
+
+              <div className="input-search">
+                <Form layout={"vertical"} form={form}>
+                  <Row>
+                    <Col span={24}>
+                      <Form.Item name="itemShoeDetailSelect">
+                        <Select
+                          showSearch
+                          notFoundContent={"Không tìm thấy sản phẩm"}
+                          // placeholder="Search to Select"
+                          optionFilterProp="children"
+                          filterOption={(input, option) =>
+                            (option?.label ?? "").includes(input)
+                          }
+                          filterSort={(optionA, optionB) =>
+                            (optionA?.label ?? "")
+                              .toLowerCase()
+                              .localeCompare(
+                                (optionB?.label ?? "").toLowerCase()
+                              )
+                          }
+                          // options={listShoeDetail}
+                          // onChange={(value) => handleChangeShoeDetail(value)}
+                        >
+                          {/* {listShoeDetail.map((item) => {
+                  return (
+                    <Option value={item.value} label={item.label}>
+                      <div
+                        style={{
+                          gap: "3rem",
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        <span>
+                          <img
+                            src={item.thumbnail}
+                            alt={item.thumbnail}
+                            style={{ height: "3rem", width: "3rem" }}
+                          />{" "}
+                        </span>
+
+                        <span>Mã sp: {item.label}</span>
+                        <span>Giá: {item.price}</span>
+                      </div>
+                    </Option>
+                  );
+                })} */}
+                        </Select>
+                        {/* <Select options={listShoeDetail}>hi</Select> */}
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </Form>
+              </div>
             </div>
           </div>
           <div className="page-header__right">

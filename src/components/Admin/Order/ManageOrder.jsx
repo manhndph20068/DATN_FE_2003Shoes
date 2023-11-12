@@ -133,6 +133,26 @@ const ManageOrder = () => {
               Chờ xác nhận
             </Tag>
           )}
+          {record.status === 5 && (
+            <Tag style={{ fontSize: "small" }} color="lime">
+              Đã xác nhận
+            </Tag>
+          )}
+          {record.status === 6 && (
+            <Tag style={{ fontSize: "small" }} color="purple">
+              Chờ giao hàng
+            </Tag>
+          )}
+          {record.status === 7 && (
+            <Tag style={{ fontSize: "small" }} color="pink">
+              Đã bàn giao
+            </Tag>
+          )}
+          {record.status === 8 && (
+            <Tag style={{ fontSize: "small" }} color="geekblue">
+              Hoàn thành
+            </Tag>
+          )}
         </div>
       ),
     },

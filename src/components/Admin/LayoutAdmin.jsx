@@ -12,11 +12,14 @@ import {
   DownOutlined,
   ShoppingCartOutlined,
   TagsOutlined,
+  AreaChartOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Dropdown, Space, message, Avatar } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { GrUserAdmin } from "react-icons/gr";
+import { BsFillPersonFill } from "react-icons/bs";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -37,14 +40,19 @@ const items = [
     icon: <UserOutlined />,
     children: [
       {
-        label: <Link to="/admin/user">CRUD</Link>,
-        key: "crud",
+        label: <Link to="/admin/admin-table">Admin </Link>,
+        key: "admin-table",
+        icon: <GrUserAdmin />,
+      },
+      {
+        label: <Link to="/admin/staff-table">Staff </Link>,
+        key: "staff-table",
         icon: <TeamOutlined />,
       },
       {
-        label: "Files1",
-        key: "file1",
-        icon: <TeamOutlined />,
+        label: <Link to="/admin/customer-table">Customer </Link>,
+        key: "customer-table",
+        icon: <BsFillPersonFill />,
       },
     ],
   },
@@ -69,6 +77,11 @@ const items = [
     label: <Link to="/admin/manage-voucher">Manage Voucher</Link>,
     key: "voucher",
     icon: <TagsOutlined />,
+  },
+  {
+    label: <Link to="/admin/statistics">Statistics</Link>,
+    key: "statistics",
+    icon: <AreaChartOutlined />,
   },
 ];
 

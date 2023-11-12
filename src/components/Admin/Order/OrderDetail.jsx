@@ -12,24 +12,38 @@ import {
   callGetOrderByCode,
   callGetOrderDetailAtCounterById,
   callListMethodPayment,
+  callUpdateNewOrderAtCounter,
+  callUpdateOrderDetailAtCounter,
 } from "../../../services/api";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Col, Divider, Row, Table, Tag } from "antd";
+import { Button, Col, Divider, Row, Table, Tag, message } from "antd";
 import ModalShowDetailOrder from "./ModalShowDetailOrder";
+import { useSelector } from "react-redux";
 const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
   const [historyOrder, setHistoryOrder] = useState([]);
   const [paymentMethodOrder, setPaymentMethodOrder] = useState([]);
   const [btnCancel, setBtnCancel] = useState(false);
+  const [btnConfirm, setBtnConfirm] = useState(false);
+  const [btnWaitingForDelivery, setBtnWaitingForDelivery] = useState(false);
+  const [btnDelivered, setBtnDelivered] = useState(false);
+  const [btnFinished, setBtnFinished] = useState(false);
   const [listOrderDetail, setListOrderDetail] = useState([]);
+  const [listProvince, setListProvince] = useState([]);
+  const [listWard, setListWard] = useState([]);
+  const [listDistrict, setListDistrict] = useState([]);
+  const [provinceCurrent, setProvinceCurrent] = useState(null);
+  const [wardCurrent, setWardCurrent] = useState(null);
+  const [districtCurrent, setDistrictCurrent] = useState(null);
   const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
     useState(false);
 
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
   const navigate = useNavigate();
+  const staffName = useSelector((state) => state.account.user.name);
 
   const handleGetOrder = async () => {
     const res = await callGetOrderByCode(code);
@@ -214,6 +228,7 @@ const OrderDetail = () => {
     }
   };
 
+  /////////////////////////////
   const handleGetTypeOfOrder = (type) => {
     if (type === 1) {
       return (
@@ -267,18 +282,321 @@ const OrderDetail = () => {
           Chờ xác nhận
         </Tag>
       );
+    } else if (type === 5) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="lime">
+          Đã xác nhận
+        </Tag>
+      );
+    } else if (type === 6) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="purple">
+          Chờ giao hàng
+        </Tag>
+      );
+    } else if (type === 7) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="pink">
+          Đã bàn giao
+        </Tag>
+      );
+    } else if (type === 8) {
+      return (
+        <Tag style={{ fontSize: "small" }} color="geekblue">
+          Hoàn thành
+        </Tag>
+      );
     } else {
       return null;
     }
   };
 
+  useEffect(() => {
+    async function getDataProvince(url = "") {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+        },
+      });
+      return response.json();
+    }
+
+    getDataProvince(
+      "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province"
+    ).then((data) => {
+      const listProvince = data?.data?.map((item) => {
+        return {
+          label: item.ProvinceName,
+          value: item.ProvinceID,
+        };
+      });
+      setListProvince(listProvince);
+      console.log("listProvince", listProvince);
+      const addressParts = dataOrder?.address.split(", ");
+      const province = addressParts[0];
+      const provinceId = listProvince.filter((item) => {
+        return item.label === province;
+      });
+      setProvinceCurrent(provinceId);
+    });
+  }, []);
+
   const handleGetStatusBtn = () => {
-    if (dataOrder?.status === 0) {
-      setBtnCancel(false);
-    } else {
+    console.log("dataOrder", dataOrder);
+    if (dataOrder?.type === null) {
+      console.log("nulllllllll");
       setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 1 && dataOrder?.status === 2) {
+      console.log("setBtnCancel");
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 2) {
+      setBtnCancel(false);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(false);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 1) {
+      setBtnCancel(false);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(false);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 4) {
+      setBtnCancel(false);
+      setBtnConfirm(false);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 5) {
+      setBtnCancel(false);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(false);
+      setBtnDelivered(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 6) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(false);
+      setBtnFinished(true);
     }
   };
+
+  const handleChangeToWaitingForDelivery = async () => {
+    console.log("dataOrder", dataOrder);
+    const dataUpdate = {
+      id: dataOrder.id,
+      idVoucher: dataOrder?.voucherOrder?.id ?? null,
+      idAccount: dataOrder?.account?.id ?? null,
+      code: dataOrder.code,
+      type: dataOrder.type,
+      customerName: dataOrder.customerName ?? null,
+      phoneNumber: dataOrder.phoneNumber ?? null,
+      address: dataOrder.address ?? null,
+      shipFee: dataOrder.shipFee ?? 0,
+      moneyReduce: dataOrder.moneyReduce ?? 0,
+      totalMoney: dataOrder.totalMoney,
+      payDate: dataOrder.payDate ?? null,
+      shipDate: null,
+      desiredDate: null,
+      receiveDate: null,
+      updatedBy: staffName ?? null,
+      note: "Xác nhận chờ giao hàng",
+      status: 6,
+    };
+    const dataShoe = listOrderDetail.map((item) => {
+      console.log("item listOrderDetail", item);
+      return {
+        name: "Giày",
+        code: item?.codeShoeDetail,
+        quantity: item?.quantity,
+        price: item?.price,
+        length: 12,
+        width: 12,
+        weight: 1200,
+        height: 12,
+        category: {
+          level1: "Giày",
+        },
+      };
+    });
+
+    console.log("data", dataUpdate);
+    const addressParts = dataOrder.address.split(", ");
+    const province = addressParts[0];
+    const district = addressParts[1];
+    const ward = addressParts[2];
+    const addressDetail = addressParts[3];
+    const dataOrderGHN = {
+      payment_type_id: 1,
+      note: "2K3SHOES",
+      required_note: "KHONGCHOXEMHANG",
+      return_phone: "0987654123",
+      return_address:
+        "Tổng kho, Phường Xuân Phương, Quận Nam Từ Liêm, Hà Nội, Vietnam",
+      return_district_id: null,
+      return_ward_code: "",
+      client_order_code: "",
+      from_name: "2K3SHOES",
+      from_phone: "0987654123",
+      from_address:
+        "Tổng kho, Phường Xuân Phương, Quận Nam Từ Liêm, Hà Nội, Vietnam",
+      from_ward_name: "Phường Xuân Phương",
+      from_district_name: "Quận Nam Từ Liêm",
+      from_province_name: "Hà Nội",
+      to_name: dataOrder.customerName ?? null,
+      to_phone: dataOrder.phoneNumber ?? null,
+      to_address:
+        addressDetail +
+        ", " +
+        ward +
+        ", " +
+        district +
+        ", " +
+        province +
+        ", Vietnam",
+      to_ward_name: ward,
+      to_district_name: district,
+      to_province_name: province,
+      cod_amount:
+        paymentMethodOrder[0].status === 1 ? 0 : dataOrder?.totalMoney,
+      content: "Theo New York Times",
+      weight: 200,
+      length: 1,
+      width: 19,
+      height: 10,
+      cod_failed_amount: 2000,
+      pick_station_id: 1444,
+      deliver_station_id: null,
+      insurance_value: 10,
+      service_id: 0,
+      service_type_id: 2,
+      coupon: null,
+      pickup_time: 1692840132,
+      pick_shift: [2],
+      items: dataShoe,
+    };
+    console.log("dataOrderGHN", dataOrderGHN);
+    const url =
+      "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
+
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+        ShopId: 125598,
+      },
+      body: JSON.stringify(dataOrderGHN),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.code === 200) {
+          const orderCode = data?.data?.order_code;
+          fetch(
+            "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/a5/gen-token",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+              },
+              body: JSON.stringify({
+                order_codes: [data?.data?.order_code],
+              }),
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => {
+              if (data?.code === 200) {
+                const urlPrint = `https://dev-online-gateway.ghn.vn/a5/public-api/printA5?token=${data?.data?.token}`;
+                window.open(urlPrint, "_blank");
+                dataUpdate.note = `MVD: ${orderCode}`;
+                callUpdateNewOrderAtCounter(dataUpdate);
+                window.location.reload();
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleChangeToConfirmOrder = () => {
+    console.log("dataOrder", dataOrder);
+    const data = {
+      id: dataOrder.id,
+      idVoucher: dataOrder?.voucherOrder?.id ?? null,
+      idAccount: dataOrder?.account?.id ?? null,
+      code: dataOrder.code,
+      type: dataOrder.type,
+      customerName: dataOrder.customerName ?? null,
+      phoneNumber: dataOrder.phoneNumber ?? null,
+      address: dataOrder.address ?? null,
+      shipFee: dataOrder.shipFee ?? 0,
+      moneyReduce: dataOrder.moneyReduce ?? 0,
+      totalMoney: dataOrder.totalMoney,
+      payDate: null,
+      shipDate: null,
+      desiredDate: null,
+      receiveDate: null,
+      updatedBy: staffName ?? null,
+      note: "Đã xác nhận thông tin đơn hàng",
+      status: 5,
+    };
+    console.log("data", data);
+    callUpdateNewOrderAtCounter(data);
+    window.location.reload();
+  };
+
+  const handleChangeToDelivered = () => {
+    console.log("dataOrder", dataOrder);
+    const addressParts = dataOrder.address.split(", ");
+    const province = addressParts[0];
+    const district = addressParts[1];
+    const ward = addressParts[2];
+    const addressDetail = addressParts[3];
+
+    const data = {
+      id: dataOrder.id,
+      idVoucher: dataOrder?.voucherOrder?.id ?? null,
+      idAccount: dataOrder?.account?.id ?? null,
+      code: dataOrder.code,
+      type: dataOrder.type,
+      customerName: dataOrder.customerName ?? null,
+      phoneNumber: dataOrder.phoneNumber ?? null,
+      address: dataOrder.address ?? null,
+      shipFee: dataOrder.shipFee ?? 0,
+      moneyReduce: dataOrder.moneyReduce ?? 0,
+      totalMoney: dataOrder.totalMoney,
+      payDate: null,
+      shipDate: null,
+      desiredDate: null,
+      receiveDate: null,
+      updatedBy: staffName ?? null,
+      note: "Đã bàn giao",
+      status: 7,
+    };
+    console.log("data", data);
+  };
+
+  useEffect(() => {
+    handleGetStatusBtn();
+  }, [dataOrder]);
 
   return (
     <div style={{ padding: "1rem" }}>
@@ -307,8 +625,12 @@ const OrderDetail = () => {
                     icon={handleGetIconTimeline(item.type)}
                     title={
                       <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span style={{ fontSize: "15px" }}>{item.type}</span>
-                        <span style={{ fontSize: "14px" }}>{item.note}</span>
+                        {/* <span style={{ fontSize: "14px" }}>
+                          {item.type}
+                        </span> */}
+                        <span style={{ fontSize: "13px", fontWeight: "bold" }}>
+                          {item.note}
+                        </span>
                         <span style={{ fontSize: "13px" }}>
                           {item.createdTime}
                         </span>
@@ -330,18 +652,56 @@ const OrderDetail = () => {
             </Button>
           </span>
           <span>
-            <Button type="primary" success>
+            <Button
+              type="primary"
+              success
+              disabled={btnConfirm}
+              onClick={() => handleChangeToConfirmOrder()}
+            >
               Xác nhận đơn
             </Button>
           </span>
           <span>
-            <Button type="primary" style={{ backgroundColor: "brown" }}>
+            <Button
+              type="primary"
+              disabled={btnWaitingForDelivery}
+              onClick={() => handleChangeToWaitingForDelivery()}
+              style={
+                btnWaitingForDelivery
+                  ? { backgroundColor: "#F5F5F5" }
+                  : { backgroundColor: "brown" }
+              }
+            >
               Chờ giao hàng
             </Button>
           </span>
           <span>
-            <Button type="primary" style={{ backgroundColor: "green" }}>
-              Đã giao hàng
+            <Button
+              type="primary"
+              disabled={btnDelivered}
+              onClick={() => handleChangeToDelivered()}
+              style={
+                btnDelivered
+                  ? { backgroundColor: "#F5F5F5" }
+                  : { backgroundColor: "green" }
+              }
+            >
+              Đã bàn giao
+            </Button>
+          </span>
+
+          <span>
+            <Button
+              type="primary"
+              // onClick={() => showModalDetailOrder()}
+              style={
+                btnFinished
+                  ? { backgroundColor: "#F5F5F5" }
+                  : { backgroundColor: "tomato" }
+              }
+              disabled={btnFinished}
+            >
+              Hoàn thành
             </Button>
           </span>
 
