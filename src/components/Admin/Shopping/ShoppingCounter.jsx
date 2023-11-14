@@ -337,7 +337,7 @@ const ShoppingCounter = () => {
         note: note
           ? `Nhân viên ${staffName} xác nhận thanh toán, ${note}`
           : `Nhân viên ${staffName} xác nhận thanh toán`,
-        status: 2,
+        status: 8,
       };
       console.log("data", data);
       const res = await callUpdateNewOrderAtCounter(data);

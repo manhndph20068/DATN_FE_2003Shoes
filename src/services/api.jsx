@@ -376,8 +376,16 @@ const callDoOrderByGuest = (data) => {
   return axios.post("/api/v1/customer-no-login/order/save", data);
 };
 
+const callBestSaleProdByYear = (nam) => {
+  return axios.get(`/api/v1/statistical/sanphambanchaytrongnam?nam=${nam}`);
+};
+
 const callGetListAccount = (data) => {
   return axios.post("/api/v1/account/get-all", data);
+};
+
+const callDeleteOrder = (data) => {
+  return axios.post(`/api/v1/admin/order/delete`, data);
 };
 
 const callDeletetUser = (_id) => {
@@ -517,4 +525,6 @@ export {
   callDoOrderByGuest,
   callDoExportOrder,
   callGetListAccount,
+  callBestSaleProdByYear,
+  callDeleteOrder,
 };

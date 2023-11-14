@@ -37,6 +37,7 @@ import StatisticalChart from "./components/Admin/Statistical/StatisticalChart";
 import AdminTable from "./components/Admin/User/AdminTable";
 import StaffTable from "./components/Admin/User/StaffTable";
 import CustomerTable from "./components/Admin/User/CustomerTable";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 const Layout = () => {
   return (

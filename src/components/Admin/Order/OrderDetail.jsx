@@ -21,6 +21,10 @@ import { useNavigate } from "react-router-dom";
 import { Button, Col, Divider, Row, Table, Tag, message } from "antd";
 import ModalShowDetailOrder from "./ModalShowDetailOrder";
 import { useSelector } from "react-redux";
+import moment from "moment";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import CancelOrder from "./CancelOrder";
+
 const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
   const [historyOrder, setHistoryOrder] = useState([]);
@@ -39,6 +43,7 @@ const OrderDetail = () => {
   const [districtCurrent, setDistrictCurrent] = useState(null);
   const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
     useState(false);
+  const [openModalCancelOrder, setOpenModalCancelOrder] = useState(false);
 
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
@@ -311,37 +316,69 @@ const OrderDetail = () => {
     }
   };
 
-  useEffect(() => {
-    async function getDataProvince(url = "") {
-      const response = await fetch(url, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
-        },
-      });
-      return response.json();
+  const fetchData = async (url, method = "GET", data = {}) => {
+    const options = {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+      },
+    };
+
+    if (method === "POST") {
+      options.body = JSON.stringify(data);
     }
 
-    getDataProvince(
-      "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province"
-    ).then((data) => {
-      const listProvince = data?.data?.map((item) => {
-        return {
-          label: item.ProvinceName,
-          value: item.ProvinceID,
-        };
-      });
+    const response = await fetch(url, options);
+    return response.json();
+  };
+
+  useEffect(() => {
+    const fetchAddressData = async () => {
+      const provinceData = await fetchData(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province"
+      );
+      const listProvince = provinceData?.data?.map(
+        ({ ProvinceName: label, ProvinceID: value }) => ({ label, value })
+      );
       setListProvince(listProvince);
-      console.log("listProvince", listProvince);
-      const addressParts = dataOrder?.address.split(", ");
+
+      const addressParts = dataOrder?.address?.split(", ");
       const province = addressParts[0];
-      const provinceId = listProvince.filter((item) => {
-        return item.label === province;
-      });
+      const provinceId = listProvince.find(({ label }) => label === province);
       setProvinceCurrent(provinceId);
-    });
-  }, []);
+
+      const districtData = await fetchData(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district",
+        "POST",
+        { province_id: provinceId.value }
+      );
+      const listDistrict = districtData?.data?.map(
+        ({ DistrictName: label, DistrictID: value }) => ({ label, value })
+      );
+      setListDistrict(listDistrict);
+
+      const district = addressParts[1];
+      const districtId = listDistrict.find(({ label }) => label === district);
+      setDistrictCurrent(districtId);
+
+      const wardData = await fetchData(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id",
+        "POST",
+        { district_id: districtId.value }
+      );
+      const listWard = wardData?.data?.map(
+        ({ WardName: label, WardCode: value }) => ({ label, value })
+      );
+      setListWard(listWard);
+
+      const ward = addressParts[2];
+      const wardId = listWard.find(({ label }) => label === ward);
+      setWardCurrent(wardId);
+    };
+
+    fetchAddressData();
+  }, [dataOrder]);
 
   const handleGetStatusBtn = () => {
     console.log("dataOrder", dataOrder);
@@ -351,6 +388,14 @@ const OrderDetail = () => {
       setBtnConfirm(true);
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
+      setBtnFinished(true);
+    }
+    if (dataOrder?.status === 0) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 1 && dataOrder?.status === 2) {
       console.log("setBtnCancel");
@@ -358,36 +403,69 @@ const OrderDetail = () => {
       setBtnConfirm(true);
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 2) {
       setBtnCancel(false);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 1) {
       setBtnCancel(false);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
+      setBtnFinished(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 3) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 4) {
       setBtnCancel(false);
       setBtnConfirm(false);
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 5) {
       setBtnCancel(false);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
+      setBtnFinished(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 6) {
       setBtnCancel(true);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(true);
       setBtnDelivered(false);
+      setBtnFinished(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 7) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+      setBtnFinished(false);
+    }
+    if (+dataOrder?.type === 1 && dataOrder?.status === 8) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
+      setBtnFinished(true);
+    }
+    if (+dataOrder?.type === 2 && dataOrder?.status === 8) {
+      setBtnCancel(true);
+      setBtnConfirm(true);
+      setBtnWaitingForDelivery(true);
+      setBtnDelivered(true);
       setBtnFinished(true);
     }
   };
@@ -406,7 +484,7 @@ const OrderDetail = () => {
       shipFee: dataOrder.shipFee ?? 0,
       moneyReduce: dataOrder.moneyReduce ?? 0,
       totalMoney: dataOrder.totalMoney,
-      payDate: dataOrder.payDate ?? null,
+      payDate: null,
       shipDate: null,
       desiredDate: null,
       receiveDate: null,
@@ -432,6 +510,7 @@ const OrderDetail = () => {
     });
 
     console.log("data", dataUpdate);
+    // callUpdateNewOrderAtCounter(dataUpdate);
     const addressParts = dataOrder.address.split(", ");
     const province = addressParts[0];
     const district = addressParts[1];
@@ -537,6 +616,7 @@ const OrderDetail = () => {
   };
 
   const handleChangeToConfirmOrder = () => {
+    // getCodeAddress();
     console.log("dataOrder", dataOrder);
     const data = {
       id: dataOrder.id,
@@ -571,6 +651,71 @@ const OrderDetail = () => {
     const ward = addressParts[2];
     const addressDetail = addressParts[3];
 
+    console.log("provinceCurrent", provinceCurrent);
+    console.log("districtCurrent", districtCurrent);
+    console.log("wardCurrent", wardCurrent);
+
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/leadtime",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ShopId: 125598,
+            Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+          },
+          body: JSON.stringify({
+            from_district_id: 3440,
+            from_ward_code: "13010",
+            to_district_id: districtCurrent.value,
+            to_ward_code: wardCurrent.value,
+            service_id: 53320,
+          }),
+        }
+      );
+      const formattedDates = (date) => {
+        return moment
+          .unix(date)
+          .utcOffset(420)
+          .format("YYYY-MM-DDTHH:mm:ss.SSS");
+      };
+
+      const dataRes = await response.json();
+      if (dataRes?.code === 200) {
+        console.log(dataRes);
+
+        const data = {
+          id: dataOrder.id,
+          idVoucher: dataOrder?.voucherOrder?.id ?? null,
+          idAccount: dataOrder?.account?.id ?? null,
+          code: dataOrder.code,
+          type: dataOrder.type,
+          customerName: dataOrder.customerName ?? null,
+          phoneNumber: dataOrder.phoneNumber ?? null,
+          address: dataOrder.address ?? null,
+          shipFee: dataOrder.shipFee ?? 0,
+          moneyReduce: dataOrder.moneyReduce ?? 0,
+          totalMoney: dataOrder.totalMoney,
+          payDate: null,
+          shipDate: null,
+          desiredDate: formattedDates(dataRes.data.leadtime),
+          receiveDate: null,
+          updatedBy: staffName ?? null,
+          note: "Đã bàn giao",
+          status: 7,
+        };
+        console.log("dâta", data);
+        callUpdateNewOrderAtCounter(data);
+        window.location.reload();
+      }
+    };
+
+    fetchData();
+  };
+
+  const handleChangeToFinish = () => {
+    console.log("dataOrder", dataOrder);
     const data = {
       id: dataOrder.id,
       idVoucher: dataOrder?.voucherOrder?.id ?? null,
@@ -583,20 +728,29 @@ const OrderDetail = () => {
       shipFee: dataOrder.shipFee ?? 0,
       moneyReduce: dataOrder.moneyReduce ?? 0,
       totalMoney: dataOrder.totalMoney,
-      payDate: null,
+      payDate: new Date().toISOString(),
       shipDate: null,
-      desiredDate: null,
+      desiredDate:
+        moment(dataOrder?.desiredDate, "DD/MM/YYYY HH:mm:ss").format(
+          "YYYY-MM-DDTHH:mm:ss.SSS"
+        ) ?? null,
       receiveDate: null,
       updatedBy: staffName ?? null,
-      note: "Đã bàn giao",
-      status: 7,
+      note: "Đã hoàn thành",
+      status: 8,
     };
     console.log("data", data);
+    callUpdateNewOrderAtCounter(data);
+    window.location.reload();
   };
 
   useEffect(() => {
     handleGetStatusBtn();
   }, [dataOrder]);
+
+  const handleCancelOrder = () => {
+    setOpenModalCancelOrder(true);
+  };
 
   return (
     <div style={{ padding: "1rem" }}>
@@ -614,40 +768,51 @@ const OrderDetail = () => {
             / {code}
           </p>
         </div>
-        <div className="timeline">
-          <Timeline minEvents={5} placeholder>
-            {historyOrder.map((item) => {
-              console.log("item", item);
-              return (
-                <div>
-                  <TimelineEvent
-                    color={handleGetColorTimeline(item.type)}
-                    icon={handleGetIconTimeline(item.type)}
-                    title={
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        {/* <span style={{ fontSize: "14px" }}>
+        <div className="timeline" style={{ padding: "3rem" }}>
+          <PerfectScrollbar>
+            <Timeline minEvents={historyOrder.length} placeholder>
+              {historyOrder.map((item) => {
+                console.log("item", item);
+                return (
+                  <div>
+                    <TimelineEvent
+                      color={handleGetColorTimeline(item.type)}
+                      icon={handleGetIconTimeline(item.type)}
+                      title={
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {/* <span style={{ fontSize: "14px" }}>
                           {item.type}
                         </span> */}
-                        <span style={{ fontSize: "13px", fontWeight: "bold" }}>
-                          {item.note}
-                        </span>
-                        <span style={{ fontSize: "13px" }}>
-                          {item.createdTime}
-                        </span>
-                        <span style={{ fontSize: "13px" }}>
-                          CreatedBy: {item.createdBy}
-                        </span>
-                      </div>
-                    }
-                  />
-                </div>
-              );
-            })}
-          </Timeline>
+                          <span
+                            style={{ fontSize: "13px", fontWeight: "bold" }}
+                          >
+                            {item.note}
+                          </span>
+                          <span style={{ fontSize: "13px" }}>
+                            {item.createdTime}
+                          </span>
+                          <span style={{ fontSize: "13px" }}>
+                            CreatedBy: {item.createdBy}
+                          </span>
+                        </div>
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </Timeline>
+          </PerfectScrollbar>
         </div>
         <div className="action-button">
           <span>
-            <Button type="primary" danger disabled={btnCancel}>
+            <Button
+              type="primary"
+              danger
+              disabled={btnCancel}
+              onClick={() => handleCancelOrder()}
+            >
               Huỷ đơn
             </Button>
           </span>
@@ -693,7 +858,7 @@ const OrderDetail = () => {
           <span>
             <Button
               type="primary"
-              // onClick={() => showModalDetailOrder()}
+              onClick={() => handleChangeToFinish()}
               style={
                 btnFinished
                   ? { backgroundColor: "#F5F5F5" }
@@ -736,6 +901,18 @@ const OrderDetail = () => {
               <>
                 <p>Số điện thoại: {dataOrder?.phoneNumber}</p>
                 <p>Địa chỉ: {dataOrder?.address}</p>
+              </>
+            ) : (
+              <></>
+            )}
+            {+dataOrder.type === 2 && +dataOrder.status === (7 || 8) ? (
+              <>
+                <p>
+                  <span style={{ color: "red", fontWeight: "bold" }}>
+                    Ngày nhận dự kiến:{" "}
+                  </span>{" "}
+                  {dataOrder?.desiredDate ?? "N/A"}
+                </p>
               </>
             ) : (
               <></>
@@ -815,6 +992,11 @@ const OrderDetail = () => {
         openModalShowOrderDetail={openModalShowOrderDetail}
         setOpenModalShowOrderDetail={setOpenModalShowOrderDetail}
         historyOrder={historyOrder}
+      />
+      <CancelOrder
+        openModalCancelOrder={openModalCancelOrder}
+        setOpenModalCancelOrder={setOpenModalCancelOrder}
+        dataOrder={dataOrder}
       />
     </div>
   );
