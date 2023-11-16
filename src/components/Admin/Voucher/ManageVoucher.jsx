@@ -95,7 +95,13 @@ const ManageVoucher = () => {
           {record.reduceForm === 1 ? (
             <Tag color="green-inverse">{_} %</Tag>
           ) : (
-            <Tag color="blue-inverse">{_} VND</Tag>
+            <Tag color="blue-inverse">
+              {Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              }).format(_)}{" "}
+              VND
+            </Tag>
           )}
         </>
       ),
