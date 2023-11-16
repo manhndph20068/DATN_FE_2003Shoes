@@ -380,12 +380,36 @@ const callBestSaleProdByYear = (nam) => {
   return axios.get(`/api/v1/statistical/sanphambanchaytrongnam?nam=${nam}`);
 };
 
+const callGetTop5Prod = (startYear, endYear) => {
+  return axios.get(
+    `/api/v1/statistical/top5SanPhamBanChay?ngayBatDau=${startYear}&ngayKetThuc=${endYear}`
+  );
+};
+
+const callGetOrderStatistical = (startYear, endYear) => {
+  return axios.get(
+    `/api/v1/statistical/hoadoncho?ngayBatDau=${startYear}&ngayKetThuc=${endYear}`
+  );
+};
+
+const callGenerateOrderBill = (id) => {
+  return axios.get(`/api/v1/admin/order/generate-hoa-don-report/${id}`);
+};
+
 const callGetListAccount = (data) => {
   return axios.post("/api/v1/account/get-all", data);
 };
 
 const callDeleteOrder = (data) => {
   return axios.post(`/api/v1/admin/order/delete`, data);
+};
+
+const callGetHistoryOrderCustomerById = (data) => {
+  return axios.post("/api/v1/customer/order/get-all/customer", data);
+};
+
+const callUpdateVoucher = (data) => {
+  return axios.post("/api/v1/admin/voucher-order/updateVoucherOrder", data);
 };
 
 const callDeletetUser = (_id) => {
@@ -527,4 +551,9 @@ export {
   callGetListAccount,
   callBestSaleProdByYear,
   callDeleteOrder,
+  callUpdateVoucher,
+  callGetTop5Prod,
+  callGetOrderStatistical,
+  callGenerateOrderBill,
+  callGetHistoryOrderCustomerById,
 };

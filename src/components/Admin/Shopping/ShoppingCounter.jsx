@@ -17,6 +17,7 @@ import TabPane from "antd/es/tabs/TabPane";
 import {
   callAddMethodPayment,
   callAddNewOrderAtCounter,
+  callGenerateOrderBill,
   callGetListOrderAtCounter,
   callGetOrderDetailAtCounterById,
   callGetVouchersByTotalMoney,
@@ -352,6 +353,7 @@ const ShoppingCounter = () => {
           note: `Nhân viên ${staffName} xác nhận thanh toán`,
           status: 1,
         });
+        window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
       } else {
         message.error(res.mess);
       }

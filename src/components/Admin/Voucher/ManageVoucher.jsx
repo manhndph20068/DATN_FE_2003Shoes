@@ -14,6 +14,7 @@ import {
 import ImportVoucher from "./ImportVoucher";
 import InputSearchVoucher from "./InputSearchVoucher";
 import ModalCreateVoucher from "./ModalCreateVoucher";
+import ModalUpdateVoucher from "./ModalUpdateVoucher";
 
 const ManageVoucher = () => {
   const [current, setCurrent] = useState(1);
@@ -23,7 +24,9 @@ const ManageVoucher = () => {
   const [dataViewDetail, setDataViewDetail] = useState(null);
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [isModalImportOpen, setIsModalImportOpen] = useState(false);
+  const [dataUpdate, setDataUpdate] = useState(null);
   const [filter, setFilter] = useState({
     page: current,
     size: pageSize,
@@ -46,6 +49,10 @@ const ManageVoucher = () => {
   useEffect(() => {
     handleFetchAllListVoucher();
   }, [filter]);
+
+  const deleteVoucherByID = (id) => {
+    console.log("id", id);
+  };
 
   const columns = [
     {
@@ -125,15 +132,16 @@ const ManageVoucher = () => {
             <EditOutlined
               style={{ cursor: "pointer" }}
               onClick={() => {
-                // setDataUpdate(record);
-                // setOpenModalUpdate(true);
+                console.log("record", record);
+                setDataUpdate(record);
+                setIsModalUpdateOpen(true);
               }}
             />
             <Popconfirm
               placement="left"
-              // title={`Are you sure to delete ${record.mainText}?`}
-              // description={`Delete the ${record.category} book?`}
-              // onConfirm={() => confirm(record.id)}
+              title={`Are you sure to delete ${record.code}?`}
+              description={`Delete the ${record.name} voucher?`}
+              onConfirm={() => deleteVoucherByID(record.id)}
               okText="Yes"
               cancelText="No"
             >
@@ -255,6 +263,12 @@ const ManageVoucher = () => {
       <ModalCreateVoucher
         setIsModalCreateOpen={setIsModalCreateOpen}
         isModalCreateOpen={isModalCreateOpen}
+        handleFetchAllListVoucher={handleFetchAllListVoucher}
+      />
+      <ModalUpdateVoucher
+        isModalUpdateOpen={isModalUpdateOpen}
+        setIsModalUpdateOpen={setIsModalUpdateOpen}
+        dataUpdate={dataUpdate}
         handleFetchAllListVoucher={handleFetchAllListVoucher}
       />
     </>

@@ -2,6 +2,7 @@ import { Col, Row, Table } from "antd";
 import "./Table.scss";
 import { useEffect, useState } from "react";
 import { callGetListAccount } from "../../../services/api";
+import InputSearchUser from "./InputSearchUser";
 
 const StaffTable = () => {
   const [current, setCurrent] = useState(1);
@@ -62,26 +63,47 @@ const StaffTable = () => {
       key: "status",
     },
   ];
+
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+    if (pagination && pagination.current !== current) {
+      setCurrent(pagination.current);
+      setFilter({
+        role: 3,
+        page: pagination.current - 1,
+        size: pageSize,
+      });
+    }
+    if (pagination && pagination.pageSize !== pageSize) {
+      setCurrent(0);
+      setPageSize(pagination.pageSize);
+      setFilter({
+        role: 3,
+        page: 0,
+        size: pagination.pageSize,
+      });
+    }
+  };
   return (
     <div style={{ padding: "1.7rem" }}>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>
-            {/* <InputSearchOrder setFilter={setFilter} filter={filter} /> */}
+            <InputSearchUser setFilter={setFilter} filter={filter} />
           </Col>
         </Row>
       </div>
       <div className="table-list-order">
         <Table
           columns={columns}
-          //   onChange={onChange}
+          onChange={onChange}
           dataSource={listStaff}
-          //   pagination={{
-          //     current: current,
-          //     pageSize: pageSize,
-          //     total: total,
-          //     showSizeChanger: true,
-          //   }}
+          pagination={{
+            current: current,
+            pageSize: pageSize,
+            total: total,
+            showSizeChanger: true,
+          }}
         />
       </div>
     </div>

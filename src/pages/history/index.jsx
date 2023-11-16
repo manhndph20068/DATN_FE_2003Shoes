@@ -1,0 +1,110 @@
+import { Table, Tag } from "antd";
+import { useEffect, useState } from "react";
+import { callGetHistoryOrderCustomerById } from "../../services/api";
+import { useSelector } from "react-redux";
+
+const OrderHistory = () => {
+  const [listOrder, setListOrder] = useState([]);
+  const dataAcc = useSelector((state) => state?.account?.user);
+  console.log("dataAcc", dataAcc?.id);
+  const handleGetListOrder = async () => {
+    const data = {
+      idAccount: dataAcc?.id,
+    };
+    const res = await callGetHistoryOrderCustomerById(data);
+
+    if (res?.length > 0) {
+      setListOrder(res);
+    }
+  };
+
+  useEffect(() => {
+    handleGetListOrder();
+  }, []);
+
+  const columns = [
+    {
+      title: "Ma don hang",
+      dataIndex: "code",
+      key: "code",
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "totalMoney",
+      key: "totalMoney",
+      render: (_, record) => (
+        <div style={{ color: "red" }}>
+          {Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(_)}
+        </div>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (_, record) => (
+        <div>
+          {record.status === 0 && (
+            <Tag style={{ fontSize: "small" }} color="cyan">
+              Hoá đơn chờ
+            </Tag>
+          )}
+          {record.status === 1 && (
+            <Tag style={{ fontSize: "small" }} color="gold">
+              Chờ thanh toán
+            </Tag>
+          )}
+          {record.status === 2 && (
+            <Tag style={{ fontSize: "small" }} color="green">
+              Đã thanh toán
+            </Tag>
+          )}
+          {record.status === 3 && (
+            <Tag style={{ fontSize: "small" }} color="red">
+              Huỷ
+            </Tag>
+          )}
+          {record.status === 4 && (
+            <Tag style={{ fontSize: "small" }} color="blue">
+              Chờ xác nhận
+            </Tag>
+          )}
+          {record.status === 5 && (
+            <Tag style={{ fontSize: "small" }} color="lime">
+              Đã xác nhận
+            </Tag>
+          )}
+          {record.status === 6 && (
+            <Tag style={{ fontSize: "small" }} color="purple">
+              Chờ giao hàng
+            </Tag>
+          )}
+          {record.status === 7 && (
+            <Tag style={{ fontSize: "small" }} color="pink">
+              Đã bàn giao
+            </Tag>
+          )}
+          {record.status === 8 && (
+            <Tag style={{ fontSize: "small" }} color="geekblue">
+              Hoàn thành
+            </Tag>
+          )}
+        </div>
+      ),
+    },
+    {
+      title: "Ngày nhận dự kiến",
+      dataIndex: "desiredDate",
+      key: "desiredDate",
+    },
+  ];
+  return (
+    <div style={{ padding: "5rem" }}>
+      <Table dataSource={listOrder} columns={columns} />
+    </div>
+  );
+};
+export default OrderHistory;

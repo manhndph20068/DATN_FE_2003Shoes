@@ -38,6 +38,7 @@ import AdminTable from "./components/Admin/User/AdminTable";
 import StaffTable from "./components/Admin/User/StaffTable";
 import CustomerTable from "./components/Admin/User/CustomerTable";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import OrderHistory from "./pages/history";
 
 const Layout = () => {
   return (
@@ -109,12 +110,17 @@ export default function App() {
           path: "shoe/:slug",
           element: <ShoePage />,
         },
+        {
+          path: "/history",
+          element: <OrderHistory />,
+        },
       ],
     },
     {
       path: "/login",
       element: <LoginPage />,
     },
+
     {
       path: "/register",
       element: <RegisterPage />,
@@ -192,6 +198,7 @@ export default function App() {
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname === "/order" ||
+      window.location.pathname === "/history" ||
       window.location.pathname === "/order-success" ||
       location.pathname.startsWith("/shoe/") ||
       window.location.pathname === "/" ? (
