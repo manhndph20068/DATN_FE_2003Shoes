@@ -2,9 +2,12 @@ import { Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { callGetHistoryOrderCustomerById } from "../../services/api";
 import { useSelector } from "react-redux";
+import { FileSearchOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 const OrderHistory = () => {
   const [listOrder, setListOrder] = useState([]);
+  const navigate = useNavigate();
   const dataAcc = useSelector((state) => state?.account?.user);
   console.log("dataAcc", dataAcc?.id);
   const handleGetListOrder = async () => {
@@ -88,7 +91,7 @@ const OrderHistory = () => {
             </Tag>
           )}
           {record.status === 8 && (
-            <Tag style={{ fontSize: "small" }} color="geekblue">
+            <Tag style={{ fontSize: "small" }} color="green-inverse">
               Hoàn thành
             </Tag>
           )}
@@ -99,6 +102,19 @@ const OrderHistory = () => {
       title: "Ngày nhận dự kiến",
       dataIndex: "desiredDate",
       key: "desiredDate",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <FileSearchOutlined
+          style={{ fontSize: "1.3rem", cursor: "pointer" }}
+          onClick={() => {
+            navigate(`/history/detail/?code=${record.code}`);
+            // alert(`Chức năng đang được phát triển${record.code}`);
+          }}
+        />
+      ),
     },
   ];
   return (

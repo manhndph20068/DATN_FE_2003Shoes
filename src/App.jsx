@@ -39,6 +39,9 @@ import StaffTable from "./components/Admin/User/StaffTable";
 import CustomerTable from "./components/Admin/User/CustomerTable";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import OrderHistory from "./pages/history";
+import ViewOrderHistory from "./components/OrderHistory/ViewOrderHistory";
+import PaymentNow from "./components/Order/PaymentNow";
+import CheckOnlineOrder from "./pages/resultOrder/CheckOnlineOrder";
 
 const Layout = () => {
   return (
@@ -74,8 +77,10 @@ export default function App() {
   const fetchAccount = async () => {
     if (
       window.location.pathname === "/login" ||
-      window.location.pathname === "/register"
+      window.location.pathname === "/register" ||
+      window.location.pathname === "/order-checking"
     ) {
+      console.log("no -------------- fetch");
       return;
     }
     const res = await callFetchAccount();
@@ -101,7 +106,10 @@ export default function App() {
           path: "order",
           element: <OrderPage />,
         },
-
+        {
+          path: "order-now",
+          element: <PaymentNow />,
+        },
         {
           path: "contact",
           element: <ContactPage />,
@@ -113,6 +121,10 @@ export default function App() {
         {
           path: "/history",
           element: <OrderHistory />,
+        },
+        {
+          path: "history/detail/",
+          element: <ViewOrderHistory />,
         },
       ],
     },
@@ -129,10 +141,17 @@ export default function App() {
       path: "order-success",
       element: <SuccessOrder />,
     },
-
+    {
+      path: "order-checking",
+      element: <CheckOnlineOrder />,
+    },
     {
       path: "/admin",
-      element: <LayoutAdmin />,
+      element: (
+        <ProtectedRoute>
+          <LayoutAdmin />
+        </ProtectedRoute>
+      ),
       errorElement: <NotFound />,
 
       children: [
@@ -198,8 +217,9 @@ export default function App() {
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname === "/order" ||
-      window.location.pathname === "/history" ||
+      window.location.pathname === "/order-now" ||
       window.location.pathname === "/order-success" ||
+      window.location.pathname === "/order-checking" ||
       location.pathname.startsWith("/shoe/") ||
       window.location.pathname === "/" ? (
         <RouterProvider router={router} />

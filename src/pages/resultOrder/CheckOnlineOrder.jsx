@@ -11,7 +11,7 @@ import {
 } from "antd";
 // import "./index.scss";
 import { useDispatch, useSelector } from "react-redux";
-import "./index.scss";
+
 import {
   DeleteOutlined,
   LoadingOutlined,
@@ -28,6 +28,7 @@ import {
   doDeleteItemCartAfterDoOrder,
   doInitalCartWithAccount,
   doUpdateCartAction,
+  doUpdateTempData,
 } from "../../redux/order/orderSlice.js";
 import ViewOrder from "../../components/Order/ViewOrder";
 import ViewPayment from "../../components/Order/ViewPayment";
@@ -41,12 +42,13 @@ import {
   callGetListCartDetailById,
 } from "../../services/api.jsx";
 import { doAddIdCart } from "../../redux/account/accountSlice.js";
+import ClimbingBoxLoader from "react-spinners/ClimbingBoxLoader";
 
-const OrderPage = () => {
-  const [totalPrice, setTotalPrice] = useState(0);
+const CheckOnlineOrder = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const cart = useSelector((state) => state.order.cart);
   const tempDataOrder = useSelector((state) => state.order.tempData);
+  const newNote = useSelector((state) => state.order.tempData.note);
   const prodPaidNow = useSelector((state) => state.order.prodPaidNow);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,34 +70,34 @@ const OrderPage = () => {
     }
   };
 
-  const submitOrder = async (data) => {
+  const submitOrder = async (data, noteVnp) => {
     if (data.idAccount !== null && Object.keys(prodPaidNow).length === 0) {
       const res = await callDoOrderByCustomer(data);
       if (res?.status === 0) {
-        setCurrentStep(2);
         await callAddMethodPayment({
           orderId: res?.data?.id,
           method: "Thanh toán VNPAY",
           total: data.totalMoney,
-          note: `Khách hàng thanh toán VNpay, mã giao dịch: ${data?.note}`,
+          note: `Khách hàng thanh toán VNpay, mã giao dịch: ${noteVnp}`,
           status: 1,
         });
 
         handleGetCartByAccountId(data.idAccount);
         dispatch(doClearTempData());
         dispatch(doClearTempCart());
+        navigate("/order-success");
       }
       // else {
       //   message.error("Đặt hàng thất bại");
       // }
-    } else if (prodPaidNow.id !== undefined) {
+    } else if (prodPaidNow.id !== undefined && data.idAccount !== null) {
       const res = await callDoOrderBuyNow(data);
       if (res?.status === 0) {
         await callAddMethodPayment({
           orderId: res?.data?.id,
           method: "Thanh toán VNPAY",
           total: data.totalMoney,
-          note: `Khách hàng thanh toán VNpay, mã giao dịch: ${data?.note}`,
+          note: `Khách hàng thanh toán VNpay, mã giao dịch: ${noteVnp}`,
           status: 1,
         });
 
@@ -113,7 +115,7 @@ const OrderPage = () => {
           status: 1,
         });
         navigate("/order-success");
-        setCurrentStep(2);
+        // setCurrentStep(2);
         dispatch(doDeleteItemCartAfterDoOrder());
         dispatch(doClearTempData());
       } else {
@@ -131,100 +133,44 @@ const OrderPage = () => {
     console.log("urlParams", urlParams);
     console.log("orderId", orderId.trim());
     if (orderId.trim() !== "null") {
-      tempDataOrder.note = orderId.trim();
+      // dispatch(doUpdateTempData(orderId.trim()));
+      // tempDataOrder.note = orderId.trim();
+      const noteVnp = orderId.trim();
+      // const newTempDataOrder = useSelector((state) => state.order.tempData);
       console.log("tempDataOrder", tempDataOrder);
+      console.log("tempDataOrder.note", tempDataOrder.note);
       console.log("totalPrice", totalPrice);
       console.log("order success");
       if (tempDataOrder.idAccount !== null) {
-        submitOrder(tempDataOrder);
+        submitOrder(tempDataOrder, noteVnp);
         dispatch(doClearTempCart());
         // setCurrentStep(2);
         dispatch(doClearTempData());
       } else {
-        submitOrder(tempDataOrder);
+        submitOrder(tempDataOrder, noteVnp);
         dispatch(doClearTempCart());
         // setCurrentStep(2);
         dispatch(doClearTempData());
         dispatch(doDeleteItemCartAfterDoOrder());
       }
     }
-  }, []);
-
-  useEffect(() => {
-    if (cart && cart.length > 0) {
-      let sum = 0;
-      cart.map((item) => {
-        sum += item.quantity * item.detail.priceInput;
-      });
-      setTotalPrice(sum);
-    } else {
-      setTotalPrice(0);
+    if (+transactionId === 0) {
+      navigate("/");
     }
-  }, [cart]);
-
-  const steps = [
-    {
-      title: "Đặt hàng",
-      status: "finish",
-      icon: <ShoppingCartOutlined />,
-    },
-    {
-      title: "Thanh Toán",
-      status: "finish",
-      icon: <SolutionOutlined />,
-    },
-    {
-      title: "Done",
-      status: "wait",
-      icon: <SmileOutlined />,
-    },
-  ];
-
-  const items = steps.map((item) => ({
-    key: item.title,
-    title: item.title,
-    icon: item.icon,
-  }));
-
-  const continueShopping = () => {
-    navigate("/");
-  };
-  const showHistory = () => {
-    navigate("/history");
-  };
-
+  }, []);
   return (
-    <div className="order-page-layout">
+    <>
       <div
-        className="order-page-container"
-        style={{ maxWidth: 1290, margin: "0 auto" }}
+        style={{
+          position: "fixed",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
       >
-        <div className="order-step">
-          <Steps current={currentStep} items={items} />
-        </div>
-        {currentStep === 0 && <ViewOrder setCurrentStep={setCurrentStep} />}
-        {currentStep === 1 && <ViewPayment setCurrentStep={setCurrentStep} />}
-        {currentStep === 2 && (
-          <Result
-            status="success"
-            title="Đơn hàng đã được đặt thành công !"
-            subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
-            extra={[
-              <Button
-                onClick={() => continueShopping()}
-                type="primary"
-                key="console"
-              >
-                Tiếp tục mua hàng
-              </Button>,
-              <Button onClick={() => showHistory()} key="buy">
-                Lịch sử đơn hàng
-              </Button>,
-            ]}
-          />
-        )}
+        <ClimbingBoxLoader color="#0066b2" />
       </div>
-    </div>
+    </>
   );
 };
-export default OrderPage;
+export default CheckOnlineOrder;

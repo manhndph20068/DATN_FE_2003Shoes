@@ -307,7 +307,7 @@ const OrderDetail = () => {
       );
     } else if (type === 8) {
       return (
-        <Tag style={{ fontSize: "small" }} color="geekblue">
+        <Tag style={{ fontSize: "small" }} color="green-inverse">
           Hoàn thành
         </Tag>
       );

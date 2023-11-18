@@ -12,8 +12,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
   doAddToCartAction,
+  doAddToTempCart,
+  doClearTempCart,
   doInitalCartWithAccount,
 } from "../../redux/order/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 const ViewDetail = (props) => {
   const [currentQuantity, setCurrentQuantity] = useState(1);
@@ -28,6 +31,7 @@ const ViewDetail = (props) => {
   const images = shoeData?.items ?? [];
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const idCart = useSelector((state) => state.account.idCart);
 
   const handleChangeFilter = (changedValues, values) => {
@@ -104,6 +108,20 @@ const ViewDetail = (props) => {
         })
       );
     }
+  };
+
+  const handlePaidNow = (qty, shoe) => {
+    dispatch(doClearTempCart());
+    console.log("handlePaidNow", qty, shoe);
+    dispatch(
+      doAddToTempCart({
+        quantity: qty,
+        detail: shoe,
+        id: shoe.id,
+        status: 1,
+      })
+    );
+    navigate("/order-now");
   };
 
   return (
@@ -245,7 +263,14 @@ const ViewDetail = (props) => {
                         >
                           Thêm vào giỏ hàng
                         </button>
-                        {/* <button className="btn-paid">Mua ngay</button> */}
+                        <button
+                          className="btn-paid"
+                          onClick={() =>
+                            handlePaidNow(currentQuantity, shoeData)
+                          }
+                        >
+                          Mua ngay
+                        </button>
                       </div>
                     </div>
                   </Col>

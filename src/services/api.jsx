@@ -1,3 +1,4 @@
+import { doClearTempCart } from "../redux/order/orderSlice";
 import axios from "../utils/axiosCustomize";
 
 const callRegister = (fullName, email, password) => {
@@ -372,6 +373,14 @@ const callDoOrderByCustomer = (data) => {
   return axios.post("/api/v1/customer/order/save", data);
 };
 
+const callDoOrderBuyNow = async (data) => {
+  return axios.post("/api/v1/customer/order/save-by-now", data);
+  // const dispatch = useDispatch();
+  // const response = await axios.post("/api/v1/customer/order/save-by-now", data);
+  // dispatch(doClearTempCart());
+  // return response;
+};
+
 const callDoOrderByGuest = (data) => {
   return axios.post("/api/v1/customer-no-login/order/save", data);
 };
@@ -556,4 +565,5 @@ export {
   callGetOrderStatistical,
   callGenerateOrderBill,
   callGetHistoryOrderCustomerById,
+  callDoOrderBuyNow,
 };

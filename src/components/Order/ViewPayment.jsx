@@ -25,6 +25,7 @@ import {
 import { useEffect, useState } from "react";
 import {
   clearCart,
+  doClearTempCart,
   doDeleteItemCartAction,
   doDeleteItemCartAfterDoOrder,
   doInitalCartWithAccount,
@@ -206,6 +207,7 @@ const ViewPayment = (props) => {
 
   const onFinish = async (values) => {
     const { username, phone, address, typePaid, voucher, email } = values;
+    dispatch(doClearTempCart());
     const id = +dataAcc.id !== 0 ? dataAcc.id : null;
     const province = listProvince.filter(
       (item) => item.value == provinceSelected

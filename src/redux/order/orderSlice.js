@@ -2,8 +2,9 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 
 const initialState = {
+  prodPaidNow: {},
   cart: [],
-  tempData: [],
+  tempData: {},
 };
 
 export const orderSlice = createSlice({
@@ -13,6 +14,7 @@ export const orderSlice = createSlice({
   reducers: {
     doAddToCartAction: (state, action) => {
       let cart = state.cart;
+      console.log("cart", state.cart);
       const item = action.payload;
       console.log("item doAddToCartAction", item);
       let isExistIndex = cart.findIndex((c) => c.id === item.id);
@@ -70,8 +72,23 @@ export const orderSlice = createSlice({
     doInitalTempData: (state, action) => {
       state.tempData = action.payload;
     },
+    doUpdateTempData: (state, action) => {
+      return {
+        ...state,
+        tempData: {
+          ...state.tempData,
+          note: action.payload,
+        },
+      };
+    },
     doClearTempData: (state, action) => {
-      state.tempData = [];
+      state.tempData = {};
+    },
+    doAddToTempCart: (state, action) => {
+      state.prodPaidNow = action.payload;
+    },
+    doClearTempCart: (state, action) => {
+      state.prodPaidNow = {};
     },
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -87,7 +104,10 @@ export const {
   doInitalCartWithAccount,
   doDeleteItemCartAfterDoOrder,
   doInitalTempData,
+  doUpdateTempData,
   doClearTempData,
+  doAddToTempCart,
+  doClearTempCart,
 } = orderSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

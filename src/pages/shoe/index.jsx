@@ -117,7 +117,7 @@ const ShoePage = (props) => {
         console.log("res step 2", res);
         setTimeout(() => {
           setShoeData(res.data);
-        }, 700);
+        }, 300);
 
         console.log("shoeData", shoeData);
       }
