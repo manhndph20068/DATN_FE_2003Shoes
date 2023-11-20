@@ -3,5 +3,5 @@ FE_DATN_2002Shoes
 - Chạy project: npm run dev
 - React 18
 - React Router 6
-- Redux Tookit
+- Redux Toolkit
 - Vite 4
