@@ -4,6 +4,7 @@ import "./PaymentNow.scss";
 import {
   callAddMethodPayment,
   callDeleteCartDetail,
+  callDoOrderBuyNow,
   callDoOrderByCustomer,
   callDoOrderByGuest,
   callFetchAccount,
@@ -238,22 +239,23 @@ const PaymentNow = () => {
     } else {
       if (idCart !== null) {
         console.log("data", data);
-        const res = await callDoOrderByCustomer(data);
+        const res = await callDoOrderBuyNow(data);
         if (res?.status === 0) {
-          setCurrentStep(2);
-          await callAddMethodPayment({
+          // setCurrentStep(2);
+          const resAddMethodPayment = await callAddMethodPayment({
             orderId: res?.data?.id,
             method: "Thanh toán khi nhận hàng",
             total: totalPrice - discountVoucher,
             note: `Khách hàng đặt`,
             status: 0,
           });
+          console.log("resAddMethodPayment", resAddMethodPayment);
           if (dataAcc.id !== null) {
+            navigate("/order-success");
             handleGetCartByAccountId(dataAcc.id);
           } else {
             dispatch(doDeleteItemCartAfterDoOrder());
           }
-          navigate("/order-success");
         } else {
           message.error("Đặt hàng thất bại");
         }

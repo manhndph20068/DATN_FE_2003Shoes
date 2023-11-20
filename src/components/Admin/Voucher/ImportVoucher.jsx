@@ -8,6 +8,7 @@ const ImportVoucher = (props) => {
   const { isModalImportOpen, setIsModalImportOpen, handleFetchAllListVoucher } =
     props;
   const [resultImport, setResultImport] = useState({});
+  const [typeImport, setTypeImport] = useState(0);
 
   const handleCancel = () => {
     setResultImport({});
@@ -18,7 +19,7 @@ const ImportVoucher = (props) => {
   const dataImportFileVoucher = (file) => {
     const bodyFormData = new FormData();
     bodyFormData.append("file", file);
-    bodyFormData.append("type", 0);
+    bodyFormData.append("type", typeImport);
     return bodyFormData;
   };
 
@@ -41,8 +42,18 @@ const ImportVoucher = (props) => {
       fetch("http://localhost:8080/api/v1/admin/voucher-order/import", {
         method: "POST",
         body: formData,
+        headers: {
+          Accept: "application/json", // Set the correct content type
+        },
       })
-        .then((response) => response.json())
+        // .then((response) => {
+        //   response.json();
+        //   console.log("response then", response);
+        // })
+        .then((response) => {
+          // Parse the JSON asynchronously and return the parsed data
+          return response.json();
+        })
         .then((data) => {
           onSuccess(data, file); // Gọi onSuccess nếu tất cả đều thành công
         })
@@ -60,7 +71,7 @@ const ImportVoucher = (props) => {
       }
       if (status === "done") {
         message.success(`${info.file.name} file uploaded successfully.`);
-        console.log(info.file.response, info.fileList);
+        console.log("info", info, info.file.response, info.fileList);
         setResultImport(info.file.response);
         handleFetchAllListVoucher();
       } else if (status === "error") {
@@ -72,7 +83,9 @@ const ImportVoucher = (props) => {
     },
   };
 
-  const handleSubmitImportFile = () => {};
+  const onChangeImport = (value) => {
+    setTypeImport(value);
+  };
 
   const handleGetFileExample = () => {
     window.location.href =
@@ -109,6 +122,7 @@ const ImportVoucher = (props) => {
           <br />
           <Button onClick={() => handleGetFileExample()}>Tải file mẫu</Button>
         </Dragger>
+
         <div
           style={{
             display: "flex",
@@ -117,9 +131,9 @@ const ImportVoucher = (props) => {
             marginTop: "3rem",
           }}
         >
-          <span>Tổng số bản ghi: {resultImport.total ?? null}</span>
+          <span>Tổng số bản ghi: {resultImport?.total ?? null}</span>
           <span>
-            {resultImport.fail > 0 ? (
+            {resultImport?.fail > 0 ? (
               <Button
                 danger={true}
                 style={{ color: "red" }}
@@ -141,11 +155,63 @@ const ImportVoucher = (props) => {
           }}
         >
           <span style={{ color: "green" }}>
+            Thành công: {resultImport?.success ?? null}
+          </span>
+          <span style={{ color: "red" }}>
+            Thất bại: {resultImport?.fail ?? null}
+          </span>
+        </div>
+        <div>
+          <form
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: "1rem",
+              textAlign: "center",
+            }}
+            onChange={(e) => onChangeImport(e.target.value)}
+          >
+            <label
+              className="radio-inline"
+              style={{
+                display: "flex",
+
+                textAlign: "center",
+              }}
+            >
+              <input
+                type="radio"
+                name="optradio"
+                value={0}
+                checked={typeImport == 0}
+                style={{ marginRight: "1rem" }}
+              />
+              Thêm mới
+            </label>
+            <label
+              className="radio-inline"
+              style={{
+                display: "flex",
+
+                textAlign: "center",
+              }}
+            >
+              <input
+                type="radio"
+                name="optradio"
+                value={1}
+                checked={typeImport == 1}
+                style={{ marginRight: "1rem" }}
+              />
+              Cập nhật
+            </label>
+          </form>
+          {/* <span style={{ color: "green" }}>
             Thành công: {resultImport.success ?? null}
           </span>
           <span style={{ color: "red" }}>
             Thất bại: {resultImport.fail ?? null}
-          </span>
+          </span> */}
         </div>
       </Modal>
     </>

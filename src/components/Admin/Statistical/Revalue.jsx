@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { Bar } from "@ant-design/plots";
-import { DatePicker, Form } from "antd";
+import { Bar, DualAxes } from "@ant-design/plots";
+import { DatePicker, Form, Row, Select } from "antd";
 import dayjs from "dayjs";
-import { callGetTop5Prod } from "../../../services/api";
+import { callGetRevalueByYear, callGetTop5Prod } from "../../../services/api";
 
 const Revalue = (props) => {
   const { data, setData } = props;
-  const [startDate, setStartDate] = useState("2023-01-01");
-  const [endDate, setEndDate] = useState("2024-01-01");
+  const [year, setYear] = useState("2023");
+  const [type, setType] = useState(1);
   const [form] = Form.useForm();
-  const { RangePicker } = DatePicker;
+  // const { RangePicker } = DatePicker;
 
-  const handleGetListTop5 = async () => {
-    const res = await callGetTop5Prod(startDate, endDate);
+  const handleGetRevalue = async () => {
+    const res = await callGetRevalueByYear(year, type);
     console.log(res);
     if (res?.status === 0) {
       console.log("res?.data", res?.data);
@@ -25,33 +25,37 @@ const Revalue = (props) => {
     }
   };
 
-  useEffect(() => {
-    handleGetListTop5();
-  }, [startDate, endDate]);
-
-  const config = {
-    data,
-    xField: "soLuong",
-    yField: "tenSanPham",
-    seriesField: "tenSanPham",
-    legend: {
-      position: "top-left",
-    },
-    label: {
-      position: "middle",
-      content: function content(item) {
-        return "".concat(item.y.toFixed(2), "%");
-      },
-      style: { fill: "#000" },
-    },
-    colorField: "type", // or seriesField in some cases
-    color: ["#19CDD7", "#DDB27C", "#d62728", "#2ca02c", "#000000"],
+  const onChangeType = (value) => {
+    console.log(value);
+    setType(value);
   };
 
-  const onChange = (date, dateString) => {
-    console.log(dateString[0], dateString[1]);
-    setStartDate(dateString[0]);
-    setEndDate(dateString[1]);
+  const onChangeYear = (date, dateString) => {
+    setYear(dateString);
+  };
+
+  useEffect(() => {
+    handleGetRevalue();
+  }, [year, type]);
+
+  const config = {
+    data: [data, data],
+    xField: "time",
+    yField: ["value", "count"],
+    geometryOptions: [
+      {
+        geometry: "column",
+        pattern: {
+          type: "line",
+        },
+      },
+      {
+        geometry: "line",
+        lineStyle: {
+          lineWidth: 2,
+        },
+      },
+    ],
   };
 
   return (
@@ -66,26 +70,47 @@ const Revalue = (props) => {
                 justifyContent: "center",
               }}
             >
-              <h3>Top 5 sản phẩm bán chạy</h3>
+              <h3>Thống kê doanh thu theo năm</h3>
             </div>
             <div>
               <Form>
-                <Form.Item>
-                  <RangePicker
-                    allowClear={false}
-                    onChange={onChange}
-                    format="YYYY-MM-DD"
-                    value={[
-                      dayjs(startDate, "YYYY-MM-DD"),
-                      dayjs(endDate, "YYYY-MM-DD"),
-                    ]}
-                  />
-                </Form.Item>
+                <Row style={{ display: "flex", gap: 10 }}>
+                  <Form.Item initialValue={dayjs(year, "YYYY")}>
+                    <DatePicker
+                      onChange={onChangeYear}
+                      picker="year"
+                      value={dayjs(year, "YYYY") ?? null}
+                      clearIcon={null}
+
+                      //   inputFormat="YYYY"
+                      //   renderInput={(params) => (
+                      //     <TextField {...params} helperText={null} />
+                      //   )}
+                    />
+                  </Form.Item>
+                  <Form.Item>
+                    <Select
+                      placeholder="Select type"
+                      optionFilterProp="children"
+                      onChange={onChangeType}
+                      value={type}
+                      options={[
+                        {
+                          value: 1,
+                          label: "Tại quầy",
+                        },
+                        {
+                          value: 2,
+                          label: "Online",
+                        },
+                      ]}
+                    />
+                  </Form.Item>
+                </Row>
               </Form>
             </div>
           </div>
-
-          <Bar {...config} />
+          <DualAxes {...config} />
         </div>
       </div>
     </>

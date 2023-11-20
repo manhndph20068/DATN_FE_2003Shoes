@@ -9,6 +9,8 @@ const CustomerTable = () => {
   const [pageSize, setPageSize] = useState(3);
   const [total, setTotal] = useState(0);
   const [listCustomer, setListCustomer] = useState([]);
+  const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+  const [roleId, setRoleId] = useState(2);
   const [filter, setFilter] = useState({
     role: 2,
     page: current - 1,

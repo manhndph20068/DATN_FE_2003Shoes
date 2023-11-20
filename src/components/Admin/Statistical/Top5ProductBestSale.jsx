@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { Bar } from "@ant-design/plots";
-import { DatePicker, Form } from "antd";
+import { DatePicker, Form, Select } from "antd";
 import dayjs from "dayjs";
 import { callGetTop5Prod } from "../../../services/api";
 
@@ -38,10 +38,10 @@ const Top5ProductBestSale = (props) => {
       position: "top-left",
     },
     label: {
-      position: "middle",
-      content: function content(item) {
-        return "".concat(item.y.toFixed(2), "%");
-      },
+      // position: "middle",
+      // content: function content(item) {
+      //   return "".concat(item.y.toFixed(2), "%");
+      // },
       style: { fill: "#000" },
     },
     colorField: "type", // or seriesField in some cases

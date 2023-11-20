@@ -389,6 +389,12 @@ const callBestSaleProdByYear = (nam) => {
   return axios.get(`/api/v1/statistical/sanphambanchaytrongnam?nam=${nam}`);
 };
 
+const callGetRevalueByYear = (year, type) => {
+  return axios.get(
+    `/api/v1/statistical/doanhthutheothang?nam=${year}&typeBanHang=${type}`
+  );
+};
+
 const callGetTop5Prod = (startYear, endYear) => {
   return axios.get(
     `/api/v1/statistical/top5SanPhamBanChay?ngayBatDau=${startYear}&ngayKetThuc=${endYear}`
@@ -419,6 +425,14 @@ const callGetHistoryOrderCustomerById = (data) => {
 
 const callUpdateVoucher = (data) => {
   return axios.post("/api/v1/admin/voucher-order/updateVoucherOrder", data);
+};
+
+const callAddNewAcc = (data) => {
+  return axios.post("/api/v1/account/new-account", data);
+};
+
+const callInActiveAccount = (data) => {
+  return axios.post("/api/v1/account/huy-account", data);
 };
 
 const callDeletetUser = (_id) => {
@@ -566,4 +580,7 @@ export {
   callGenerateOrderBill,
   callGetHistoryOrderCustomerById,
   callDoOrderBuyNow,
+  callGetRevalueByYear,
+  callAddNewAcc,
+  callInActiveAccount,
 };

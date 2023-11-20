@@ -1,14 +1,31 @@
-import { Col, Row, Table } from "antd";
+import {
+  Button,
+  Col,
+  Popconfirm,
+  Row,
+  Table,
+  Tag,
+  Tooltip,
+  message,
+} from "antd";
 import "./Table.scss";
 import { useEffect, useState } from "react";
-import { callGetListAccount } from "../../../services/api";
+import { callGetListAccount, callInActiveAccount } from "../../../services/api";
 import InputSearchUser from "./InputSearchUser";
+import ModalCreateAccount from "./ModalCreateAccount";
+import {
+  DeleteOutlined,
+  PlusOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 
 const AdminTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
   const [total, setTotal] = useState(0);
   const [listAdmin, setListAdmin] = useState([]);
+  const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+  const [roleId, setRoleId] = useState(1);
   const [filter, setFilter] = useState({
     role: 1,
     page: current - 1,
@@ -35,6 +52,20 @@ const AdminTable = () => {
     handleFetchAllListAcc();
   }, [filter]);
 
+  const InactiveAccByID = async (id) => {
+    console.log("id", id);
+    const data = {
+      id: id,
+    };
+    const res = await callInActiveAccount(data);
+    if (res.status === 0) {
+      handleFetchAllListAcc();
+      message.success(res.message);
+    } else {
+      message.error("Huy thất bại");
+    }
+  };
+
   const columns = [
     {
       title: "STT",
@@ -56,11 +87,44 @@ const AdminTable = () => {
       title: "Role",
       dataIndex: "roleId",
       key: "roleId",
+      render: (_, record) => (
+        <>
+          {_ === 1 && <Tag color="green-inverse">ADMIN</Tag>}
+          {_ === 2 && <Tag color="green-inverse">Customer</Tag>}
+          {_ === 3 && <Tag color="green-inverse">STAFF</Tag>}
+        </>
+      ),
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => (
+        <>
+          {_ === 0 && <Tag color="red-inverse">InActive</Tag>}
+          {_ === 1 && <Tag color="green-inverse">Active</Tag>}
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text, record, index) => {
+        return (
+          <div style={{ display: "flex", gap: 20 }}>
+            <Popconfirm
+              placement="left"
+              title={`Are you sure to inactive ${record.name}?`}
+              description={`Inactive the ${record.name} ?`}
+              onConfirm={() => InactiveAccByID(record.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteOutlined />
+            </Popconfirm>
+          </div>
+        );
+      },
     },
   ];
 
@@ -84,6 +148,57 @@ const AdminTable = () => {
       });
     }
   };
+
+  const renderHeaderTable = () => {
+    return (
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <span>Table Account</span>
+        <span style={{ display: "flex", gap: 15 }}>
+          {/* <Button
+            type="primary"
+            icon={<ExportOutlined />}
+            // onClick={() => handleExportUsers()}
+          >
+            Export
+          </Button>
+
+          <Button
+            type="primary"
+            icon={<ImportOutlined />}
+            onClick={() => {
+              setIsModalImportOpen(true);
+            }}
+          >
+            Import
+          </Button> */}
+
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              setIsModalCreateOpen(true);
+            }}
+          >
+            Thêm mới
+          </Button>
+
+          <Tooltip title="Refresh Data Table">
+            <Button
+              shape="circle"
+              icon={<ReloadOutlined />}
+              onClick={() => {
+                setFilter({
+                  role: 1,
+                  page: current - 1,
+                  size: pageSize,
+                });
+              }}
+            />
+          </Tooltip>
+        </span>
+      </div>
+    );
+  };
   return (
     <div style={{ padding: "1.7rem" }}>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
@@ -96,6 +211,7 @@ const AdminTable = () => {
       <div className="table-list-order">
         <Table
           columns={columns}
+          title={renderHeaderTable}
           onChange={onChange}
           dataSource={listAdmin}
           pagination={{
@@ -106,6 +222,12 @@ const AdminTable = () => {
           }}
         />
       </div>
+      <ModalCreateAccount
+        isModalCreateOpen={isModalCreateOpen}
+        setIsModalCreateOpen={setIsModalCreateOpen}
+        roleId={roleId}
+        handleFetchAllListAcc={handleFetchAllListAcc}
+      />
     </div>
   );
 };

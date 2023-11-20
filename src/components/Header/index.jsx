@@ -22,10 +22,12 @@ import { doLogout } from "../../redux/account/accountSlice";
 import { clearCart } from "../../redux/order/orderSlice";
 import "../../styles/global.scss";
 import { useEffect } from "react";
+import ManageAccount from "../ManageAccount";
 
 const Header = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [listShoeDetail, setListShoeDetail] = useState([]);
+  const [isModalManageAcconut, setIsModalManageAcconut] = useState(false);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const user = useSelector((state) => state.account.user);
   const cart = useSelector((state) => state.order.cart);
@@ -108,9 +110,15 @@ const Header = () => {
     );
   };
 
+  const handleMangeAccount = () => {
+    setIsModalManageAcconut(true);
+  };
+
   const items = [
     {
-      label: <label>Quản lý tài khoản</label>,
+      label: (
+        <label onClick={() => handleMangeAccount()}>Quản lý tài khoản</label>
+      ),
       key: "account",
     },
     {
@@ -359,6 +367,10 @@ const Header = () => {
         <p>Dang xuat</p>
         <Divider />
       </Drawer>
+      <ManageAccount
+        isModalManageAcconut={isModalManageAcconut}
+        setIsModalManageAcconut={setIsModalManageAcconut}
+      />
     </>
   );
 };
