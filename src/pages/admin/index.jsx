@@ -1,7 +1,9 @@
+import StatisticalChart from "../../components/Admin/Statistical/StatisticalChart";
+
 const AdminPage = () => {
   return (
     <div>
-      <h1>Admin Page</h1>
+      <StatisticalChart />
     </div>
   );
 };

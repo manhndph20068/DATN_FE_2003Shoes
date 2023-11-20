@@ -78,11 +78,11 @@ const items = [
     key: "voucher",
     icon: <TagsOutlined />,
   },
-  {
-    label: <Link to="/admin/statistics">Statistics</Link>,
-    key: "statistics",
-    icon: <AreaChartOutlined />,
-  },
+  // {
+  //   label: <Link to="/admin/statistics">Statistics</Link>,
+  //   key: "statistics",
+  //   icon: <AreaChartOutlined />,
+  // },
 ];
 
 const LayoutAdmin = () => {

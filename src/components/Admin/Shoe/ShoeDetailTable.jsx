@@ -26,6 +26,7 @@ import {
 import * as XLSX from "xlsx";
 import BookModalCreate from "./ShoeDetailModalCreate";
 import ShoeDetailModalUpdate from "./ShoeDetailModalUpdate";
+import ImportShoes from "./ImportShoe";
 
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
@@ -38,6 +39,7 @@ const ShoeDetailTable = () => {
   const [dataViewDetail, setDataViewDetail] = useState({});
   const [modalCreateShoeDetailOpen, setModalCreateShoeDetailOpen] =
     useState(false);
+  const [isModalImportOpen, setIsModalImportOpen] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({});
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
 
@@ -205,7 +207,7 @@ const ShoeDetailTable = () => {
             onClick={() => handleExportUsers()}
           >
             Export
-          </Button>
+          </Button> */}
 
           <Button
             type="primary"
@@ -215,8 +217,8 @@ const ShoeDetailTable = () => {
             }}
           >
             Import
-          </Button> */}
-
+          </Button>
+          {/* 
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -225,7 +227,7 @@ const ShoeDetailTable = () => {
             }}
           >
             Thêm mới
-          </Button>
+          </Button> */}
 
           <Tooltip title="Refresh Data Table">
             <Button
@@ -282,6 +284,11 @@ const ShoeDetailTable = () => {
         setOpenModalUpdate={setOpenModalUpdate}
         dataUpdate={dataUpdate}
         setDataUpdate={setDataUpdate}
+        fetchAllShoes={fetchAllShoes}
+      />
+      <ImportShoes
+        isModalImportOpen={isModalImportOpen}
+        setIsModalImportOpen={setIsModalImportOpen}
         fetchAllShoes={fetchAllShoes}
       />
     </>
