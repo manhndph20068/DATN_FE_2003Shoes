@@ -85,17 +85,29 @@ const InputSearchVoucher = (props) => {
           style={{ display: "flex", justifyContent: "center" }}
         >
           <Col span={7}>
-            <Form.Item label="Tên Voucher" name="nameOfVaoucher">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Tên Voucher"
+              name="nameOfVaoucher"
+            >
               <Input />
             </Form.Item>
           </Col>
           <Col span={7}>
-            <Form.Item label="Trạng thái" name="status">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Trạng thái"
+              name="status"
+            >
               <Select options={optionStatusVoucher} allowClear />
             </Form.Item>
           </Col>
           <Col span={9}>
-            <Form.Item label="Date" name="date">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Khoảng ngày"
+              name="date"
+            >
               <RangePicker
                 showTime={{ format: "HH:mm:ss" }}
                 format="YYYY-MM-DD HH:mm:ss"
@@ -113,10 +125,10 @@ const InputSearchVoucher = (props) => {
             htmlType="submit"
             style={{ marginRight: "7px" }}
           >
-            Submit
+            Tìm kiếm
           </Button>
           <Button htmlType="button" onClick={onReset}>
-            Reset
+            Cài lại
           </Button>
         </div>
       </Form>

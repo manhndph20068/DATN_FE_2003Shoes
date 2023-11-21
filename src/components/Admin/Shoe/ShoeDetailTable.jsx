@@ -151,7 +151,7 @@ const ShoeDetailTable = () => {
       sorter: true,
     },
     {
-      title: "Action",
+      title: "",
       render: (text, record, index) => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
@@ -199,7 +199,7 @@ const ShoeDetailTable = () => {
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Data Shoes</span>
+        <i>Danh sách sản phẩm:</i>
         <span style={{ display: "flex", gap: 15 }}>
           {/* <Button
             type="primary"

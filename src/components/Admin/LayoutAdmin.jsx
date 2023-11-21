@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./LayoutAdmin.scss";
 import {
   AppstoreOutlined,
+  AppstoreAddOutlined,
   ExceptionOutlined,
   HeartTwoTone,
   TeamOutlined,
@@ -13,6 +14,8 @@ import {
   ShoppingCartOutlined,
   TagsOutlined,
   AreaChartOutlined,
+  FileDoneOutlined,
+  SnippetsOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Dropdown, Space, message, Avatar } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -25,17 +28,17 @@ const { Content, Footer, Sider } = Layout;
 
 const items = [
   {
-    label: <Link to="/admin">Dashboard</Link>,
+    label: <Link to="/admin">Thống Kê</Link>,
     key: "dashboard",
-    icon: <AppstoreOutlined />,
+    icon: <AreaChartOutlined />,
   },
   {
-    label: <Link to="/admin/shopping-counter">Sale in counter</Link>,
+    label: <Link to="/admin/shopping-counter">Bán Hàng</Link>,
     key: "counter",
     icon: <ShoppingCartOutlined />,
   },
   {
-    label: <span>Manage Users</span>,
+    label: <span>Quản Lý Tài Khoản</span>,
     key: "user",
     icon: <UserOutlined />,
     children: [
@@ -45,36 +48,53 @@ const items = [
         icon: <GrUserAdmin />,
       },
       {
-        label: <Link to="/admin/staff-table">Staff </Link>,
+        label: <Link to="/admin/staff-table">Nhân Viên </Link>,
         key: "staff-table",
         icon: <TeamOutlined />,
       },
       {
-        label: <Link to="/admin/customer-table">Customer </Link>,
+        label: <Link to="/admin/customer-table">Khách Hàng </Link>,
         key: "customer-table",
         icon: <BsFillPersonFill />,
       },
     ],
   },
+  // {
+  //   label: <Link to="/admin/shoe">Quản Lý Sản Phẩm</Link>,
+  //   key: "shoe",
+  //   icon: <AppstoreOutlined />,
+  //   children: [
+  //     {
+  //       label: <Link to="/admin/shoe/create">Tạo sản phẩm mới</Link>,
+  //       key: "Create",
+  //       icon: <AppstoreAddOutlined />,
+  //     },
+  //   ],
+  // },
   {
-    label: <Link to="/admin/shoe">Manage Shoes</Link>,
+    label: <span>Quản Lý Sản Phẩm</span>,
     key: "shoe",
-    icon: <ExceptionOutlined />,
+    icon: <AppstoreOutlined />,
     children: [
       {
-        label: <Link to="/admin/shoe/create">Create</Link>,
+        label: <Link to="/admin/shoe">Danh sách sản phẩm</Link>,
+        key: "shoe",
+        icon: <SnippetsOutlined />,
+      },
+      {
+        label: <Link to="/admin/shoe/create">Tạo sản phẩm mới</Link>,
         key: "Create",
-        icon: <TeamOutlined />,
+        icon: <AppstoreAddOutlined />,
       },
     ],
   },
   {
-    label: <Link to="/admin/order">Manage Orders</Link>,
+    label: <Link to="/admin/order">Quản Lý Đơn Hàng</Link>,
     key: "order",
-    icon: <DollarCircleOutlined />,
+    icon: <FileDoneOutlined />,
   },
   {
-    label: <Link to="/admin/manage-voucher">Manage Voucher</Link>,
+    label: <Link to="/admin/manage-voucher">Quản Lý Voucher</Link>,
     key: "voucher",
     icon: <TagsOutlined />,
   },
@@ -122,7 +142,16 @@ const LayoutAdmin = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div style={{ height: 32, margin: 16, textAlign: "center" }}>Admin</div>
+        <div
+          style={{
+            height: 32,
+            margin: 16,
+            textAlign: "center",
+            marginBottom: "30px",
+          }}
+        >
+          <img src="/src/assets/logo.jpg" alt="" width="60%" height="50px" />
+        </div>
         <Menu
           defaultSelectedKeys={[activeMenu]}
           mode="inline"

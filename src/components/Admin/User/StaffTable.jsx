@@ -42,7 +42,7 @@ const StaffTable = () => {
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Account</span>
+        <i>Danh sách nhân viên: </i>
         <span style={{ display: "flex", gap: 15 }}>
           {/* <Button
             type="primary"
@@ -108,14 +108,14 @@ const StaffTable = () => {
       key: "email",
     },
     {
-      title: "Role",
+      title: "Vài Trò",
       dataIndex: "roleId",
       key: "roleId",
       render: (_, record) => (
         <>
           {_ === 1 && <Tag color="green-inverse">ADMIN</Tag>}
-          {_ === 2 && <Tag color="green-inverse">Customer</Tag>}
-          {_ === 3 && <Tag color="green-inverse">STAFF</Tag>}
+          {_ === 2 && <Tag color="green-inverse">Khách Hàng</Tag>}
+          {_ === 3 && <Tag color="green-inverse">Nhân Viên</Tag>}
         </>
       ),
     },
@@ -125,8 +125,8 @@ const StaffTable = () => {
       key: "status",
       render: (_, record) => (
         <>
-          {_ === 0 && <Tag color="red-inverse">InActive</Tag>}
-          {_ === 1 && <Tag color="green-inverse">Active</Tag>}
+          {_ === 0 && <Tag color="red-inverse">Không hoạt động</Tag>}
+          {_ === 1 && <Tag color="green-inverse">Hoạt động</Tag>}
         </>
       ),
     },

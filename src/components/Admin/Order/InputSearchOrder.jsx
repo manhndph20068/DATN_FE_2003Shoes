@@ -242,7 +242,7 @@ const InputSearchOrder = (props) => {
     >
       <Form
         name="basic"
-        labelCol={{ span: 5 }}
+        labelCol={{ span: 7 }}
         form={form}
         initialValues={{ remember: true }}
         onFinish={onFinish}
@@ -253,12 +253,23 @@ const InputSearchOrder = (props) => {
           style={{ display: "flex", justifyContent: "left" }}
         >
           <Col span={7}>
-            <Form.Item label="Customer" name="customer">
-              <Input allowClear />
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Khách hàng"
+              name="customer"
+            >
+              <Input
+                allowClear
+                style={{ width: "200px", marginLeft: "10px" }}
+              />
             </Form.Item>
           </Col>
           <Col span={9}>
-            <Form.Item label="Date" name="date">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Khoảng ngày"
+              name="date"
+            >
               <RangePicker
                 showTime={{ format: "HH:mm:ss" }}
                 format="YYYY-MM-DD HH:mm:ss"
@@ -266,8 +277,13 @@ const InputSearchOrder = (props) => {
             </Form.Item>
           </Col>
           <Col span={7}>
-            <Form.Item label="Price" name="price">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Khoảng giá"
+              name="price"
+            >
               <Slider
+                style={{ marginLeft: "10px" }}
                 range={{ draggableTrack: true }}
                 defaultValue={[0, 10000000]}
                 min={0}
@@ -290,12 +306,20 @@ const InputSearchOrder = (props) => {
           </Col>
 
           <Col span={7}>
-            <Form.Item label="Loại" name="type">
-              <Select options={optionType} allowClear />
+            <Form.Item style={{ fontWeight: "bold" }} label="Loại" name="type">
+              <Select
+                style={{ marginLeft: "10px" }}
+                options={optionType}
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col span={9}>
-            <Form.Item label="Trạng thái" name="status">
+            <Form.Item
+              style={{ fontWeight: "bold" }}
+              label="Trạng thái"
+              name="status"
+            >
               <Select options={optionStatus} allowClear />
             </Form.Item>
           </Col>
@@ -309,19 +333,19 @@ const InputSearchOrder = (props) => {
                 htmlType="button"
                 onClick={() => handleExportData()}
                 icon={<ExportOutlined />}
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: "10px" }}
               >
                 Export
               </Button>
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ marginRight: "20px" }}
+                style={{ marginRight: "10px" }}
               >
-                Submit
+                Tìm kiếm
               </Button>
               <Button htmlType="button" onClick={onReset}>
-                Reset
+                Cài lại
               </Button>
             </div>
           </Col>

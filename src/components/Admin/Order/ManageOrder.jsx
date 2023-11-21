@@ -79,7 +79,7 @@ const ManageOrder = () => {
         ) : null,
     },
     {
-      title: "type",
+      title: "Loại hóa đơn",
       key: "type",
       dataIndex: "type",
       render: (_, record) => (
@@ -157,7 +157,7 @@ const ManageOrder = () => {
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (_, record) => (
         <FileSearchOutlined

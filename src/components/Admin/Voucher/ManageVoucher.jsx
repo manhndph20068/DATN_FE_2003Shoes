@@ -130,7 +130,7 @@ const ManageVoucher = () => {
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (text, record, index) => {
         return (
@@ -162,7 +162,7 @@ const ManageVoucher = () => {
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Data Voucher</span>
+        <i>Danh sách voucher :</i>
         <span style={{ display: "flex", gap: 15 }}>
           <Button
             type="primary"

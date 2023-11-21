@@ -12,7 +12,11 @@ import {
   Tabs,
   message,
 } from "antd";
-import { QrcodeOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  QrcodeOutlined,
+  ShoppingOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import TabPane from "antd/es/tabs/TabPane";
 import {
   callAddMethodPayment,

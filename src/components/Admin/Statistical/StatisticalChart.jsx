@@ -6,7 +6,7 @@ import ProductsSoldDuringTheYear from "./ProductsSoldDuringTheYear";
 import Top5ProductBestSale from "./Top5ProductBestSale";
 import StatusOfOrder from "./StatusOfOrder";
 import Revalue from "./Revalue";
-
+import { ArrowRightOutlined } from "@ant-design/icons";
 const StatisticalChart = () => {
   const [dataProductsSoldDuringTheYear, setDataProductsSoldDuringTheYear] =
     useState([]);
