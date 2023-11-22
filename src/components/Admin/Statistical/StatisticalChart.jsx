@@ -6,7 +6,7 @@ import ProductsSoldDuringTheYear from "./ProductsSoldDuringTheYear";
 import Top5ProductBestSale from "./Top5ProductBestSale";
 import StatusOfOrder from "./StatusOfOrder";
 import Revalue from "./Revalue";
-
+import { ArrowRightOutlined } from "@ant-design/icons";
 const StatisticalChart = () => {
   const [dataProductsSoldDuringTheYear, setDataProductsSoldDuringTheYear] =
     useState([]);
@@ -16,8 +16,32 @@ const StatisticalChart = () => {
 
   return (
     <>
-      <div style={{ padding: "1.5rem" }}>
-        <div style={{ backgroundColor: "white", padding: "1.5rem" }}>
+      <div style={{ padding: "1.5rem", display: "flex" }}>
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            width: "28%",
+            marginRight: "20px",
+          }}
+        >
+          <div
+            style={{
+              height: "200px",
+              border: "2px solid black",
+              padding: "10px",
+            }}
+          >
+            Tạo một ô cho dữ liệu: Doanh thu hôm nay: Đơn hàng / Tổng Tiền
+          </div>
+        </div>
+        <div
+          style={{
+            backgroundColor: "white",
+            padding: "1.5rem",
+            width: "70%",
+          }}
+        >
           <ProductsSoldDuringTheYear
             data={dataProductsSoldDuringTheYear}
             setData={setDataProductsSoldDuringTheYear}

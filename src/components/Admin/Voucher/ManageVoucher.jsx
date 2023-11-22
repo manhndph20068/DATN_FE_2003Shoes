@@ -130,28 +130,42 @@ const ManageVoucher = () => {
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (text, record, index) => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
-            <EditOutlined
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                console.log("record", record);
-                setDataUpdate(record);
-                setIsModalUpdateOpen(true);
-              }}
-            />
+            <Tooltip title="Cập nhật">
+              <EditOutlined
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  transition: "color 0.3s",
+                }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={() => {
+                  console.log("record", record);
+                  setDataUpdate(record);
+                  setIsModalUpdateOpen(true);
+                }}
+              />
+            </Tooltip>
             <Popconfirm
               placement="left"
-              title={`Are you sure to delete ${record.code}?`}
-              description={`Delete the ${record.name} voucher?`}
+              title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
+              description={`Xóa voucher ${record.name}?`}
               onConfirm={() => deleteVoucherByID(record.id)}
-              okText="Yes"
-              cancelText="No"
+              okText="Đồng ý"
+              cancelText="Hủy"
             >
-              <DeleteOutlined />
+              <Tooltip title="Xóa">
+                <DeleteOutlined
+                  style={{ color: "black", transition: "color 0.3s" }}
+                  onMouseOver={(e) => (e.target.style.color = "red")}
+                  onMouseOut={(e) => (e.target.style.color = "black")}
+                />
+              </Tooltip>
             </Popconfirm>
           </div>
         );
@@ -162,7 +176,7 @@ const ManageVoucher = () => {
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Data Voucher</span>
+        <i>Danh sách voucher :</i>
         <span style={{ display: "flex", gap: 15 }}>
           <Button
             type="primary"

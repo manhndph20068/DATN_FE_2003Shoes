@@ -1,7 +1,12 @@
 import { Form, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import { callListNameShoe } from "../../../services/api";
-import { PlusCircleTwoTone } from "@ant-design/icons";
+import {
+  PlusCircleTwoTone,
+  ArrowRightOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import ModalCreateShoeName from "./ModalCreateShoeName";
 import ModalCreateShoeProperties from "./ModalCreateShoeProperties";
 import "./CreateShoeDetail.scss";
@@ -133,88 +138,106 @@ const CreateShoeDetail = () => {
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          padding: "1rem",
-          gap: "1rem",
-          alignItems: "center",
-        }}
-      >
-        <Select
-          showSearch
-          style={{ width: 500 }}
-          placeholder="Search to Select"
-          optionFilterProp="children"
-          virtual={true}
-          filterOption={(input, option) =>
-            (option?.label ?? "").includes(input)
-          }
-          filterSort={(optionA, optionB) =>
-            (optionA?.label ?? "")
-              .toLowerCase()
-              .localeCompare((optionB?.label ?? "").toLowerCase())
-          }
-          options={nameShoeOptions}
-          showArrow={false}
-          allowClear={true}
-          onChange={(value) => handleOnchangeNameShoe(value)}
-        />
-        <PlusCircleTwoTone
-          style={{ fontSize: "1.5rem" }}
-          onClick={() => handleAddNameShoe()}
-        />
+    <>
+      <div style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}>
+        <p style={{ fontSize: "15px" }}>
+          <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý sản phẩm </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Thêm mới sản phẩm</i>
+          </span>
+        </p>
       </div>
-      <div className="properties">
-        {shoeNameSelected && (
-          <>
-            <div className="properties-item-title">
-              <div className="title">
-                {" "}
-                <p>Thuộc tính sản phẩm</p>
+      <div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "1rem",
+            gap: "1rem",
+            alignItems: "center",
+          }}
+        >
+          <Select
+            showSearch
+            style={{ width: 500 }}
+            placeholder="Chọn giày"
+            optionFilterProp="children"
+            virtual={true}
+            filterOption={(input, option) =>
+              (option?.label ?? "").includes(input)
+            }
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            options={nameShoeOptions}
+            showArrow={false}
+            allowClear={true}
+            onChange={(value) => handleOnchangeNameShoe(value)}
+          />
+          <PlusCircleTwoTone
+            style={{ fontSize: "1.5rem" }}
+            onClick={() => handleAddNameShoe()}
+          />
+        </div>
+        <div className="properties">
+          {shoeNameSelected && (
+            <>
+              <div className="properties-item-title">
+                <div className="title">
+                  {" "}
+                  <p>Thuộc tính sản phẩm</p>
+                </div>
               </div>
+            </>
+          )}
+
+          {shoeNameSelected && (
+            <div className="properties-item">
+              <ModalCreateShoeProperties
+                valuesProperties={valuesProperties}
+                setValuesProperties={setValuesProperties}
+                colorSelected={colorSelected}
+                setColorSelected={setColorSelected}
+                sizeSelected={sizeSelected}
+                setSizeSelected={setSizeSelected}
+                setCategorySelected={setCategorySelected}
+                setBrandSelected={setBrandSelected}
+                setSoleSelected={setSoleSelected}
+                dataCreateShoeDetail={dataCreateShoeDetail}
+                setDataCreateShoeDetail={setDataCreateShoeDetail}
+                dataThumbnail={dataThumbnail}
+                setDataThumbnail={setDataThumbnail}
+                dataSlider={dataSlider}
+                setDataSlider={setDataSlider}
+                price={price}
+                setPrice={setPrice}
+                quantity={quantity}
+                setQuantity={setQuantity}
+                setShoeNameSelected={setShoeNameSelected}
+                shoeNameSelected={shoeNameSelected}
+              />
             </div>
-          </>
-        )}
+          )}
+        </div>
 
-        {shoeNameSelected && (
-          <div className="properties-item">
-            <ModalCreateShoeProperties
-              valuesProperties={valuesProperties}
-              setValuesProperties={setValuesProperties}
-              colorSelected={colorSelected}
-              setColorSelected={setColorSelected}
-              sizeSelected={sizeSelected}
-              setSizeSelected={setSizeSelected}
-              setCategorySelected={setCategorySelected}
-              setBrandSelected={setBrandSelected}
-              setSoleSelected={setSoleSelected}
-              dataCreateShoeDetail={dataCreateShoeDetail}
-              setDataCreateShoeDetail={setDataCreateShoeDetail}
-              dataThumbnail={dataThumbnail}
-              setDataThumbnail={setDataThumbnail}
-              dataSlider={dataSlider}
-              setDataSlider={setDataSlider}
-              price={price}
-              setPrice={setPrice}
-              quantity={quantity}
-              setQuantity={setQuantity}
-              setShoeNameSelected={setShoeNameSelected}
-              shoeNameSelected={shoeNameSelected}
-            />
-          </div>
-        )}
+        <ModalCreateShoeName
+          openModalCreateNameShoe={openModalCreateNameShoe}
+          setOpenModalCreateNameShoe={setOpenModalCreateNameShoe}
+          fetchNameShoe={fetchNameShoe}
+          shoeNameSelected={shoeNameSelected}
+        />
       </div>
-
-      <ModalCreateShoeName
-        openModalCreateNameShoe={openModalCreateNameShoe}
-        setOpenModalCreateNameShoe={setOpenModalCreateNameShoe}
-        fetchNameShoe={fetchNameShoe}
-        shoeNameSelected={shoeNameSelected}
-      />
-    </div>
+    </>
   );
 };
 export default CreateShoeDetail;

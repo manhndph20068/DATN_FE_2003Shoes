@@ -41,7 +41,7 @@ const Revalue = (props) => {
   const config = {
     data: [data, data],
     xField: "time",
-    yField: ["value", "count"],
+    yField: ["tien", "soLuong"],
     geometryOptions: [
       {
         geometry: "column",
@@ -73,6 +73,7 @@ const Revalue = (props) => {
               <h3>Thống kê doanh thu theo năm</h3>
             </div>
             <div>
+              <p style={{ marginBottom: "10px" }}>Chọn năm: </p>
               <Form>
                 <Row style={{ display: "flex", gap: 10 }}>
                   <Form.Item initialValue={dayjs(year, "YYYY")}>

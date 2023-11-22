@@ -151,26 +151,41 @@ const ShoeDetailTable = () => {
       sorter: true,
     },
     {
-      title: "Action",
+      title: "",
       render: (text, record, index) => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
-            <EditOutlined
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setDataUpdate(record);
-                setOpenModalUpdate(true);
-              }}
-            />
+            <Tooltip title="Cập nhật">
+              <EditOutlined
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  transition: "color 0.3s",
+                }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={() => {
+                  setDataUpdate(record);
+                  setOpenModalUpdate(true);
+                }}
+              />
+            </Tooltip>
+
             <Popconfirm
               placement="left"
-              title={`Are you sure to delete ${record.mainText}?`}
-              description={`Delete the ${record.category} book?`}
+              title={`Bạn có muốn xóa ${record.category}?`}
+              description={`Xóa giày ${record.category} ?`}
               onConfirm={() => confirm(record.id)}
               okText="Yes"
               cancelText="No"
             >
-              <DeleteOutlined />
+              <Tooltip title="Xóa">
+                <DeleteOutlined
+                  style={{ color: "black", transition: "color 0.3s" }}
+                  onMouseOver={(e) => (e.target.style.color = "red")}
+                  onMouseOut={(e) => (e.target.style.color = "black")}
+                />
+              </Tooltip>
             </Popconfirm>
           </div>
         );
@@ -199,7 +214,7 @@ const ShoeDetailTable = () => {
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Data Shoes</span>
+        <i>Danh sách sản phẩm:</i>
         <span style={{ display: "flex", gap: 15 }}>
           {/* <Button
             type="primary"

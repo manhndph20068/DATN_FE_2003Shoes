@@ -1,4 +1,4 @@
-import { Col, Row, Space, Table, Tag } from "antd";
+import { Col, Row, Space, Table, Tag, Tooltip } from "antd";
 import { useState } from "react";
 import { callGetListOrder } from "../../../services/api";
 import { useEffect } from "react";
@@ -79,7 +79,7 @@ const ManageOrder = () => {
         ) : null,
     },
     {
-      title: "type",
+      title: "Loại hóa đơn",
       key: "type",
       dataIndex: "type",
       render: (_, record) => (
@@ -157,15 +157,17 @@ const ManageOrder = () => {
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (_, record) => (
-        <FileSearchOutlined
-          style={{ fontSize: "1.3rem", cursor: "pointer" }}
-          onClick={() => {
-            navigate(`/admin/order/detail/?code=${record.code}`);
-          }}
-        />
+        <Tooltip title="Xem chi tiết đơn hàng">
+          <FileSearchOutlined
+            style={{ fontSize: "1.3rem", cursor: "pointer" }}
+            onClick={() => {
+              navigate(`/admin/order/detail/?code=${record.code}`);
+            }}
+          />
+        </Tooltip>
       ),
     },
   ];

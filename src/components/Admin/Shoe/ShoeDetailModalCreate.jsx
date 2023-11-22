@@ -208,7 +208,7 @@ const BookModalCreate = (props) => {
   return (
     <>
       <Modal
-        title="Create new shoe"
+        title="Tạo mới giày"
         open={modalCreateShoeDetailOpen}
         onOk={() => {
           form.submit();

@@ -12,7 +12,11 @@ import {
   Tabs,
   message,
 } from "antd";
-import { QrcodeOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  QrcodeOutlined,
+  ShoppingOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import TabPane from "antd/es/tabs/TabPane";
 import {
   callAddMethodPayment,
@@ -694,7 +698,7 @@ const ShoppingCounter = () => {
                             </Select>
                           </Form.Item>
                           <Form.Item
-                            label="Note"
+                            label="Ghi chú"
                             name="note"
                             labelCol={{ span: 24 }}
                             labelAlign="left"
@@ -885,7 +889,7 @@ const ShoppingCounter = () => {
                             </Select>
                           </Form.Item>
                           <Form.Item
-                            label="Note"
+                            label="Ghi chú"
                             name="note"
                             labelCol={{ span: 24 }}
                             labelAlign="left"

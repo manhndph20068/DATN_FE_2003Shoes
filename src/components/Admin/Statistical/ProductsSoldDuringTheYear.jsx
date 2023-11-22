@@ -73,9 +73,10 @@ const ProductsSoldDuringTheYear = (props) => {
               justifyContent: "center",
             }}
           >
-            <h3>Thống kê sản phẩm đã bán theo năm</h3>
+            <h3>Thống kê số lượng sản phẩm đã bán theo năm</h3>
           </div>
           <div>
+            <p style={{ marginBottom: "10px" }}>Chọn năm: </p>
             <Form>
               <Form.Item initialValue={dayjs(year, "YYYY")}>
                 <DatePicker

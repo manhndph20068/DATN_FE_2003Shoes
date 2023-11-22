@@ -69,12 +69,12 @@ const ImportShoes = (props) => {
         // console.log(info.file, info.fileList);
       }
       if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
+        message.success(`${info.file.name} Tải file thành công.`);
         console.log("info", info, info.file.response, info.fileList);
         setResultImport(info.file.response);
         fetchAllShoes();
       } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        message.error(`${info.file.name} Tải file thất bại.`);
       }
     },
     onDrop(e) {
@@ -100,11 +100,12 @@ const ImportShoes = (props) => {
     <>
       <Modal
         maskClosable={false}
-        title="Import Voucher"
+        title="Import Sản Phẩm"
         open={isModalImportOpen}
         cancelButtonProps={{ style: { marginTop: "1rem" } }}
         okButtonProps={{ style: { display: "none" } }}
         onCancel={handleCancel}
+        cancelText="Hủy"
         //   okButtonProps={{ disabled: dataImport.length < 1 }}
       >
         <Dragger {...UploadProps}>
@@ -112,11 +113,11 @@ const ImportShoes = (props) => {
             <InboxOutlined />
           </p>
           <p className="ant-upload-text">
-            Click or drag file to this area to upload
+            Nhấp hoặc kéo tệp vào khu vực này để tải lên
           </p>
           <p className="ant-upload-hint">
-            Support for a XLSX. Strictly prohibited from uploading company data
-            or other banned files.
+            Hỗ trợ XLSX. Nghiêm cấm tải lên dữ liệu công ty hoặc các tập tin bị
+            cấm khác.
           </p>
           <br />
           <Button onClick={() => handleGetFileExample()}>Tải file mẫu</Button>

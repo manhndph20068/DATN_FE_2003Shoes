@@ -1,9 +1,9 @@
-import { Col, Row, Table } from "antd";
+import { Button, Col, Row, Table, Tag, Tooltip } from "antd";
 import "./Table.scss";
 import { useEffect, useState } from "react";
 import { callGetListAccount } from "../../../services/api";
 import InputSearchUser from "./InputSearchUser";
-
+import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 const CustomerTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -55,14 +55,27 @@ const CustomerTable = () => {
       key: "email",
     },
     {
-      title: "Role",
+      title: "Vài Trò",
       dataIndex: "roleId",
       key: "roleId",
+      render: (_, record) => (
+        <>
+          {_ === 1 && <Tag color="green-inverse">ADMIN</Tag>}
+          {_ === 2 && <Tag color="green-inverse">Khách Hàng</Tag>}
+          {_ === 3 && <Tag color="green-inverse">Nhân Viên</Tag>}
+        </>
+      ),
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
       key: "status",
+      render: (_, record) => (
+        <>
+          {_ === 0 && <Tag color="red-inverse">Không hoạt động</Tag>}
+          {_ === 1 && <Tag color="green-inverse">Hoạt động</Tag>}
+        </>
+      ),
     },
   ];
 
@@ -88,6 +101,22 @@ const CustomerTable = () => {
   };
   return (
     <div style={{ padding: "1.7rem" }}>
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px" }}>
+          <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý tài khoản </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Khách Hàng</i>
+          </span>
+        </p>
+      </div>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>
@@ -96,6 +125,9 @@ const CustomerTable = () => {
         </Row>
       </div>
       <div className="table-list-order">
+        <div>
+          <i>Danh sách khách hàng:</i>
+        </div>
         <Table
           columns={columns}
           onChange={onChange}

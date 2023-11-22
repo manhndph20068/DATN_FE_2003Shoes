@@ -108,11 +108,13 @@ const ModalUpdateVoucher = (props) => {
   return (
     <>
       <Modal
-        title="Add new voucher"
+        title={<span style={{ fontWeight: "bold" }}>Cập nhật voucher</span>}
         open={isModalUpdateOpen}
         onOk={() => form.submit()}
         onCancel={handleCancel}
         maskClosable={false}
+        okText="Đồng ý"
+        cancelText="Hủy"
       >
         <Divider />
         <Form
@@ -141,12 +143,12 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Name of voucher!",
+                    message: "Vui lòng nhập tên voucher!",
                   },
                 ]}
                 // initialValue={dataUpdate?.name}
               >
-                <Input />
+                <Input placeholder="Nhập tên voucher" />
               </Form.Item>
             </Col>
             <Col span={11}>
@@ -157,12 +159,15 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Quantity!",
+                    message: "Vui lòng nhập số lượng!",
                   },
                 ]}
                 // initialValue={dataUpdate?.quantity}
               >
-                <InputNumber style={{ width: "100%" }} />
+                <InputNumber
+                  placeholder="Nhập số lượng voucher"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -174,12 +179,15 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Discount Amount!",
+                    message: "Vui lòng nhập giá trị giảm!",
                   },
                 ]}
                 // initialValue={dataUpdate?.discountAmount}
               >
-                <InputNumber style={{ width: "100%" }} />
+                <InputNumber
+                  placeholder="Nhập giá trị giảm"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
             <Col span={11}>
@@ -189,12 +197,15 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Min Bill Value!",
+                    message: "Vui lòng nhập giá trị tối thiểu của đơn hàng!",
                   },
                 ]}
                 // initialValue={dataUpdate?.minBillValue}
               >
-                <InputNumber style={{ width: "100%" }} />
+                <InputNumber
+                  placeholder="Nhập giá trị tối thiểu của đơn hàng"
+                  style={{ width: "100%" }}
+                />
               </Form.Item>
             </Col>
           </Row>
@@ -206,7 +217,7 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Reduce Form!",
+                    message: "Vui lòng chọn hình thức giảm!",
                   },
                 ]}
                 // initialValue={dataUpdate?.reduceForm}
@@ -230,12 +241,13 @@ const ModalUpdateVoucher = (props) => {
                 rules={[
                   {
                     required: typeOfReduce === 0 ? false : true,
-                    message: "Please input your Maximum Reduction Value!",
+                    message: "Vui lòng nhập giá trị giảm tối đa!",
                   },
                 ]}
                 // initialValue={dataUpdate?.maximumReductionValue}
               >
                 <InputNumber
+                  placeholder="Nhập giá trị giảm tối đa"
                   max={90}
                   style={{ width: "100%" }}
                   disabled={typeOfReduce === 0 ? true : false}

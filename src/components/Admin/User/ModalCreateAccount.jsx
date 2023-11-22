@@ -107,12 +107,12 @@ const ModalCreateAccount = (props) => {
           Modal
         </Button> */}
       <Modal
-        title="Create new account"
+        title="Thêm mới tài khoản"
         open={isModalCreateOpen}
         onOk={() => form.submit()}
         onCancel={hideModal}
-        okText="Ok"
-        cancelText="Cancel"
+        okText="Xác nhận"
+        cancelText="Hủy"
       >
         <Divider />
         <Form

@@ -43,7 +43,7 @@ const SearchProductInput = (props) => {
             <Form.Item name="itemShoeDetailSelect">
               <Select
                 showSearch
-                placeholder="Search to Select"
+                placeholder="Chọn sản phẩm"
                 optionFilterProp="children"
                 filterOption={(input, option) =>
                   (option?.label ?? "").includes(input)

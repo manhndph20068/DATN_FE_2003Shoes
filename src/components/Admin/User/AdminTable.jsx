@@ -17,8 +17,9 @@ import {
   DeleteOutlined,
   PlusOutlined,
   ReloadOutlined,
+  ArrowRightOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-
 const AdminTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -84,14 +85,14 @@ const AdminTable = () => {
       key: "email",
     },
     {
-      title: "Role",
+      title: "Vai trò",
       dataIndex: "roleId",
       key: "roleId",
       render: (_, record) => (
         <>
           {_ === 1 && <Tag color="green-inverse">ADMIN</Tag>}
-          {_ === 2 && <Tag color="green-inverse">Customer</Tag>}
-          {_ === 3 && <Tag color="green-inverse">STAFF</Tag>}
+          {_ === 2 && <Tag color="green-inverse">Khách Hàng</Tag>}
+          {_ === 3 && <Tag color="green-inverse">Nhân Viên</Tag>}
         </>
       ),
     },
@@ -101,13 +102,13 @@ const AdminTable = () => {
       key: "status",
       render: (_, record) => (
         <>
-          {_ === 0 && <Tag color="red-inverse">InActive</Tag>}
-          {_ === 1 && <Tag color="green-inverse">Active</Tag>}
+          {_ === 0 && <Tag color="red-inverse">Không hoạt động</Tag>}
+          {_ === 1 && <Tag color="green-inverse">Hoạt động</Tag>}
         </>
       ),
     },
     {
-      title: "Action",
+      title: "",
       key: "action",
       render: (text, record, index) => {
         return (
@@ -151,8 +152,14 @@ const AdminTable = () => {
 
   const renderHeaderTable = () => {
     return (
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <span>Table Account</span>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          borderRadius: "30px",
+        }}
+      >
+        <i>Danh sách quản trị : </i>
         <span style={{ display: "flex", gap: 15 }}>
           {/* <Button
             type="primary"
@@ -201,6 +208,22 @@ const AdminTable = () => {
   };
   return (
     <div style={{ padding: "1.7rem" }}>
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px" }}>
+          <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý tài khoản </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Admin</i>
+          </span>
+        </p>
+      </div>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>
