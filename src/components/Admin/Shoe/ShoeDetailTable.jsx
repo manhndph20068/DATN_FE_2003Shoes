@@ -155,19 +155,22 @@ const ShoeDetailTable = () => {
       render: (text, record, index) => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
-            <EditOutlined
-              style={{
-                cursor: "pointer",
-                color: "black",
-                transition: "color 0.3s",
-              }}
-              onMouseOver={(e) => (e.target.style.color = "blue")}
-              onMouseOut={(e) => (e.target.style.color = "black")}
-              onClick={() => {
-                setDataUpdate(record);
-                setOpenModalUpdate(true);
-              }}
-            />
+            <Tooltip title="Cập nhật">
+              <EditOutlined
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  transition: "color 0.3s",
+                }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={() => {
+                  setDataUpdate(record);
+                  setOpenModalUpdate(true);
+                }}
+              />
+            </Tooltip>
+
             <Popconfirm
               placement="left"
               title={`Bạn có muốn xóa ${record.category}?`}
@@ -176,11 +179,13 @@ const ShoeDetailTable = () => {
               okText="Yes"
               cancelText="No"
             >
-              <DeleteOutlined
-                style={{ color: "black", transition: "color 0.3s" }}
-                onMouseOver={(e) => (e.target.style.color = "red")}
-                onMouseOut={(e) => (e.target.style.color = "black")}
-              />
+              <Tooltip title="Xóa">
+                <DeleteOutlined
+                  style={{ color: "black", transition: "color 0.3s" }}
+                  onMouseOver={(e) => (e.target.style.color = "red")}
+                  onMouseOut={(e) => (e.target.style.color = "black")}
+                />
+              </Tooltip>
             </Popconfirm>
           </div>
         );

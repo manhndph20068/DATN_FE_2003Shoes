@@ -41,7 +41,7 @@ const Revalue = (props) => {
   const config = {
     data: [data, data],
     xField: "time",
-    yField: ["value", "count"],
+    yField: ["tien", "soLuong"],
     geometryOptions: [
       {
         geometry: "column",
