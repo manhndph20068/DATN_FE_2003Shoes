@@ -17,7 +17,7 @@ import {
   FileDoneOutlined,
   SnippetsOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu, Dropdown, Space, message, Avatar } from "antd";
+import { Layout, Menu, Dropdown, Space, message, Avatar, Tooltip } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -77,12 +77,20 @@ const items = [
     icon: <AppstoreOutlined />,
     children: [
       {
-        label: <Link to="/admin/shoe">Danh sách sản phẩm</Link>,
+        label: (
+          <Tooltip title="Danh sách sản phẩm">
+            <Link to="/admin/shoe">Danh sách sản phẩm</Link>
+          </Tooltip>
+        ),
         key: "shoe",
         icon: <SnippetsOutlined />,
       },
       {
-        label: <Link to="/admin/shoe/create">Tạo sản phẩm mới</Link>,
+        label: (
+          <Tooltip title="Tạo mới sản phẩm">
+            <Link to="/admin/shoe/create">Tạo mới sản phẩm</Link>
+          </Tooltip>
+        ),
         key: "Create",
         icon: <AppstoreAddOutlined />,
       },

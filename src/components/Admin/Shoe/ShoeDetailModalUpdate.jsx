@@ -419,7 +419,7 @@ const ShoeDetailModalUpdate = (props) => {
   return (
     <>
       <Modal
-        title="Update Shoe Detail"
+        title="Cập nhật thông tin sản phẩm"
         open={openModalUpdate}
         onOk={() => {
           form.submit();
@@ -430,7 +430,7 @@ const ShoeDetailModalUpdate = (props) => {
           setDataUpdate(null);
           setOpenModalUpdate(false);
         }}
-        okText={"Update"}
+        okText={"Xác nhận"}
         cancelText={"Hủy"}
         confirmLoading={isSubmit}
         width={"50vw"}

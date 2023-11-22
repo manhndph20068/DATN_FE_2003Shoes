@@ -139,7 +139,7 @@ const CreateShoeDetail = () => {
 
   return (
     <>
-      <div style={{ padding: "1.5rem" }}>
+      <div style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}>
         <p style={{ fontSize: "15px" }}>
           <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
           <span>Quản lý sản phẩm </span>
@@ -168,7 +168,7 @@ const CreateShoeDetail = () => {
           <Select
             showSearch
             style={{ width: 500 }}
-            placeholder="Search to Select"
+            placeholder="Chọn giày"
             optionFilterProp="children"
             virtual={true}
             filterOption={(input, option) =>

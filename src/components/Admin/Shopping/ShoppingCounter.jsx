@@ -698,7 +698,7 @@ const ShoppingCounter = () => {
                             </Select>
                           </Form.Item>
                           <Form.Item
-                            label="Note"
+                            label="Ghi chú"
                             name="note"
                             labelCol={{ span: 24 }}
                             labelAlign="left"
@@ -889,7 +889,7 @@ const ShoppingCounter = () => {
                             </Select>
                           </Form.Item>
                           <Form.Item
-                            label="Note"
+                            label="Ghi chú"
                             name="note"
                             labelCol={{ span: 24 }}
                             labelAlign="left"

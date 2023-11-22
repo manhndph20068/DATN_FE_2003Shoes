@@ -74,6 +74,7 @@ const StatusOfOrder = (props) => {
               <h3>Thống kê hoá đơn</h3>
             </div>
             <div>
+              <p style={{ marginBottom: "10px" }}>Chọn khoảng ngày: </p>
               <Form>
                 <Form.Item>
                   <RangePicker

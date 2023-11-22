@@ -151,7 +151,7 @@ const ModalCreateShoeProperties = (props) => {
     console.log("res", res);
     if (res.status === 0) {
       setIsLoading(false);
-      message.success("Create new shoe detail success");
+      message.success("Tạo mới sản phẩm thành công");
       props.setColorSelected(null);
       props.setSizeSelected(null);
       props.setDataCreateShoeDetail(null);
@@ -440,7 +440,7 @@ const ModalCreateShoeProperties = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your shoe category!",
+                message: "Vui lòng nhập loài giày!",
               },
             ]}
           >
@@ -453,7 +453,7 @@ const ModalCreateShoeProperties = (props) => {
                   <Divider style={{ margin: "8px 0" }} />
                   <Space style={{ padding: "0 8px 4px" }}>
                     <Input
-                      placeholder="Please enter item"
+                      placeholder="Nhập loại giày"
                       value={addNameCategory}
                       onChange={(e) => {
                         setAddNameCategory(e.target.value);
@@ -461,11 +461,11 @@ const ModalCreateShoeProperties = (props) => {
                     />
                     <Popconfirm
                       placement="bottomLeft"
-                      title={"Are you sure to add new item?"}
+                      title={"Bạn có chắc chắn thêm mục mới không?"}
                       onConfirm={() => handleAddNewCategory()}
                       onCancel={() => setAddNameCategory(null)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText="Đồng ý"
+                      cancelText="Hủy"
                       disabled={
                         addNameCategory === null ||
                         addNameCategory.trim() === ""
@@ -478,7 +478,7 @@ const ModalCreateShoeProperties = (props) => {
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
                       >
-                        Add item
+                        Tạo mới
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -495,25 +495,25 @@ const ModalCreateShoeProperties = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Brand"
+            label="Thương hiệu"
             name="shoeBrand"
             rules={[
               {
                 required: true,
-                message: "Please input your shoe brand!",
+                message: "Vui lòng chọn thương hiệu!",
               },
             ]}
           >
             <Select
               style={{ width: 250 }}
-              placeholder="Chọn Brand!"
+              placeholder="Chọn thương hiệu!"
               dropdownRender={(menu) => (
                 <>
                   {menu}
                   <Divider style={{ margin: "8px 0" }} />
                   <Space style={{ padding: "0 8px 4px" }}>
                     <Input
-                      placeholder="Please enter item"
+                      placeholder="Nhập thương hiệu"
                       value={addNameBrand}
                       onChange={(e) => {
                         setAddNameBrand(e.target.value);
@@ -521,11 +521,11 @@ const ModalCreateShoeProperties = (props) => {
                     />
                     <Popconfirm
                       placement="bottomLeft"
-                      title={"Are you sure to add new item?"}
+                      title={"Bạn có chắc chắn thêm mục mới không?"}
                       onConfirm={() => handleAddNewBrand()}
                       onCancel={() => setAddNameBrand(null)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText="Đồng ý"
+                      cancelText="Hủy"
                       disabled={
                         addNameBrand === null || addNameBrand.trim() === ""
                           ? true
@@ -537,7 +537,7 @@ const ModalCreateShoeProperties = (props) => {
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
                       >
-                        Add item
+                        Tạo mới
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -554,25 +554,25 @@ const ModalCreateShoeProperties = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Sole"
+            label="Đế giày"
             name="shoeSole"
             rules={[
               {
                 required: true,
-                message: "Please input your shoe sole!",
+                message: "Vui lòng chọn đế giày!",
               },
             ]}
           >
             <Select
               style={{ width: 250 }}
-              placeholder="Chọn sole!"
+              placeholder="Chọn đế giày!"
               dropdownRender={(menu) => (
                 <>
                   {menu}
                   <Divider style={{ margin: "8px 0" }} />
                   <Space style={{ padding: "0 8px 4px" }}>
                     <Input
-                      placeholder="Please enter item"
+                      placeholder="Nhập đế giày"
                       value={addNameSole}
                       onChange={(e) => {
                         setAddNameSole(e.target.value);
@@ -580,11 +580,11 @@ const ModalCreateShoeProperties = (props) => {
                     />
                     <Popconfirm
                       placement="bottomLeft"
-                      title={"Are you sure to add new item?"}
+                      title={"Bạn có chắc chắn thêm mục mới không?"}
                       onConfirm={() => handleAddNewSole()}
                       onCancel={() => setAddNameSole(null)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText="Đồng ý"
+                      cancelText="Hủy"
                       disabled={
                         addNameSole === null || addNameSole.trim() === ""
                           ? true
@@ -596,7 +596,7 @@ const ModalCreateShoeProperties = (props) => {
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
                       >
-                        Add item
+                        Tạo mới
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -613,26 +613,26 @@ const ModalCreateShoeProperties = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Color"
+            label="Màu sắc"
             name="shoeColor"
             rules={[
               {
                 required: true,
-                message: "Please input your shoe color!",
+                message: "Vui lòng chọn màu sắc!",
               },
             ]}
           >
             <Select
               mode="multiple"
               style={{ width: 250 }}
-              placeholder="Chọn color!"
+              placeholder="Chọn màu sắc!"
               dropdownRender={(menu) => (
                 <>
                   {menu}
                   <Divider style={{ margin: "8px 0" }} />
                   <Space style={{ padding: "0 8px 4px" }}>
                     <Input
-                      placeholder="Please enter item"
+                      placeholder="Nhập màu sắc"
                       value={addNameColor}
                       onChange={(e) => {
                         setAddNameColor(e.target.value);
@@ -640,11 +640,11 @@ const ModalCreateShoeProperties = (props) => {
                     />
                     <Popconfirm
                       placement="bottomLeft"
-                      title={"Are you sure to add new item?"}
+                      title={"Bạn có chắc chắn thêm mục mới không?"}
                       onConfirm={() => handleAddNewColor()}
                       onCancel={() => setAddNameColor(null)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText="Đồng ý"
+                      cancelText="Hủy"
                       disabled={
                         addNameColor === null || addNameColor.trim() === ""
                           ? true
@@ -656,7 +656,7 @@ const ModalCreateShoeProperties = (props) => {
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
                       >
-                        Add item
+                        Tạo mới
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -673,12 +673,12 @@ const ModalCreateShoeProperties = (props) => {
           </Form.Item>
 
           <Form.Item
-            label="Size"
+            label="Kích cỡ"
             name="shoeSize"
             rules={[
               {
                 required: true,
-                message: "Please input your shoe size!",
+                message: "Vui lòng chọn kích cỡ!",
               },
             ]}
           >
@@ -686,14 +686,14 @@ const ModalCreateShoeProperties = (props) => {
               mode="multiple"
               ref={selectRef}
               style={{ width: 250 }}
-              placeholder="Chọn size!"
+              placeholder="Chọn kích cỡ!"
               dropdownRender={(menu) => (
                 <>
                   {menu}
                   <Divider style={{ margin: "8px 0" }} />
                   <Space style={{ padding: "0 8px 4px" }}>
                     <Input
-                      placeholder="Please enter item"
+                      placeholder="Nhập kích cỡ"
                       value={addNameSize}
                       onChange={(e) => {
                         setAddNameSize(e.target.value);
@@ -701,11 +701,11 @@ const ModalCreateShoeProperties = (props) => {
                     />
                     <Popconfirm
                       placement="bottomLeft"
-                      title={"Are you sure to add new item?"}
+                      title={"Bạn có chắc chắn thêm mục mới không?"}
                       onConfirm={() => handleAddNewSize()}
                       onCancel={() => setAddNameSize(null)}
-                      okText="Yes"
-                      cancelText="No"
+                      okText="Đồng ý"
+                      cancelText="Hủy"
                       disabled={
                         addNameSize === null || addNameSize.trim() === ""
                           ? true
@@ -717,7 +717,7 @@ const ModalCreateShoeProperties = (props) => {
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
                       >
-                        Add item
+                        Tạo mới
                       </Button>
                     </Popconfirm>
                   </Space>
@@ -840,7 +840,7 @@ const ModalCreateShoeProperties = (props) => {
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit" loading={isLoading}>
-            Submit
+            Xác nhận
           </Button>
         </Form.Item>
       </Form>

@@ -145,11 +145,11 @@ const ManageVoucher = () => {
             />
             <Popconfirm
               placement="left"
-              title={`Are you sure to delete ${record.code}?`}
-              description={`Delete the ${record.name} voucher?`}
+              title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
+              description={`Xóa voucher ${record.name}?`}
               onConfirm={() => deleteVoucherByID(record.id)}
-              okText="Yes"
-              cancelText="No"
+              okText="Đồng ý"
+              cancelText="Hủy"
             >
               <DeleteOutlined />
             </Popconfirm>

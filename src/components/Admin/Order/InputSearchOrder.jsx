@@ -259,6 +259,7 @@ const InputSearchOrder = (props) => {
               name="customer"
             >
               <Input
+                placeholder="Nhập tên hoặc số điện thoại"
                 allowClear
                 style={{ width: "200px", marginLeft: "10px" }}
               />
@@ -308,7 +309,8 @@ const InputSearchOrder = (props) => {
           <Col span={7}>
             <Form.Item style={{ fontWeight: "bold" }} label="Loại" name="type">
               <Select
-                style={{ marginLeft: "10px" }}
+                placeholder="Chọn loại hóa đơn"
+                style={{ marginLeft: "10px", fontWeight: "normal" }}
                 options={optionType}
                 allowClear
               />
@@ -320,7 +322,12 @@ const InputSearchOrder = (props) => {
               label="Trạng thái"
               name="status"
             >
-              <Select options={optionStatus} allowClear />
+              <Select
+                placeholder="Chọn trạng thái hóa đơn"
+                style={{ fontWeight: "normal" }}
+                options={optionStatus}
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col span={7}>

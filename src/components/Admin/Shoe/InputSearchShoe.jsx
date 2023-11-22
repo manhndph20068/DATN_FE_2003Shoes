@@ -69,7 +69,7 @@ const InputSearchShoe = (props) => {
                 label="Tên Giày"
                 name="nameShoe"
               >
-                <Input />
+                <Input placeholder="Nhập tên giày" />
               </Form.Item>
             </Col>
             <Col span={7}>
@@ -78,7 +78,7 @@ const InputSearchShoe = (props) => {
                 label="Kích cỡ"
                 name="size"
               >
-                <Input />
+                <Input placeholder="Nhập kích cỡ" />
               </Form.Item>
             </Col>
             <Col span={7}>
@@ -87,7 +87,7 @@ const InputSearchShoe = (props) => {
                 label="Thương hiệu"
                 name="brand"
               >
-                <Input />
+                <Input placeholder="Nhập thương hiệu" />
               </Form.Item>
             </Col>
           </Row>

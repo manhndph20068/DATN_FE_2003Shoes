@@ -69,6 +69,7 @@ const Top5ProductBestSale = (props) => {
               <h3>Top 5 sản phẩm bán chạy</h3>
             </div>
             <div>
+              <p style={{ marginBottom: "10px" }}>Chọn khoảng ngày: </p>
               <Form>
                 <Form.Item>
                   <RangePicker

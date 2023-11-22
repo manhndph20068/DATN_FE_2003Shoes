@@ -116,18 +116,22 @@ const TableProductDetail = (props) => {
     {
       width: "5%",
       align: "center",
-      title: "Action",
+      title: "",
       key: "action",
       render: (_, record) => (
         <Popconfirm
           placement="top"
-          title={`Confirm delete?`}
+          title={`Xóa sản phẩm?`}
           onConfirm={() => confirmDelete(record)}
           style={{ cursor: "pointer" }}
-          okText="Yes"
-          cancelText="No"
+          okText="Đồng ý"
+          cancelText="Hủy"
         >
-          <DeleteOutlined />
+          <DeleteOutlined
+            style={{ color: "black", transition: "color 0.3s" }}
+            onMouseOver={(e) => (e.target.style.color = "red")}
+            onMouseOut={(e) => (e.target.style.color = "black")}
+          />
         </Popconfirm>
       ),
     },

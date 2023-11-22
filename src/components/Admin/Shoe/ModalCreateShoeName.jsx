@@ -46,7 +46,7 @@ const ModalCreateShoeName = (props) => {
   return (
     <>
       <Modal
-        title="Create a new Shoe"
+        title="Tạo mới giày"
         open={openModalCreateNameShoe}
         onOk={() => {
           formCreateNewShoe.submit();
@@ -54,6 +54,8 @@ const ModalCreateShoeName = (props) => {
         onCancel={handleCancel}
         closable={false}
         maskClosable={false}
+        cancelText="Hủy"
+        okText="Đồng ý"
       >
         <Divider />
         <Form
@@ -70,9 +72,7 @@ const ModalCreateShoeName = (props) => {
           <Form.Item
             label="Tên giày"
             name="shoeName"
-            rules={[
-              { required: true, message: "Please input your shoe name!" },
-            ]}
+            rules={[{ required: true, message: "Vui lòng nhập tên giày!" }]}
           >
             <Input />
           </Form.Item>

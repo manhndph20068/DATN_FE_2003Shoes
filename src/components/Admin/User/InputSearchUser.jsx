@@ -26,22 +26,6 @@ const InputSearchUser = (props) => {
   ];
   return (
     <>
-      <div style={{ paddingBottom: "1.5rem" }}>
-        <p style={{ fontSize: "15px" }}>
-          <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
-          <span>Quản lý tài khoản </span>
-          <ArrowRightOutlined
-            style={{
-              fontSize: "10px",
-              marginLeft: "10px",
-              marginRight: "10px",
-            }}
-          />
-          <span>
-            <i>Khách hàng</i>
-          </span>
-        </p>
-      </div>
       <div
         className=""
         style={{
@@ -67,7 +51,7 @@ const InputSearchUser = (props) => {
                 label="Tên"
                 name="fullName"
               >
-                <Input />
+                <Input placeholder="Nhập tên hoặc mã" />
               </Form.Item>
             </Col>
             <Col span={7}>
@@ -76,7 +60,7 @@ const InputSearchUser = (props) => {
                 label="Email"
                 name="email"
               >
-                <Input />
+                <Input placeholder="Nhập email" />
               </Form.Item>
             </Col>
             <Col span={7}>
@@ -85,7 +69,12 @@ const InputSearchUser = (props) => {
                 label="Trạng Thái"
                 name="status"
               >
-                <Select options={optionStatus} allowClear />
+                <Select
+                  placeholder="Chọn trạng thái"
+                  style={{ fontWeight: "normal" }}
+                  options={optionStatus}
+                  allowClear
+                />
               </Form.Item>
             </Col>
           </Row>

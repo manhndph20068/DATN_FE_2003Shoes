@@ -17,8 +17,9 @@ import {
   DeleteOutlined,
   PlusOutlined,
   ReloadOutlined,
+  ArrowRightOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-
 const AdminTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -207,6 +208,22 @@ const AdminTable = () => {
   };
   return (
     <div style={{ padding: "1.7rem" }}>
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px" }}>
+          <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý tài khoản </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Admin</i>
+          </span>
+        </p>
+      </div>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>

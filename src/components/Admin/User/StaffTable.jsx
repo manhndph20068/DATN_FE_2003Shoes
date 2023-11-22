@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { callGetListAccount } from "../../../services/api";
 import InputSearchUser from "./InputSearchUser";
 import ModalCreateAccount from "./ModalCreateAccount";
-import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  ReloadOutlined,
+  ArrowRightOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
 const StaffTable = () => {
   const [current, setCurrent] = useState(1);
@@ -154,6 +159,22 @@ const StaffTable = () => {
   };
   return (
     <div style={{ padding: "1.7rem" }}>
+      <div style={{ paddingBottom: "1.5rem" }}>
+        <p style={{ fontSize: "15px" }}>
+          <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý tài khoản </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Nhân Viên</i>
+          </span>
+        </p>
+      </div>
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>

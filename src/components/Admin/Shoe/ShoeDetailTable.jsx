@@ -156,7 +156,13 @@ const ShoeDetailTable = () => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
             <EditOutlined
-              style={{ cursor: "pointer" }}
+              style={{
+                cursor: "pointer",
+                color: "black",
+                transition: "color 0.3s",
+              }}
+              onMouseOver={(e) => (e.target.style.color = "blue")}
+              onMouseOut={(e) => (e.target.style.color = "black")}
               onClick={() => {
                 setDataUpdate(record);
                 setOpenModalUpdate(true);
@@ -164,13 +170,17 @@ const ShoeDetailTable = () => {
             />
             <Popconfirm
               placement="left"
-              title={`Are you sure to delete ${record.mainText}?`}
-              description={`Delete the ${record.category} book?`}
+              title={`Bạn có muốn xóa ${record.category}?`}
+              description={`Xóa giày ${record.category} ?`}
               onConfirm={() => confirm(record.id)}
               okText="Yes"
               cancelText="No"
             >
-              <DeleteOutlined />
+              <DeleteOutlined
+                style={{ color: "black", transition: "color 0.3s" }}
+                onMouseOver={(e) => (e.target.style.color = "red")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+              />
             </Popconfirm>
           </div>
         );

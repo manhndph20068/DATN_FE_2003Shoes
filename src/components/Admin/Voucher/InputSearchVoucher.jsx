@@ -90,7 +90,7 @@ const InputSearchVoucher = (props) => {
               label="Tên Voucher"
               name="nameOfVaoucher"
             >
-              <Input />
+              <Input placeholder="Nhập tên voucher" />
             </Form.Item>
           </Col>
           <Col span={7}>
@@ -99,7 +99,12 @@ const InputSearchVoucher = (props) => {
               label="Trạng thái"
               name="status"
             >
-              <Select options={optionStatusVoucher} allowClear />
+              <Select
+                placeholder="Chọn trạng thái"
+                style={{ fontWeight: "normal" }}
+                options={optionStatusVoucher}
+                allowClear
+              />
             </Form.Item>
           </Col>
           <Col span={9}>
