@@ -2,21 +2,30 @@ import { Button, Form, Input, message } from "antd";
 import { useSelector } from "react-redux";
 // import { callChangePassword } from "../../services/api";
 import { useEffect } from "react";
+import { callDoChangePassword } from "../../services/api";
 
 const ChangePassword = (props) => {
   const { setIsModalManageAcconut, isModalManageAcconut, setTab } = props;
   const [form] = Form.useForm();
-  //   const user = useSelector((state) => state.account.user);
+  const user = useSelector((state) => state.account.user);
 
   const onFinish = async (values) => {
-    //   const { email, oldpass, newpass } = values;
-    //   const res = await callChangePassword(email, oldpass, newpass);
-    //   if (res && res?.data) {
-    //     message.success("Đổi mật khẩu thành công");
-    //     setIsModalManageAcconut(false);
-    //   } else {
-    //     message.error("Đổi mật khẩu thất bại");
-    //   }
+    const { email, oldpass, newpass } = values;
+    console.log("id", user.id);
+    console.log("values", values);
+    const data = {
+      id: user.id,
+      yourOldPassword: oldpass,
+      newPassword: newpass,
+      enterNewPassword: newpass,
+    };
+    const res = await callDoChangePassword(data);
+    if (res?.status === 0) {
+      message.success("Đổi mật khẩu thành công");
+      setIsModalManageAcconut(false);
+    } else {
+      message.error("Đổi mật khẩu thất bại");
+    }
   };
 
   useEffect(() => {
@@ -38,7 +47,7 @@ const ChangePassword = (props) => {
           name="email"
           labelCol={{ span: 5 }}
           label="Email"
-          //   initialValue={user?.email}
+          initialValue={user?.email}
         >
           <Input
             style={{ maxWidth: "350px" }}

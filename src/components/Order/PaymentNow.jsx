@@ -8,6 +8,7 @@ import {
   callDoOrderByCustomer,
   callDoOrderByGuest,
   callFetchAccount,
+  callGetAddressByID,
   callGetCartByAccountId,
   callGetListCartDetailById,
   callGetVouchersByTotalMoney,
@@ -54,6 +55,7 @@ const PaymentNow = () => {
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
   const [discountVoucher, setDiscountVoucher] = useState(0);
+  const [addressAccount, setAddressAccount] = useState(null);
   const [form] = Form.useForm();
 
   const idCart = useSelector((state) => state.account.idCart);
@@ -362,8 +364,19 @@ const PaymentNow = () => {
       dispatch(doAddIdCart(res?.data?.id));
     }
   };
+
+  const handleGetAddressByIDAccount = async () => {
+    const res = await callGetAddressByID(dataAcc?.id);
+    console.log("res handleGetAddressByIDAccount", res);
+    if (res?.status === 0) {
+      // setAddressAccount(res?.data);
+    }
+  };
   useEffect(() => {
     console.log("prodPaidNow", prodPaidNow);
+    if (dataAcc?.id) {
+      handleGetAddressByIDAccount();
+    }
   }, []);
 
   return (

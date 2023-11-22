@@ -419,6 +419,10 @@ const callDeleteOrder = (data) => {
   return axios.post(`/api/v1/admin/order/delete`, data);
 };
 
+const callDoChangePassword = (data) => {
+  return axios.post(`/api/v1/account/change-password-account`, data);
+};
+
 const callGetHistoryOrderCustomerById = (data) => {
   return axios.post("/api/v1/customer/order/get-all/customer", data);
 };
@@ -433,6 +437,26 @@ const callAddNewAcc = (data) => {
 
 const callInActiveAccount = (data) => {
   return axios.post("/api/v1/account/huy-account", data);
+};
+
+const callGetCommentByOrderIdAndShoeDetailId = (data) => {
+  return axios.post("/api/v1/comment/get-one", data);
+};
+
+const callDoAddComment = (data) => {
+  return axios.post("/api/v1/comment/save", data);
+};
+
+const callGetCommentByShoeId = (data) => {
+  return axios.post("/api/v1/comment/get-all", data);
+};
+
+const callGetHistoryComment = (data) => {
+  return axios.post("/api/v1/comment/get-one", data);
+};
+
+const callGetAddressByID = (id) => {
+  return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
 };
 
 const callDeletetUser = (_id) => {
@@ -583,4 +607,10 @@ export {
   callGetRevalueByYear,
   callAddNewAcc,
   callInActiveAccount,
+  callDoChangePassword,
+  callGetAddressByID,
+  callGetCommentByOrderIdAndShoeDetailId,
+  callDoAddComment,
+  callGetCommentByShoeId,
+  callGetHistoryComment,
 };

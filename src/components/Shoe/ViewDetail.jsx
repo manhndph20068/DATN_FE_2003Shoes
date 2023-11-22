@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Form, Radio, Rate, Row } from "antd";
+import { Checkbox, Col, Divider, Form, Radio, Row, Rate } from "antd";
 import "./ViewDetail.scss";
 import ImageGallery from "react-image-gallery";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
@@ -17,6 +17,7 @@ import {
   doInitalCartWithAccount,
 } from "../../redux/order/orderSlice";
 import { useNavigate } from "react-router-dom";
+import RateComponent from "./RateComponent";
 
 const ViewDetail = (props) => {
   const [currentQuantity, setCurrentQuantity] = useState(1);
@@ -276,6 +277,22 @@ const ViewDetail = (props) => {
                   </Col>
                 </Col>
               </Row>
+            </div>
+          </div>
+          <div
+            className="Rate"
+            style={{ background: "#f2f2f2", padding: "20px 0" }}
+          >
+            <div style={{ maxWidth: 1290, margin: "0 auto" }}>
+              <div
+                style={{
+                  padding: "25px",
+                  background: "#FFFFFF",
+                  borderRadius: "6px",
+                }}
+              >
+                <RateComponent shoeData={shoeData} />
+              </div>
             </div>
           </div>
         </div>

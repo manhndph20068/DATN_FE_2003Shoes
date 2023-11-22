@@ -1,13 +1,3 @@
-// const ViewOrderHistory = () => {
-//   let param = new URLSearchParams(location.search);
-//   let code = param.get("code");
-//   return (
-//     <div>
-//       <h1>Code : {code}</h1>
-//     </div>
-//   );
-// };
-// export default ViewOrderHistory;
 import React from "react";
 import { Timeline, TimelineEvent } from "@mailtop/horizontal-timeline";
 import { FaBug, FaRegCalendarCheck, FaRegFileAlt } from "react-icons/fa";
@@ -18,6 +8,7 @@ import {
 } from "react-icons/ai";
 import "./ViewOrderHistory.scss";
 import {
+  callGetCommentByOrderIdAndShoeDetailId,
   callGetListOrderHistoryById,
   callGetOrderByCode,
   callGetOrderDetailAtCounterById,
@@ -33,26 +24,20 @@ import { Button, Col, Divider, Row, Table, Tag, message } from "antd";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import ModalComment from "./ModalComment";
+import { GrFormView } from "react-icons/gr";
+import ModalHistoryComment from "./ModalHistoryComment";
 
 const ViewOrderHistory = () => {
   const [dataOrder, setDataOrder] = useState({});
   const [historyOrder, setHistoryOrder] = useState([]);
   const [paymentMethodOrder, setPaymentMethodOrder] = useState([]);
-  const [btnCancel, setBtnCancel] = useState(false);
-  const [btnConfirm, setBtnConfirm] = useState(false);
-  const [btnWaitingForDelivery, setBtnWaitingForDelivery] = useState(false);
-  const [btnDelivered, setBtnDelivered] = useState(false);
-  const [btnFinished, setBtnFinished] = useState(false);
+  const [idOrder, setIdOrder] = useState(null);
   const [listOrderDetail, setListOrderDetail] = useState([]);
-  const [listProvince, setListProvince] = useState([]);
-  const [listWard, setListWard] = useState([]);
-  const [listDistrict, setListDistrict] = useState([]);
-  const [provinceCurrent, setProvinceCurrent] = useState(null);
-  const [wardCurrent, setWardCurrent] = useState(null);
-  const [districtCurrent, setDistrictCurrent] = useState(null);
-  const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
-    useState(false);
-  const [openModalCancelOrder, setOpenModalCancelOrder] = useState(false);
+  const [commentObjects, setCommentObjects] = useState([]);
+  const [openModalComment, setOpenModalComment] = useState(false);
+  const [openModalHistoryComment, setOpenModalHistoryComment] = useState(false);
+  const [idShoeDetail, setIdShoeDetail] = useState(null);
 
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
@@ -66,6 +51,7 @@ const ViewOrderHistory = () => {
       console.log("res.data", res.data);
 
       setDataOrder(res.data);
+      setIdOrder(res.data.id);
       const resCallGetListOrderHistory = await callGetListOrderHistoryById(
         res.data.id
       );
@@ -74,9 +60,12 @@ const ViewOrderHistory = () => {
       );
       if (resCallGetOrderDetail?.status === 0) {
         let index = 1;
-        resCallGetOrderDetail.data.forEach((item) => {
+        const commentPromises = resCallGetOrderDetail.data.map((item) => {
+          console.log("item commentPromises", item);
           item.index = index++;
+          return handleGetCommentOrder(res.data.id, item.idShoeDetail);
         });
+        await Promise.all(commentPromises);
         setListOrderDetail(resCallGetOrderDetail.data);
       }
       console.log("resCallGetListOrderHistory", resCallGetListOrderHistory);
@@ -100,6 +89,7 @@ const ViewOrderHistory = () => {
     if (code) {
       handleGetMethodPayment(code);
     }
+    console.log("commentObjects", commentObjects);
   }, []);
 
   const columnsPaymentMetod = [
@@ -208,7 +198,72 @@ const ViewOrderHistory = () => {
         </div>
       ),
     },
+    {
+      title: "Nhận xét",
+      key: "comment",
+      render: (_, record) => {
+        const shoeId = record.idShoeDetail;
+        console.log("shoeId", shoeId);
+        const comment = commentObjects?.find(
+          (comment) => comment?.idShoe === shoeId
+        );
+
+        return (
+          <div style={{ color: "red" }}>
+            {comment ? (
+              comment.status === 0 ? (
+                <Button
+                  onClick={() => handleOpenModalComment(shoeId)}
+                  style={{ color: "blue" }}
+                >
+                  Nhận xét ngay
+                </Button>
+              ) : (
+                <GrFormView
+                  style={{
+                    fontSize: "2rem",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => handleOpenModalHistoryComment(shoeId)}
+                ></GrFormView>
+              )
+            ) : null}
+          </div>
+        );
+      },
+    },
   ];
+
+  const handleOpenModalHistoryComment = (idShoeDetail) => {
+    setIdShoeDetail(idShoeDetail);
+    setOpenModalHistoryComment(true);
+  };
+
+  const handleOpenModalComment = (idShoeDetail) => {
+    setIdShoeDetail(idShoeDetail);
+    setOpenModalComment(true);
+  };
+
+  const handleGetCommentOrder = async (idOrder, idShoeDetail) => {
+    const data = {
+      idOrder: idOrder,
+      idShoeDetail: idShoeDetail,
+    };
+    console.log("data", data);
+    const res = await callGetCommentByOrderIdAndShoeDetailId(data);
+    console.log("res callGetCommentByOrderIdAndShoeDetailId", res);
+    const newCommentObject = {
+      status: res.data === null ? 0 : 1,
+      idShoe: idShoeDetail,
+    };
+    setCommentObjects((prevComments) => [...prevComments, newCommentObject]);
+
+    // if (+res?.status === 0) {
+    //   return <a>Chưa nhận xét</a>;
+    // } else {
+    //   return <a>Nhận xét</a>;
+    // }
+  };
 
   const handleCalTotalPrice = () => {
     let total = 0;
@@ -493,6 +548,20 @@ const ViewOrderHistory = () => {
         setOpenModalCancelOrder={setOpenModalCancelOrder}
         dataOrder={dataOrder}
       /> */}
+      <ModalComment
+        openModalComment={openModalComment}
+        setOpenModalComment={setOpenModalComment}
+        idOrder={idOrder}
+        idShoeDetail={idShoeDetail}
+        handleGetOrder={handleGetOrder}
+      />
+      <ModalHistoryComment
+        openModalHistoryComment={openModalHistoryComment}
+        setOpenModalHistoryComment={setOpenModalHistoryComment}
+        idOrder={idOrder}
+        idShoeDetail={idShoeDetail}
+        handleGetOrder={handleGetOrder}
+      />
     </div>
   );
 };
