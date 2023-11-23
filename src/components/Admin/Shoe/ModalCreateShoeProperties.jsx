@@ -65,7 +65,8 @@ const ModalCreateShoeProperties = (props) => {
   const fetchNameCategory = async () => {
     const res = await callListShoeCategory();
     if (res?.data && res.data.length > 0) {
-      const newOption = res.data.map((item) => {
+      const filteredData = res.data.filter((item) => item.status !== 0);
+      const newOption = filteredData.map((item) => {
         return {
           value: item.id,
           label: item.name,

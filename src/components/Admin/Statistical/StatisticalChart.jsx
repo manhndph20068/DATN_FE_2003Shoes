@@ -7,6 +7,7 @@ import Top5ProductBestSale from "./Top5ProductBestSale";
 import StatusOfOrder from "./StatusOfOrder";
 import Revalue from "./Revalue";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import CurrentRevalue from "./CurrentRevalue";
 const StatisticalChart = () => {
   const [dataProductsSoldDuringTheYear, setDataProductsSoldDuringTheYear] =
     useState([]);
@@ -32,7 +33,7 @@ const StatisticalChart = () => {
               padding: "10px",
             }}
           >
-            Tạo một ô cho dữ liệu: Doanh thu hôm nay: Đơn hàng / Tổng Tiền
+            <CurrentRevalue />
           </div>
         </div>
         <div

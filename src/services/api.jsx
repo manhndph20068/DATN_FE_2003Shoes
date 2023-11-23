@@ -386,7 +386,13 @@ const callDoOrderByGuest = (data) => {
 };
 
 const callBestSaleProdByYear = (nam) => {
-  return axios.get(`/api/v1/statistical/sanphambanchaytrongnam?nam=${nam}`);
+  return axios.get(
+    `/api/v1/statistical/so-luong-hang-hoa-ban-theo-nam?nam=${nam}`
+  );
+};
+
+const callGetRevalueCurrent = (type) => {
+  return axios.get(`/api/v1/statistical/doanhthutheongay?typeBanHang=${type}`);
 };
 
 const callGetRevalueByYear = (year, type) => {
@@ -613,4 +619,5 @@ export {
   callDoAddComment,
   callGetCommentByShoeId,
   callGetHistoryComment,
+  callGetRevalueCurrent,
 };

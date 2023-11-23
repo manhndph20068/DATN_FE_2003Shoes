@@ -211,7 +211,7 @@ const ViewOrderHistory = () => {
         return (
           <div style={{ color: "red" }}>
             {comment ? (
-              comment.status === 0 ? (
+              dataOrder?.status === 8 && comment.status === 0 ? (
                 <Button
                   onClick={() => handleOpenModalComment(shoeId)}
                   style={{ color: "blue" }}

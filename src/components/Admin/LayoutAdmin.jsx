@@ -8,6 +8,7 @@ import {
   TeamOutlined,
   UserOutlined,
   DollarCircleOutlined,
+  ClusterOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   DownOutlined,
@@ -93,6 +94,15 @@ const items = [
         ),
         key: "Create",
         icon: <AppstoreAddOutlined />,
+      },
+      {
+        label: (
+          <Tooltip title="Quản lý thuộc tính">
+            <Link to="/admin/shoe/properties">Quản lý thuộc tính</Link>
+          </Tooltip>
+        ),
+        key: "Properties",
+        icon: <ClusterOutlined />,
       },
     ],
   },

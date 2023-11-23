@@ -42,6 +42,7 @@ import OrderHistory from "./pages/history";
 import ViewOrderHistory from "./components/OrderHistory/ViewOrderHistory";
 import PaymentNow from "./components/Order/PaymentNow";
 import CheckOnlineOrder from "./pages/resultOrder/CheckOnlineOrder";
+import Properties from "./components/Admin/Properties/Properties";
 
 const Layout = () => {
   return (
@@ -186,6 +187,10 @@ export default function App() {
         {
           path: "shoe/create",
           element: <CreateShoeDetail />,
+        },
+        {
+          path: "shoe/properties",
+          element: <Properties />,
         },
         {
           path: "shopping-counter",

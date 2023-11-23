@@ -1,7 +1,16 @@
-import { Button, Col, Row, Table, Tag, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Popconfirm,
+  Row,
+  Table,
+  Tag,
+  Tooltip,
+  message,
+} from "antd";
 import "./Table.scss";
 import { useEffect, useState } from "react";
-import { callGetListAccount } from "../../../services/api";
+import { callGetListAccount, callInActiveAccount } from "../../../services/api";
 import InputSearchUser from "./InputSearchUser";
 import ModalCreateAccount from "./ModalCreateAccount";
 import {
@@ -9,6 +18,7 @@ import {
   ReloadOutlined,
   ArrowRightOutlined,
   UserOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 
 const StaffTable = () => {
@@ -135,7 +145,41 @@ const StaffTable = () => {
         </>
       ),
     },
+    {
+      title: "",
+      key: "action",
+      render: (text, record, index) => {
+        return (
+          <div style={{ display: "flex", gap: 20 }}>
+            <Popconfirm
+              placement="left"
+              title={`Are you sure to inactive ${record.name}?`}
+              description={`Inactive the ${record.name} ?`}
+              onConfirm={() => InactiveAccByID(record.id)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteOutlined />
+            </Popconfirm>
+          </div>
+        );
+      },
+    },
   ];
+
+  const InactiveAccByID = async (id) => {
+    console.log("id", id);
+    const data = {
+      id: id,
+    };
+    const res = await callInActiveAccount(data);
+    if (res.status === 0) {
+      handleFetchAllListAcc();
+      message.success(res.message);
+    } else {
+      message.error("Huy thất bại");
+    }
+  };
 
   const onChange = (pagination, filters, sorter, extra) => {
     console.log("params", pagination, filters, sorter, extra);
