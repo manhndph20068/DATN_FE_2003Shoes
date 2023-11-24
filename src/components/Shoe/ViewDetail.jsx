@@ -175,7 +175,9 @@ const ViewDetail = (props) => {
                       <div className="code" style={{ fontSize: "1rem" }}>
                         <p>Mã Sp: {shoeData.code}</p>
                       </div>
-                      <div className="title">{shoeData.nameShoe}</div>
+                      <div className="title" style={{ fontSize: "20px" }}>
+                        {shoeData.nameShoe}
+                      </div>
                       <div className="rating">
                         <Rate
                           value={5}
@@ -189,7 +191,10 @@ const ViewDetail = (props) => {
                       </div>
                       <div
                         className="price"
-                        style={{ backgroundColor: "rgb(250, 250, 250)" }}
+                        style={{
+                          fontSize: "15px",
+                          // backgroundColor: "rgb(250, 250, 250)",
+                        }}
                       >
                         <span className="currency">
                           {Intl.NumberFormat("vi-VN", {

@@ -199,8 +199,15 @@ const OrderPage = () => {
         className="order-page-container"
         style={{ maxWidth: 1290, margin: "0 auto" }}
       >
-        <div className="order-step">
+        <div className="order-step" style={{ borderRadius: "20px" }}>
           <Steps current={currentStep} items={items} />
+          <style>
+            {`
+          .order-step .ant-steps-item-title {
+            margin-top: 5px;
+          }
+        `}
+          </style>
         </div>
         {currentStep === 0 && <ViewOrder setCurrentStep={setCurrentStep} />}
         {currentStep === 1 && <ViewPayment setCurrentStep={setCurrentStep} />}

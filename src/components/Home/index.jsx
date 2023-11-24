@@ -234,9 +234,9 @@ const Home = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <FilterTwoTone />
-                  <h4>Bộ lọc tìm kiếm</h4>
-                  <ReloadOutlined title="Reset" />
+                  <FilterTwoTone style={{ margin: "12px" }} />
+                  <h6 style={{ marginTop: "10px" }}>Bộ lọc tìm kiếm</h6>
+                  <ReloadOutlined style={{ marginTop: "12px" }} title="Reset" />
                 </span>
               </div>
               <Divider />

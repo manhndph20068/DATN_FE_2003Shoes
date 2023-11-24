@@ -49,7 +49,7 @@ const Layout = () => {
     <div className="Layout-app">
       <Header />
       <Outlet />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 };
