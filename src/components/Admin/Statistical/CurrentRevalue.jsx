@@ -41,7 +41,7 @@ const CurrentRevalue = (props) => {
 
   return (
     <>
-      <div className="hi">
+      <div className="statistical">
         <div className="type">
           <Form>
             <Row style={{ display: "flex", gap: 10 }}>
