@@ -1,4 +1,4 @@
-import { Button, Table, Radio, Tag } from "antd";
+import { Button, Table, Radio, Tag, Tooltip, Popconfirm } from "antd";
 import { useEffect, useState } from "react";
 import {
   callListShoeBrand,
@@ -11,9 +11,15 @@ import {
   ExportOutlined,
   ImportOutlined,
   PlusOutlined,
+  PlusCircleTwoTone,
+  ArrowRightOutlined,
+  AppstoreOutlined,
+  UserOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import ModalCreateProperties from "./ModalCreateProperties";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 const Properties = () => {
   const [listData, setListData] = useState([]);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -78,6 +84,40 @@ const Properties = () => {
         </>
       ),
     },
+    {
+      title: "Thao tác",
+      key: "action",
+      render: (text, record, index) => {
+        return (
+          <div style={{ display: "flex", gap: 20 }}>
+            <Tooltip title="Cập nhật">
+              <EditOutlined
+                style={{ color: "black", transition: "color 0.3s" }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+              />
+            </Tooltip>
+            <Popconfirm
+              placement="left"
+              title={`Bạn có chắc chắn muốn hủy kích hoạt thuộc tính: ${record.name}?`}
+              description={`Hủy kích hoạt thuộc tính: ${record.name} ?`}
+              onConfirm={() => InactiveAccByID(record.id)}
+              okText="Đồng ý"
+              cancelText="Không"
+            >
+              <Tooltip title="Hủy kích hoạt">
+                <FontAwesomeIcon
+                  icon={faToggleOff}
+                  style={{ color: "black", transition: "color 0.3s" }}
+                  onMouseOver={(e) => (e.target.style.color = "red")}
+                  onMouseOut={(e) => (e.target.style.color = "black")}
+                />
+              </Tooltip>
+            </Popconfirm>
+          </div>
+        );
+      },
+    },
   ];
 
   const renderHeaderTable = () => {
@@ -105,29 +145,47 @@ const Properties = () => {
   };
 
   return (
-    <div style={{ padding: "25px" }}>
-      <div style={{ marginBottom: "25px" }}>
-        <Radio.Group onChange={(e) => onChange(e)} value={currentProperties}>
-          <Radio value={1}>Category</Radio>
-          <Radio value={2}>Brand</Radio>
-          <Radio value={3}>Sole</Radio>
-          <Radio value={4}>Size</Radio>
-          <Radio value={5}>Color</Radio>
-        </Radio.Group>
+    <>
+      <div style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}>
+        <p style={{ fontSize: "15px" }}>
+          <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
+          <span>Quản lý sản phẩm </span>
+          <ArrowRightOutlined
+            style={{
+              fontSize: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
+            }}
+          />
+          <span>
+            <i>Quản lý thuộc tính sản phẩm</i>
+          </span>
+        </p>
       </div>
-      <div className="table">
-        <Table
-          title={renderHeaderTable}
-          dataSource={listData}
-          columns={columns}
+      <div style={{ padding: "25px" }}>
+        <div style={{ marginBottom: "25px" }}>
+          <Radio.Group onChange={(e) => onChange(e)} value={currentProperties}>
+            <Radio value={1}>Category</Radio>
+            <Radio value={2}>Brand</Radio>
+            <Radio value={3}>Sole</Radio>
+            <Radio value={4}>Size</Radio>
+            <Radio value={5}>Color</Radio>
+          </Radio.Group>
+        </div>
+        <div className="table">
+          <Table
+            title={renderHeaderTable}
+            dataSource={listData}
+            columns={columns}
+          />
+        </div>
+        <ModalCreateProperties
+          isModalCreateOpen={isModalCreateOpen}
+          setIsModalCreateOpen={setIsModalCreateOpen}
+          currentProperties={currentProperties}
         />
       </div>
-      <ModalCreateProperties
-        isModalCreateOpen={isModalCreateOpen}
-        setIsModalCreateOpen={setIsModalCreateOpen}
-        currentProperties={currentProperties}
-      />
-    </div>
+    </>
   );
 };
 export default Properties;

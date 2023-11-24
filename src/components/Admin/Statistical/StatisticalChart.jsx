@@ -26,13 +26,7 @@ const StatisticalChart = () => {
             marginRight: "20px",
           }}
         >
-          <div
-            style={{
-              height: "200px",
-              border: "2px solid black",
-              padding: "10px",
-            }}
-          >
+          <div>
             <CurrentRevalue />
           </div>
         </div>

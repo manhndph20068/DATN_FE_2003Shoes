@@ -73,7 +73,7 @@ const ProductsSoldDuringTheYear = (props) => {
               justifyContent: "center",
             }}
           >
-            <h3>Thống kê số lượng sản phẩm đã bán theo năm</h3>
+            <h5>Thống kê số lượng sản phẩm đã bán theo năm</h5>
           </div>
           <div>
             <p style={{ marginBottom: "10px" }}>Chọn năm: </p>

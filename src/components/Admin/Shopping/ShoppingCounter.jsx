@@ -496,7 +496,7 @@ const ShoppingCounter = () => {
     <div style={{ padding: "1.5rem" }}>
       <div style={{ marginBottom: 16 }}>
         <Button onClick={addNewOrder}>
-          <ShoppingOutlined /> Tạo Hoá Đơn
+          <ShoppingOutlined style={{ marginBottom: "8px" }} /> Tạo Hoá Đơn
         </Button>
       </div>
       <div
@@ -520,10 +520,10 @@ const ShoppingCounter = () => {
               <div className="tab-container">
                 <div className="tab-left-content">
                   <div className="title-order">
-                    <h2>Hoá Đơn {pane?.code}</h2>
+                    <h5>Hoá Đơn {pane?.code}</h5>
                   </div>
                   <div className="title-order-infor">
-                    <h3>Thông Tin Khách Hàng</h3>
+                    <h5>Thông Tin Khách Hàng</h5>
                   </div>
                   <div>
                     <Form
@@ -958,7 +958,7 @@ const ShoppingCounter = () => {
                     }}
                   >
                     <span>
-                      <h2>Giỏ Hàng</h2>
+                      <h5>Giỏ Hàng</h5>
                     </span>
                     <span>
                       <Button

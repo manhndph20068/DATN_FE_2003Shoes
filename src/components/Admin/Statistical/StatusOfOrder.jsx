@@ -71,7 +71,7 @@ const StatusOfOrder = (props) => {
                 justifyContent: "center",
               }}
             >
-              <h3>Thống kê hoá đơn</h3>
+              <h5>Thống kê hoá đơn</h5>
             </div>
             <div>
               <p style={{ marginBottom: "10px" }}>Chọn khoảng ngày: </p>

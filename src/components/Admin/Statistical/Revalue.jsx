@@ -70,7 +70,7 @@ const Revalue = (props) => {
                 justifyContent: "center",
               }}
             >
-              <h3>Thống kê doanh thu theo năm</h3>
+              <h5>Thống kê doanh thu theo năm</h5>
             </div>
             <div>
               <p style={{ marginBottom: "10px" }}>Chọn năm: </p>

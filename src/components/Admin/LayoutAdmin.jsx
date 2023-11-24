@@ -17,6 +17,8 @@ import {
   AreaChartOutlined,
   FileDoneOutlined,
   SnippetsOutlined,
+  CaretDownOutlined,
+  BellOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Dropdown, Space, message, Avatar, Tooltip } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -24,39 +26,39 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GrUserAdmin } from "react-icons/gr";
 import { BsFillPersonFill } from "react-icons/bs";
-
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { Content, Footer, Sider } = Layout;
-
 const items = [
   {
     label: <Link to="/admin">Thống Kê</Link>,
     key: "dashboard",
-    icon: <AreaChartOutlined />,
+    icon: <AreaChartOutlined className="iconMenu" />,
   },
   {
     label: <Link to="/admin/shopping-counter">Bán Hàng</Link>,
     key: "counter",
-    icon: <ShoppingCartOutlined />,
+    icon: <ShoppingCartOutlined className="iconMenu" />,
   },
   {
     label: <span>Quản Lý Tài Khoản</span>,
     key: "user",
-    icon: <UserOutlined />,
+    icon: <UserOutlined className="iconMenu" />,
     children: [
       {
         label: <Link to="/admin/admin-table">Admin </Link>,
         key: "admin-table",
-        icon: <GrUserAdmin />,
+        icon: <GrUserAdmin className="iconMenuAccount" />,
       },
       {
         label: <Link to="/admin/staff-table">Nhân Viên </Link>,
         key: "staff-table",
-        icon: <TeamOutlined />,
+        icon: <TeamOutlined className="iconMenuAccount" />,
       },
       {
         label: <Link to="/admin/customer-table">Khách Hàng </Link>,
         key: "customer-table",
-        icon: <BsFillPersonFill />,
+        icon: <BsFillPersonFill className="iconMenuAccount" />,
       },
     ],
   },
@@ -75,7 +77,7 @@ const items = [
   {
     label: <span>Quản Lý Sản Phẩm</span>,
     key: "shoe",
-    icon: <AppstoreOutlined />,
+    icon: <AppstoreOutlined className="iconMenu" />,
     children: [
       {
         label: (
@@ -84,7 +86,7 @@ const items = [
           </Tooltip>
         ),
         key: "shoe",
-        icon: <SnippetsOutlined />,
+        icon: <SnippetsOutlined className="iconMenu" />,
       },
       {
         label: (
@@ -93,28 +95,28 @@ const items = [
           </Tooltip>
         ),
         key: "Create",
-        icon: <AppstoreAddOutlined />,
+        icon: <AppstoreAddOutlined className="iconMenu" />,
       },
       {
         label: (
-          <Tooltip title="Quản lý thuộc tính">
-            <Link to="/admin/shoe/properties">Quản lý thuộc tính</Link>
+          <Tooltip title="Quản lý thuộc tính sản phẩm">
+            <Link to="/admin/shoe/properties">Quản lý thuộc tính sản phẩm</Link>
           </Tooltip>
         ),
         key: "Properties",
-        icon: <ClusterOutlined />,
+        icon: <ClusterOutlined className="iconMenu" />,
       },
     ],
   },
   {
     label: <Link to="/admin/order">Quản Lý Đơn Hàng</Link>,
     key: "order",
-    icon: <FileDoneOutlined />,
+    icon: <FileDoneOutlined className="iconMenu" />,
   },
   {
     label: <Link to="/admin/manage-voucher">Quản Lý Voucher</Link>,
     key: "voucher",
-    icon: <TagsOutlined />,
+    icon: <TagsOutlined className="iconMenu" />,
   },
   // {
   //   label: <Link to="/admin/statistics">Statistics</Link>,
@@ -188,11 +190,39 @@ const LayoutAdmin = () => {
               }
             )}
           </span>
+
           <Dropdown menu={{ items: itemsDropdown }} trigger={["click"]}>
             <a onClick={(e) => e.preventDefault()}>
               <Space>
-                <Avatar src={urlAvatar} /> {user?.name}
-                <DownOutlined />
+                <FontAwesomeIcon
+                  icon={faEnvelope}
+                  style={{
+                    fontSize: "18px",
+                    marginTop: "5px",
+                    marginRight: "20px",
+                    color: "black",
+                  }}
+                />
+                <BellOutlined
+                  style={{
+                    fontSize: "18px",
+                    marginTop: "5px",
+                    marginRight: "20px",
+                    color: "black",
+                  }}
+                />
+                <Avatar src={urlAvatar} />{" "}
+                <span style={{ fontWeight: "bold", color: "black" }}>
+                  {user?.name}
+                </span>
+                <CaretDownOutlined
+                  style={{
+                    marginLeft: "10px",
+                    color: "black",
+                    marginTop: "10px",
+                    marginRight: "20px",
+                  }}
+                />
               </Space>
             </a>
           </Dropdown>

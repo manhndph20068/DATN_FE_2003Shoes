@@ -66,7 +66,7 @@ const Top5ProductBestSale = (props) => {
                 justifyContent: "center",
               }}
             >
-              <h3>Top 5 sản phẩm bán chạy</h3>
+              <h5>Top 5 sản phẩm bán chạy</h5>
             </div>
             <div>
               <p style={{ marginBottom: "10px" }}>Chọn khoảng ngày: </p>
