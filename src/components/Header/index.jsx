@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { GiOpenBook } from "react-icons/gi";
 import { BiCart } from "react-icons/bi";
 import "./header.scss";
-import { DownOutlined } from "@ant-design/icons";
+import "bootstrap/dist/css/bootstrap.min.css";
+import {
+  DownOutlined,
+  UserOutlined,
+  UserAddOutlined,
+  CaretDownOutlined,
+} from "@ant-design/icons";
 import {
   Divider,
   Badge,
@@ -228,131 +234,232 @@ const Header = () => {
   };
   return (
     <>
-      <div className="header-container" justify="center" align="middle">
-        <div className="page-header">
-          <div className="page-header__left">
-            <div
-              className="page-header__toggle"
-              onClick={() => setOpenDrawer(true)}
-            >
-              ☰
-            </div>
-            <div className="page-header__logo">
-              <div className="logo">
-                {/* <GiOpenBook className="icon-react" /> manh-store */}
-                <Link to={"/"}>
-                  <img src={urlLogo} alt="logo" style={{ height: "2.5rem" }} />
-                </Link>
-              </div>
+      <div className="hi">
+        <div className="menu">
+          <div className="header-container" justify="center" align="middle">
+            <div className="page-header">
+              <div className="page-header__left">
+                <div
+                  className="page-header__toggle"
+                  onClick={() => setOpenDrawer(true)}
+                >
+                  ☰
+                </div>
+                <div
+                  className="page-header__logo"
+                  style={{ marginTop: "25px" }}
+                >
+                  <div className="logo">
+                    {/* <GiOpenBook className="icon-react" /> manh-store */}
+                    <Link to={"/"}>
+                      <img
+                        src={urlLogo}
+                        alt="logo"
+                        style={{ height: "4rem" }}
+                      />
+                    </Link>
+                  </div>
 
-              <div className="input-search">
-                <Form layout={"vertical"} form={form}>
-                  <Row>
-                    <Col span={24}>
-                      <Form.Item name="itemShoeDetailSelect">
-                        <Select
-                          showSearch
-                          notFoundContent={"Không tìm thấy sản phẩm"}
-                          onSearch={handleSearch}
-                          optionFilterProp="children"
-                          filterOption={(input, option) =>
-                            (option?.label ?? "").includes(input)
-                          }
-                          filterSort={(optionA, optionB) =>
-                            (optionA?.label ?? "")
-                              .toLowerCase()
-                              .localeCompare(
-                                (optionB?.label ?? "").toLowerCase()
-                              )
-                          }
-                          // options={listShoeDetail}
-                          onChange={(value) => handleChangeShoeDetail(value)}
-                        >
-                          {searchInput && listShoeDetail
-                            ? listShoeDetail.map((item) => {
-                                return (
-                                  <Option value={item.value} label={item.label}>
-                                    <div
-                                      style={{
-                                        gap: "3rem",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "row",
-                                      }}
-                                    >
-                                      <span>
-                                        <img
-                                          src={item.thumbnail}
-                                          alt={item.thumbnail}
+                  <div className="input-search">
+                    <Form layout={"vertical"} form={form}>
+                      <Row>
+                        <Col span={24}>
+                          <Form.Item name="itemShoeDetailSelect">
+                            <Select
+                              showSearch
+                              notFoundContent={"Không tìm thấy sản phẩm"}
+                              onSearch={handleSearch}
+                              optionFilterProp="children"
+                              filterOption={(input, option) =>
+                                (option?.label ?? "").includes(input)
+                              }
+                              filterSort={(optionA, optionB) =>
+                                (optionA?.label ?? "")
+                                  .toLowerCase()
+                                  .localeCompare(
+                                    (optionB?.label ?? "").toLowerCase()
+                                  )
+                              }
+                              // options={listShoeDetail}
+                              onChange={(value) =>
+                                handleChangeShoeDetail(value)
+                              }
+                            >
+                              {searchInput && listShoeDetail
+                                ? listShoeDetail.map((item) => {
+                                    return (
+                                      <Option
+                                        value={item.value}
+                                        label={item.label}
+                                      >
+                                        <div
                                           style={{
-                                            height: "3rem",
-                                            width: "3rem",
+                                            gap: "3rem",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            flexDirection: "row",
                                           }}
-                                        />{" "}
-                                      </span>
+                                        >
+                                          <span>
+                                            <img
+                                              src={item.thumbnail}
+                                              alt={item.thumbnail}
+                                              style={{
+                                                height: "3rem",
+                                                width: "3rem",
+                                              }}
+                                            />{" "}
+                                          </span>
 
-                                      <span>{item.label}</span>
-                                      <span>
-                                        Giá:{" "}
-                                        {Intl.NumberFormat("vi-VN", {
-                                          style: "currency",
-                                          currency: "VND",
-                                        }).format(item.price)}{" "}
-                                      </span>
-                                    </div>
-                                  </Option>
-                                );
-                              })
-                            : null}
-                        </Select>
-                        {/* <Select options={listShoeDetail}>hi</Select> */}
-                      </Form.Item>
-                    </Col>
-                  </Row>
-                </Form>
+                                          <span>{item.label}</span>
+                                          <span>
+                                            Giá:{" "}
+                                            {Intl.NumberFormat("vi-VN", {
+                                              style: "currency",
+                                              currency: "VND",
+                                            }).format(item.price)}{" "}
+                                          </span>
+                                        </div>
+                                      </Option>
+                                    );
+                                  })
+                                : null}
+                            </Select>
+                            {/* <Select options={listShoeDetail}>hi</Select> */}
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Form>
+                  </div>
+                </div>
+              </div>
+              <div className="page-header__right" style={{ marginTop: "10px" }}>
+                <ul className="navigation">
+                  <li className="navigation__item badge">
+                    <Popover
+                      placement="bottom"
+                      title={"Giỏ Hàng"}
+                      content={contentPopover}
+                      arrow={true}
+                      rootClassName="popover-cart"
+                    >
+                      <Badge count={cart.length ?? 0} size={"small"}>
+                        <BiCart className="icon-cart" />
+                      </Badge>
+                    </Popover>
+                  </li>
+                  <li className="navigation__item mobile">
+                    <Divider type="vertical" />
+                  </li>
+                  {/* Đăng nhập */}
+                  <li className="navigation__item mobile">
+                    {!isAuthenticated ? (
+                      <div>
+                        <span onClick={() => navigate("/login")}>
+                          <UserOutlined />
+                        </span>
+                        <span
+                          onClick={() => navigate("/login")}
+                          className="account"
+                        >
+                          {" "}
+                          Đăng nhập
+                        </span>
+                      </div>
+                    ) : (
+                      <Dropdown
+                        className="accountLogin"
+                        menu={{ items }}
+                        trigger={["click"]}
+                      >
+                        <a onClick={(e) => e.preventDefault()}>
+                          <Space className="accountLogin">
+                            <Avatar src={urlAvatar} />
+                            <span
+                              style={{ fontWeight: "bold", color: "black" }}
+                            >
+                              {user?.name}
+                            </span>
+                            <CaretDownOutlined
+                              style={{
+                                marginLeft: "10px",
+                                marginBottom: "3px",
+                                color: "black",
+                              }}
+                            />
+                          </Space>
+                        </a>
+                      </Dropdown>
+                    )}
+                  </li>
+                  {/* đăng kí */}
+                  <li
+                    className="navigation__item mobile"
+                    style={{ marginLeft: "20px" }}
+                  >
+                    {!isAuthenticated ? (
+                      <div>
+                        <span onClick={() => navigate("/login")}>
+                          <UserAddOutlined />
+                        </span>
+                        <span
+                          onClick={() => navigate("/login")}
+                          className="account"
+                        >
+                          {" "}
+                          Đăng ký
+                        </span>
+                      </div>
+                    ) : (
+                      <span></span>
+                    )}
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-          <div className="page-header__right">
-            <ul className="navigation">
-              <li className="navigation__item badge">
-                <Popover
-                  placement="bottom"
-                  title={"Giỏ Hàng"}
-                  content={contentPopover}
-                  arrow={true}
-                  rootClassName="popover-cart"
+          <div className="submenu">
+            <nav className="navbar navbar-expand-lg ">
+              <div className="container-fluid">
+                <a
+                  className="navbar-brand"
+                  href="#trang-chu"
+                  style={{ fontSize: "16px" }}
                 >
-                  <Badge count={cart.length ?? 0} size={"small"}>
-                    <BiCart className="icon-cart" />
-                  </Badge>
-                </Popover>
-              </li>
-              <li className="navigation__item mobile">
-                <Divider type="vertical" />
-              </li>
-              <li className="navigation__item mobile">
-                {!isAuthenticated ? (
-                  <span onClick={() => navigate("/login")} className="account">
-                    Tai khoan
-                  </span>
-                ) : (
-                  <Dropdown
-                    className="account"
-                    menu={{ items }}
-                    trigger={["click"]}
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Space className="account">
-                        <Avatar src={urlAvatar} />
-                        {user?.name}
-                        <DownOutlined />
-                      </Space>
+                  Trang chủ
+                </a>
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNavAltMarkup"
+                  aria-controls="navbarNavAltMarkup"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span className="navbar-toggler-icon"></span>
+                </button>
+                <div
+                  className="collapse navbar-collapse"
+                  id="navbarNavAltMarkup"
+                >
+                  <div className="navbar-nav">
+                    <a className="nav-link " href="#gioi-thieu">
+                      Giới Thiệu
                     </a>
-                  </Dropdown>
-                )}
-              </li>
-            </ul>
+                    <a className="nav-link" href="#tin-tuc">
+                      Tin Tức
+                    </a>
+                    <a className="nav-link" href="#san-pham">
+                      Sản Phẩm
+                    </a>
+                    <a className="nav-link " href="#lien-he">
+                      Liên Hệ
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </nav>
           </div>
         </div>
       </div>

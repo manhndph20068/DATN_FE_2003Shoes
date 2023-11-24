@@ -54,7 +54,7 @@ const RateComponent = (props) => {
         }}
       >
         <span className="rate">
-          <h2>Đánh giá ({totalRate ?? 0})</h2>
+          <h5>Đánh giá ({totalRate ?? 0})</h5>
         </span>
         <span className="averaged-stars">
           {" "}
