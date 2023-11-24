@@ -125,6 +125,7 @@ const Properties = () => {
       <ModalCreateProperties
         isModalCreateOpen={isModalCreateOpen}
         setIsModalCreateOpen={setIsModalCreateOpen}
+        currentProperties={currentProperties}
       />
     </div>
   );

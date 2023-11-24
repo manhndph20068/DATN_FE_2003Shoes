@@ -61,6 +61,8 @@ const ViewPayment = (props) => {
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
   const [discountVoucher, setDiscountVoucher] = useState(0);
+  const [typeOfReduceVoucher, setTypeOfReduceVoucher] = useState(null);
+  const [vocherSelected, setVoucherSelected] = useState({});
   const { setCurrentStep } = props;
 
   const cart = useSelector((state) => state.order.cart);
@@ -193,7 +195,15 @@ const ViewPayment = (props) => {
   }, [provinceSelected, districtSelected]);
 
   const handleSubmitOrderVnPay = async () => {
-    const orderTotal = totalPrice - discountVoucher;
+    const orderTotal =
+      typeOfReduceVoucher === 1
+        ? Math.ceil(
+            totalPrice -
+              discountVoucher -
+              (totalPrice - discountVoucher) *
+                (vocherSelected?.discountAmount / 100)
+          )
+        : Math.ceil(totalPrice - discountVoucher) || 0;
     const orderInfo = "VNPAY" + uuidv4();
     console.log("orderInfo", orderInfo);
     console.log("orderTotal", orderTotal);
@@ -240,8 +250,22 @@ const ViewPayment = (props) => {
       phoneNumber: phone,
       address: province + ", " + district + ", " + ward + ", " + address,
       shipFee: shipPrice,
-      moneyReduce: discountVoucher,
-      totalMoney: totalPrice - discountVoucher,
+      moneyReduce:
+        typeOfReduceVoucher === 1
+          ? Math.ceil(
+              (totalPrice - discountVoucher) *
+                (vocherSelected?.discountAmount / 100)
+            )
+          : discountVoucher || 0,
+      totalMoney:
+        typeOfReduceVoucher === 1
+          ? Math.ceil(
+              totalPrice -
+                discountVoucher -
+                (totalPrice - discountVoucher) *
+                  (vocherSelected?.discountAmount / 100)
+            )
+          : Math.ceil(totalPrice - discountVoucher) || 0,
       note: "Đơn khách đặt",
       shoeDetailListRequets: detailOrder,
     };
@@ -355,7 +379,14 @@ const ViewPayment = (props) => {
     console.log("item", value);
     const voucher = listVoucher?.filter((item) => item.id === value)[0];
     console.log("voucher", voucher);
-    setDiscountVoucher(voucher?.discountAmount ?? 0);
+    setVoucherSelected(voucher);
+    setTypeOfReduceVoucher(voucher?.reduceForm);
+    if (voucher?.reduceForm === 1) {
+      setDiscountVoucher(0);
+    } else {
+      setDiscountVoucher(voucher?.discountAmount ?? 0);
+    }
+    // setDiscountVoucher(voucher?.discountAmount ?? 0);
   };
 
   const handleGetListCartDetail = async (id) => {
@@ -364,6 +395,15 @@ const ViewPayment = (props) => {
     if (res?.status === 0) {
       dispatch(doInitalCartWithAccount(res.data));
     }
+  };
+
+  const handleCalTotalPriceOfProd = () => {
+    let total = 0;
+    listOrderDetail?.forEach((item) => {
+      total += item.price * item.quantity;
+    }) ?? 0;
+
+    return total;
   };
 
   const handleGetCartByAccountId = async (id) => {
@@ -610,10 +650,12 @@ const ViewPayment = (props) => {
 
                             <span>
                               Giá trị giảm:{" "}
-                              {Intl.NumberFormat("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                              }).format(item.discountAmount)}
+                              {item.discountAmount <= 100
+                                ? `${+item.discountAmount} %`
+                                : Intl.NumberFormat("vi-VN", {
+                                    style: "currency",
+                                    currency: "VND",
+                                  }).format(item.discountAmount)}
                             </span>
 
                             {/* <span>
@@ -681,10 +723,22 @@ const ViewPayment = (props) => {
                 >
                   <span>Voucher giảm giá: </span>
                   <span style={{ fontSize: "1rem" }}>
-                    {Intl.NumberFormat("vi-VN", {
+                    {/* {Intl.NumberFormat("vi-VN", {
                       style: "currency",
                       currency: "VND",
-                    }).format(discountVoucher || 0)}
+                    }).format(discountVoucher || 0)} */}
+                    {typeOfReduceVoucher === 1
+                      ? Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(
+                          (totalPrice - discountVoucher) *
+                            (vocherSelected?.discountAmount / 100)
+                        )
+                      : Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(discountVoucher || 0)}
                   </span>
                 </div>
                 <div className="order-tong">
@@ -693,7 +747,14 @@ const ViewPayment = (props) => {
                     {Intl.NumberFormat("vi-VN", {
                       style: "currency",
                       currency: "VND",
-                    }).format(totalPrice - discountVoucher || 0)}
+                    }).format(
+                      typeOfReduceVoucher === 1
+                        ? totalPrice -
+                            discountVoucher -
+                            (totalPrice - discountVoucher) *
+                              (vocherSelected?.discountAmount / 100)
+                        : totalPrice - discountVoucher || 0
+                    )}
                   </span>
                 </div>
                 <Divider />

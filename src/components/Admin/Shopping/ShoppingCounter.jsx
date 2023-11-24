@@ -57,6 +57,8 @@ const ShoppingCounter = () => {
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
   const [listShoeDataQR, setListShoeDataQR] = useState([]);
+  const [typeOfReduceVoucher, setTypeOfReduceVoucher] = useState(null);
+  const [vocherSelected, setVoucherSelected] = useState({});
 
   const [form] = Form.useForm();
 
@@ -204,7 +206,8 @@ const ShoppingCounter = () => {
     setDistrictSelected(null);
     setWardSelected(null);
     console.log("activeKey 2", activeKey);
-
+    setVoucherSelected({});
+    setTypeOfReduceVoucher(null);
     fetchListShoeDetailAtCounter();
     handleGetOrderDetailById(activeKey);
     console.log("activeKey 3", activeKey);
@@ -288,7 +291,10 @@ const ShoppingCounter = () => {
         phoneNumber: phone,
         address: province + ", " + district + ", " + ward + ", " + address,
         shipFee: shipPrice,
-        moneyReduce: discountVoucher,
+        moneyReduce:
+          vocherSelected?.reduceForm === 0
+            ? discountVoucher
+            : handleCalTotalPriceOfProd() - handleCalTotalPrice(),
         totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
         payDate:
           typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy"
@@ -332,7 +338,10 @@ const ShoppingCounter = () => {
         phoneNumber: null,
         address: null,
         shipFee: null,
-        moneyReduce: discountVoucher,
+        moneyReduce:
+          vocherSelected?.reduceForm === 0
+            ? discountVoucher
+            : handleCalTotalPriceOfProd() - handleCalTotalPrice(),
         totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
         payDate: new Date().toISOString(),
         shipDate: null,
@@ -378,6 +387,27 @@ const ShoppingCounter = () => {
   }, [totalMoney, listOrderDetail]);
 
   const handleCalTotalPrice = () => {
+    if (typeOfReduceVoucher === 1) {
+      let totalWithReduce = 0;
+      listOrderDetail?.forEach((item) => {
+        totalWithReduce += item.price * item.quantity;
+      });
+      console.log(
+        "totalWithReduce1",
+        totalWithReduce * (vocherSelected?.discountAmount / 100)
+      );
+      return totalWithReduce * (vocherSelected?.discountAmount / 100);
+    } else {
+      let total = 0;
+      listOrderDetail?.forEach((item) => {
+        total += item.price * item.quantity;
+      }) ?? 0;
+
+      return total;
+    }
+  };
+
+  const handleCalTotalPriceOfProd = () => {
     let total = 0;
     listOrderDetail?.forEach((item) => {
       total += item.price * item.quantity;
@@ -451,7 +481,13 @@ const ShoppingCounter = () => {
     console.log("value", value);
     const voucher = listVoucher?.filter((item) => item.id === value)[0];
     console.log("voucher", voucher);
-    setDiscountVoucher(voucher?.discountAmount ?? 0);
+    setVoucherSelected(voucher);
+    setTypeOfReduceVoucher(voucher?.reduceForm);
+    if (voucher?.reduceForm === 1) {
+      setDiscountVoucher(0);
+    } else {
+      setDiscountVoucher(voucher?.discountAmount ?? 0);
+    }
     form.resetFields(["moneyPaid"]);
     setRefund(0);
   };
@@ -626,7 +662,7 @@ const ShoppingCounter = () => {
                                   {Intl.NumberFormat("vi-VN", {
                                     style: "currency",
                                     currency: "VND",
-                                  }).format(handleCalTotalPrice())}
+                                  }).format(handleCalTotalPriceOfProd())}
                                 </span>
                               </div>
                             </Col>
@@ -869,10 +905,14 @@ const ShoppingCounter = () => {
 
                                       <span>
                                         Giá trị giảm:{" "}
-                                        {Intl.NumberFormat("vi-VN", {
-                                          style: "currency",
-                                          currency: "VND",
-                                        }).format(item.discountAmount)}
+                                        {item.reduceForm === 0 ? (
+                                          Intl.NumberFormat("vi-VN", {
+                                            style: "currency",
+                                            currency: "VND",
+                                          }).format(item.discountAmount)
+                                        ) : (
+                                          <>{item.discountAmount}%</>
+                                        )}
                                       </span>
 
                                       <span>
@@ -952,7 +992,7 @@ const ShoppingCounter = () => {
                       {Intl.NumberFormat("vi-VN", {
                         style: "currency",
                         currency: "VND",
-                      }).format(handleCalTotalPrice())}
+                      }).format(handleCalTotalPriceOfProd())}
                     </span>
                   </div>
                 </div>

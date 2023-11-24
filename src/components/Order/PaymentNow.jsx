@@ -56,6 +56,8 @@ const PaymentNow = () => {
   const [wardSelected, setWardSelected] = useState(null);
   const [discountVoucher, setDiscountVoucher] = useState(0);
   const [addressAccount, setAddressAccount] = useState(null);
+  const [typeOfReduceVoucher, setTypeOfReduceVoucher] = useState(null);
+  const [vocherSelected, setVoucherSelected] = useState({});
   const [form] = Form.useForm();
 
   const idCart = useSelector((state) => state.account.idCart);
@@ -184,7 +186,15 @@ const PaymentNow = () => {
   }, [provinceSelected, districtSelected]);
 
   const handleSubmitOrderVnPay = async () => {
-    const orderTotal = totalPrice - discountVoucher;
+    const orderTotal =
+      typeOfReduceVoucher === 1
+        ? Math.ceil(
+            totalPrice -
+              discountVoucher -
+              (totalPrice - discountVoucher) *
+                (vocherSelected?.discountAmount / 100)
+          )
+        : Math.ceil(totalPrice - discountVoucher) || 0;
     const orderInfo = "VNPAY" + uuidv4();
     console.log("orderInfo", orderInfo);
     console.log("orderTotal", orderTotal);
@@ -227,15 +237,30 @@ const PaymentNow = () => {
       phoneNumber: phone,
       address: province + ", " + district + ", " + ward + ", " + address,
       shipFee: shipPrice,
-      moneyReduce: discountVoucher,
-      totalMoney: totalPrice - discountVoucher,
+      moneyReduce:
+        typeOfReduceVoucher === 1
+          ? Math.ceil(
+              (totalPrice - discountVoucher) *
+                (vocherSelected?.discountAmount / 100)
+            )
+          : discountVoucher || 0,
+      totalMoney:
+        typeOfReduceVoucher === 1
+          ? Math.ceil(
+              totalPrice -
+                discountVoucher -
+                (totalPrice - discountVoucher) *
+                  (vocherSelected?.discountAmount / 100)
+            )
+          : Math.ceil(totalPrice - discountVoucher) || 0,
       note: "Đơn khách đặt",
       shoeDetailListRequets: detailOrder,
     };
 
     console.log("values", values);
-    console.log("data", data);
+
     if (typePaid === 2) {
+      console.log("data", data);
       dispatch(doInitalTempData(data));
       handleSubmitOrderVnPay();
     } else {
@@ -247,7 +272,15 @@ const PaymentNow = () => {
           const resAddMethodPayment = await callAddMethodPayment({
             orderId: res?.data?.id,
             method: "Thanh toán khi nhận hàng",
-            total: totalPrice - discountVoucher,
+            total:
+              typeOfReduceVoucher === 1
+                ? Math.ceil(
+                    totalPrice -
+                      discountVoucher -
+                      (totalPrice - discountVoucher) *
+                        (vocherSelected?.discountAmount / 100)
+                  )
+                : Math.ceil(totalPrice - discountVoucher) || 0,
             note: `Khách hàng đặt`,
             status: 0,
           });
@@ -268,7 +301,15 @@ const PaymentNow = () => {
           await callAddMethodPayment({
             orderId: res?.data?.id,
             method: "Thanh toán khi nhận hàng",
-            total: totalPrice - discountVoucher,
+            total:
+              typeOfReduceVoucher === 1
+                ? Math.ceil(
+                    totalPrice -
+                      discountVoucher -
+                      (totalPrice - discountVoucher) *
+                        (vocherSelected?.discountAmount / 100)
+                  )
+                : Math.ceil(totalPrice - discountVoucher) || 0,
             note: `Khách hàng đặt`,
             status: 0,
           });
@@ -335,6 +376,7 @@ const PaymentNow = () => {
     const data = {
       totalMoneyMyOrder: totalPrice,
     };
+    console.log("data -----------", data);
     const res = await callGetVouchersByTotalMoney(data);
     if (res?.status === 0) {
       setListVoucher(res?.data);
@@ -345,7 +387,14 @@ const PaymentNow = () => {
     console.log("item", value);
     const voucher = listVoucher?.filter((item) => item.id === value)[0];
     console.log("voucher", voucher);
-    setDiscountVoucher(voucher?.discountAmount ?? 0);
+    setVoucherSelected(voucher);
+    setTypeOfReduceVoucher(voucher?.reduceForm);
+    if (voucher?.reduceForm === 1) {
+      setDiscountVoucher(0);
+    } else {
+      setDiscountVoucher(voucher?.discountAmount ?? 0);
+    }
+    // setDiscountVoucher(voucher?.discountAmount ?? 0);
   };
 
   const handleGetListCartDetail = async (id) => {
@@ -377,7 +426,8 @@ const PaymentNow = () => {
     if (dataAcc?.id) {
       handleGetAddressByIDAccount();
     }
-  }, []);
+    handleGetListVoucher();
+  }, [totalPrice]);
 
   return (
     <div className="order-page-layout">
@@ -589,10 +639,12 @@ const PaymentNow = () => {
 
                           <span>
                             Giá trị giảm:{" "}
-                            {Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(item.discountAmount)}
+                            {item.discountAmount <= 100
+                              ? `${+item.discountAmount} %`
+                              : Intl.NumberFormat("vi-VN", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(item.discountAmount)}
                           </span>
                         </div>
                       </Option>
@@ -658,7 +710,12 @@ const PaymentNow = () => {
                   {Intl.NumberFormat("vi-VN", {
                     style: "currency",
                     currency: "VND",
-                  }).format(discountVoucher || 0)}
+                  }).format(
+                    typeOfReduceVoucher === 1
+                      ? (totalPrice - discountVoucher) *
+                          (vocherSelected?.discountAmount / 100)
+                      : discountVoucher || 0
+                  )}
                 </span>
               </div>
               <div className="order-tong">
@@ -667,7 +724,14 @@ const PaymentNow = () => {
                   {Intl.NumberFormat("vi-VN", {
                     style: "currency",
                     currency: "VND",
-                  }).format(totalPrice - discountVoucher || 0)}
+                  }).format(
+                    typeOfReduceVoucher === 1
+                      ? totalPrice -
+                          discountVoucher -
+                          (totalPrice - discountVoucher) *
+                            (vocherSelected?.discountAmount / 100)
+                      : totalPrice - discountVoucher || 0
+                  )}
                 </span>
               </div>
               <Divider />
