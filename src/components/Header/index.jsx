@@ -67,7 +67,7 @@ const Header = () => {
           cart.map((item, index) => {
             return (
               <div className="book-cart" key={`shoe-${index}`}>
-                <img src={item.detail.thumbnail} />
+                <img style={{ width: "5rem" }} src={item.detail.thumbnail} />
                 <div style={{ width: "10rem" }}>{item.detail.code}</div>
                 <div style={{ width: "5rem" }}>Số lượng {item.quantity}</div>
                 <Row>
@@ -403,7 +403,7 @@ const Header = () => {
                           <UserAddOutlined />
                         </span>
                         <span
-                          onClick={() => navigate("/login")}
+                          onClick={() => navigate("/register")}
                           className="account"
                         >
                           {" "}
@@ -423,7 +423,7 @@ const Header = () => {
               <div className="container-fluid">
                 <a
                   className="navbar-brand"
-                  href="#trang-chu"
+                  href="/"
                   style={{ fontSize: "16px" }}
                 >
                   Trang chủ
@@ -444,16 +444,16 @@ const Header = () => {
                   id="navbarNavAltMarkup"
                 >
                   <div className="navbar-nav">
-                    <a className="nav-link " href="#gioi-thieu">
+                    <a className="nav-link " href="introduction">
                       Giới Thiệu
                     </a>
-                    <a className="nav-link" href="#tin-tuc">
+                    <a className="nav-link" href="news">
                       Tin Tức
                     </a>
-                    <a className="nav-link" href="#san-pham">
+                    <a className="nav-link" href="productions">
                       Sản Phẩm
                     </a>
-                    <a className="nav-link " href="#lien-he">
+                    <a className="nav-link " href="contact">
                       Liên Hệ
                     </a>
                   </div>

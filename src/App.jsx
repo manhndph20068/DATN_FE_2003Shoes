@@ -43,6 +43,9 @@ import ViewOrderHistory from "./components/OrderHistory/ViewOrderHistory";
 import PaymentNow from "./components/Order/PaymentNow";
 import CheckOnlineOrder from "./pages/resultOrder/CheckOnlineOrder";
 import Properties from "./components/Admin/Properties/Properties";
+import IntroductionPage from "./pages/introduction";
+import ProductionPage from "./pages/production";
+import NewsPage from "./pages/news";
 
 const Layout = () => {
   return (
@@ -114,6 +117,22 @@ export default function App() {
         {
           path: "contact",
           element: <ContactPage />,
+        },
+        {
+          path: "introduction",
+          element: <IntroductionPage />,
+        },
+        {
+          path: "productions",
+          element: <ProductionPage />,
+        },
+        {
+          path: "contact",
+          element: <ContactPage />,
+        },
+        {
+          path: "news",
+          element: <NewsPage />,
         },
         {
           path: "shoe/:slug",
@@ -221,6 +240,10 @@ export default function App() {
       {isLoading == false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
+      window.location.pathname === "/introduction" ||
+      window.location.pathname === "/news" ||
+      window.location.pathname === "/productions" ||
+      window.location.pathname === "/contact" ||
       window.location.pathname === "/order" ||
       window.location.pathname === "/order-now" ||
       window.location.pathname === "/order-success" ||
