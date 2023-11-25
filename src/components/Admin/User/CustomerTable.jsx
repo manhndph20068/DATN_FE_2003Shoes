@@ -16,7 +16,10 @@ import {
   ArrowRightOutlined,
   DeleteOutlined,
   UserOutlined,
+  EyeOutlined,
 } from "@ant-design/icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 const CustomerTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -105,20 +108,34 @@ const CustomerTable = () => {
       ),
     },
     {
-      title: "",
+      title: "Thao tác",
       key: "action",
       render: (text, record, index) => {
         return (
           <div style={{ display: "flex", gap: 20 }}>
+            <Tooltip title="Chi tiết">
+              <EyeOutlined
+                style={{ color: "black", transition: "color 0.3s" }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+              />
+            </Tooltip>
             <Popconfirm
               placement="left"
-              title={`Are you sure to inactive ${record.name}?`}
-              description={`Inactive the ${record.name} ?`}
+              title={`Bạn có chắc chắn muốn hủy kích hoạt tài khoản khách hàng: ${record.name}?`}
+              description={`Hủy kích hoạt khách hàng: ${record.name} ?`}
               onConfirm={() => InactiveAccByID(record.id)}
-              okText="Yes"
-              cancelText="No"
+              okText="Đồng ý"
+              cancelText="Không"
             >
-              <DeleteOutlined />
+              <Tooltip title="Hủy kích hoạt">
+                <FontAwesomeIcon
+                  icon={faToggleOff}
+                  style={{ color: "black", transition: "color 0.3s" }}
+                  onMouseOver={(e) => (e.target.style.color = "red")}
+                  onMouseOut={(e) => (e.target.style.color = "black")}
+                />
+              </Tooltip>
             </Popconfirm>
           </div>
         );

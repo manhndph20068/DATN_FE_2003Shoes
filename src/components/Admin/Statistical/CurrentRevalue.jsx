@@ -8,7 +8,7 @@ import {
   callGetRevalueCurrent,
   callGetTop5Prod,
 } from "../../../services/api";
-
+import "./Statistical.scss";
 const CurrentRevalue = (props) => {
   const [totalPrice, setTotalPrice] = useState(null);
   const [type, setType] = useState(1);
@@ -41,34 +41,49 @@ const CurrentRevalue = (props) => {
 
   return (
     <>
-      <div>
-        <Form>
-          <Row style={{ display: "flex", gap: 10 }}>
-            <Form.Item>
-              <Select
-                placeholder="Select type"
-                optionFilterProp="children"
-                onChange={onChangeType}
-                value={type}
-                options={[
-                  {
-                    value: 1,
-                    label: "Tại quầy",
-                  },
-                  {
-                    value: 2,
-                    label: "Online",
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Row>
-        </Form>
-      </div>
-      <div>
-        <span>Tổng tiền {totalPrice ?? 0}</span>
-        <br />
-        <span>Tổng đơn hàng {totalOrder ?? 0}</span>
+      <div className="statistical">
+        <div className="type">
+          <Form>
+            <Row style={{ display: "flex", gap: 10 }}>
+              <Form.Item style={{ marginTop: "10px" }}>
+                <span style={{ marginLeft: "5px", marginBottom: "10px" }}>
+                  Doanh Thu Hôm Nay:
+                </span>
+                <Select
+                  style={{ marginTop: "10px", width: "200px" }}
+                  placeholder="Select type"
+                  optionFilterProp="children"
+                  onChange={onChangeType}
+                  value={type}
+                  options={[
+                    {
+                      value: 1,
+                      label: "Tại quầy",
+                      style: { backgroundColor: "#3498db", color: "white" },
+                    },
+                    {
+                      value: 2,
+                      label: "Online",
+                      style: { backgroundColor: "#2ecc71", color: "white" },
+                    },
+                  ]}
+                />
+              </Form.Item>
+            </Row>
+          </Form>
+        </div>
+        <div>
+          <span style={{ marginLeft: "10px" }}>
+            Tổng tiền:{" "}
+            <span style={{ fontWeight: "bold" }}>{totalPrice ?? 0} vnđ</span>
+          </span>
+          <br />
+          <br />
+          <span style={{ marginLeft: "10px", marginTop: "10px" }}>
+            Tổng đơn hàng:{" "}
+            <span style={{ fontWeight: "bold" }}>{totalOrder ?? 0} đơn</span>
+          </span>
+        </div>
       </div>
     </>
   );

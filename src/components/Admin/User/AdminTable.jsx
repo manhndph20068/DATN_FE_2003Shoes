@@ -107,26 +107,26 @@ const AdminTable = () => {
         </>
       ),
     },
-    {
-      title: "",
-      key: "action",
-      render: (text, record, index) => {
-        return (
-          <div style={{ display: "flex", gap: 20 }}>
-            <Popconfirm
-              placement="left"
-              title={`Are you sure to inactive ${record.name}?`}
-              description={`Inactive the ${record.name} ?`}
-              onConfirm={() => InactiveAccByID(record.id)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <DeleteOutlined />
-            </Popconfirm>
-          </div>
-        );
-      },
-    },
+    // {
+    //   title: "",
+    //   key: "action",
+    //   render: (text, record, index) => {
+    //     return (
+    //       <div style={{ display: "flex", gap: 20 }}>
+    //         <Popconfirm
+    //           placement="left"
+    //           title={`Are you sure to inactive ${record.name}?`}
+    //           description={`Inactive the ${record.name} ?`}
+    //           onConfirm={() => InactiveAccByID(record.id)}
+    //           okText="Yes"
+    //           cancelText="No"
+    //         >
+    //           <DeleteOutlined />
+    //         </Popconfirm>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   const onChange = (pagination, filters, sorter, extra) => {
