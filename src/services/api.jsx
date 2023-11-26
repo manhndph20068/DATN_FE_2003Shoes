@@ -461,12 +461,27 @@ const callGetHistoryComment = (data) => {
   return axios.post("/api/v1/comment/get-one", data);
 };
 
+const callDoUpdateUser = (data) => {
+  return axios.post("/api/v1/account/update-account", data);
+};
+
 const callGetAddressByID = (id) => {
   return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
 };
 
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
+};
+
+const callDoInActiveVoucher = (data) => {
+  return axios.post("/api/v1/admin/voucher-order/deleteVoucherOrder", data);
+};
+
+const callDoActiveVoucher = (data) => {
+  return axios.post(
+    "/api/v1/admin/voucher-order/updateStatusVoucherOrderCancelFromWait",
+    data
+  );
 };
 
 const callUploadBookImg = (fileImg) => {
@@ -620,4 +635,7 @@ export {
   callGetCommentByShoeId,
   callGetHistoryComment,
   callGetRevalueCurrent,
+  callDoUpdateUser,
+  callDoInActiveVoucher,
+  callDoActiveVoucher,
 };

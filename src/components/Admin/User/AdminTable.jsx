@@ -20,6 +20,7 @@ import {
   ArrowRightOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import ShowDetailUser from "./ShowDetailUser";
 const AdminTable = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(3);
@@ -27,6 +28,8 @@ const AdminTable = () => {
   const [listAdmin, setListAdmin] = useState([]);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
   const [roleId, setRoleId] = useState(1);
+  const [openViewDetail, setOpenViewDetail] = useState(false);
+  const [dataViewDetail, setDataViewDetail] = useState({});
   const [filter, setFilter] = useState({
     role: 1,
     page: current - 1,
@@ -78,6 +81,16 @@ const AdminTable = () => {
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ảnh đại diện",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (_, record) => (
+        <>
+          <img src={record.avatar} alt="" style={{ width: "50px" }} />
+        </>
+      ),
     },
     {
       title: "Email",
@@ -250,6 +263,11 @@ const AdminTable = () => {
         setIsModalCreateOpen={setIsModalCreateOpen}
         roleId={roleId}
         handleFetchAllListAcc={handleFetchAllListAcc}
+      />
+      <ShowDetailUser
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
       />
     </div>
   );

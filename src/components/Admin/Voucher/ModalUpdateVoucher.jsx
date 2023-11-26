@@ -38,7 +38,7 @@ const ModalUpdateVoucher = (props) => {
   ];
 
   const handleCancel = () => {
-    form.resetFields();
+    // form.resetFields();
     setIsModalUpdateOpen(false);
   };
 

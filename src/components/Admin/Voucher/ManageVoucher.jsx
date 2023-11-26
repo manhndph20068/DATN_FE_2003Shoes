@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Popconfirm, Row, Space, Table, Tag, Tooltip } from "antd";
-import { callGetListVoucher } from "../../../services/api";
+import {
+  callDoActiveVoucher,
+  callDoInActiveVoucher,
+  callGetListVoucher,
+} from "../../../services/api";
 import "./ManageVoucher.scss";
 import ViewDetailVoucher from "./ViewDetailVoucher";
 import {
@@ -15,6 +19,8 @@ import ImportVoucher from "./ImportVoucher";
 import InputSearchVoucher from "./InputSearchVoucher";
 import ModalCreateVoucher from "./ModalCreateVoucher";
 import ModalUpdateVoucher from "./ModalUpdateVoucher";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
 
 const ManageVoucher = () => {
   const [current, setCurrent] = useState(1);
@@ -50,8 +56,32 @@ const ManageVoucher = () => {
     handleFetchAllListVoucher();
   }, [filter]);
 
-  const deleteVoucherByID = (id) => {
+  const deleteVoucherByID = async (id) => {
     console.log("id", id);
+    const data = {
+      id: id,
+    };
+
+    const res = await callDoInActiveVoucher(data);
+    console.log("res ", res);
+    if (res.status === 0) {
+      console.log("res red");
+      handleFetchAllListVoucher();
+    }
+  };
+
+  const activeVoucherByID = async (id) => {
+    console.log("id", id);
+    const data = {
+      id: id,
+    };
+
+    const res = await callDoActiveVoucher(data);
+    console.log("res ", res);
+    if (res.status === 0) {
+      console.log("res red");
+      handleFetchAllListVoucher();
+    }
   };
 
   const columns = [
@@ -134,40 +164,133 @@ const ManageVoucher = () => {
       key: "action",
       render: (text, record, index) => {
         return (
-          <div style={{ display: "flex", gap: 20 }}>
-            <Tooltip title="Cập nhật">
-              <EditOutlined
-                style={{
-                  cursor: "pointer",
-                  color: "black",
-                  transition: "color 0.3s",
-                }}
-                onMouseOver={(e) => (e.target.style.color = "blue")}
-                onMouseOut={(e) => (e.target.style.color = "black")}
-                onClick={() => {
-                  console.log("record", record);
-                  setDataUpdate(record);
-                  setIsModalUpdateOpen(true);
-                }}
-              />
-            </Tooltip>
-            <Popconfirm
-              placement="left"
-              title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
-              description={`Xóa voucher ${record.name}?`}
-              onConfirm={() => deleteVoucherByID(record.id)}
-              okText="Đồng ý"
-              cancelText="Hủy"
-            >
-              <Tooltip title="Xóa">
-                <DeleteOutlined
-                  style={{ color: "black", transition: "color 0.3s" }}
-                  onMouseOver={(e) => (e.target.style.color = "red")}
-                  onMouseOut={(e) => (e.target.style.color = "black")}
-                />
-              </Tooltip>
-            </Popconfirm>
-          </div>
+          <>
+            {record.status === 1 && (
+              <div style={{ display: "flex", gap: 20 }}>
+                <Tooltip title="Cập nhật"></Tooltip>
+                <Popconfirm
+                  placement="left"
+                  title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
+                  description={`Xóa voucher ${record.name}?`}
+                  onConfirm={() => deleteVoucherByID(record.id)}
+                  okText="Đồng ý"
+                  cancelText="Hủy"
+                ></Popconfirm>
+              </div>
+            )}
+
+            {record.status === 0 && (
+              <div style={{ display: "flex", gap: 20 }}>
+                <Tooltip title="Cập nhật">
+                  <EditOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onMouseOver={(e) => (e.target.style.color = "blue")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                    onClick={() => {
+                      console.log("record", record);
+                      setDataUpdate(record);
+                      setIsModalUpdateOpen(true);
+                    }}
+                  />
+                </Tooltip>
+                <Popconfirm
+                  placement="left"
+                  title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
+                  description={`Xóa voucher ${record.name}?`}
+                  onConfirm={() => deleteVoucherByID(record.id)}
+                  okText="Đồng ý"
+                  cancelText="Hủy"
+                >
+                  <Tooltip title="Xóa">
+                    <DeleteOutlined
+                      style={{ color: "black", transition: "color 0.3s" }}
+                      onMouseOver={(e) => (e.target.style.color = "red")}
+                      onMouseOut={(e) => (e.target.style.color = "black")}
+                    />
+                  </Tooltip>
+                </Popconfirm>
+              </div>
+            )}
+            {record.status === 3 && (
+              <div style={{ display: "flex", gap: 20 }}>
+                <Tooltip title="Cập nhật">
+                  <EditOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onMouseOver={(e) => (e.target.style.color = "blue")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                    onClick={() => {
+                      console.log("record", record);
+                      setDataUpdate(record);
+                      setIsModalUpdateOpen(true);
+                    }}
+                  />
+                </Tooltip>
+                <Popconfirm
+                  placement="left"
+                  title={`Bạn có muốn kích hoạt ${record.code} không?`}
+                  description={`Kích hoạt ${record.name}?`}
+                  onConfirm={() => activeVoucherByID(record.id)}
+                  okText="Đồng ý"
+                  cancelText="Hủy"
+                >
+                  <Tooltip title="Kích hoạt">
+                    <FontAwesomeIcon
+                      icon={faToggleOff}
+                      style={{ color: "black", transition: "color 0.3s" }}
+                      onMouseOver={(e) => (e.target.style.color = "red")}
+                      onMouseOut={(e) => (e.target.style.color = "black")}
+                    />
+                  </Tooltip>
+                </Popconfirm>
+              </div>
+            )}
+
+            {record.status === 2 && (
+              <div style={{ display: "flex", gap: 20 }}>
+                <Tooltip title="Cập nhật">
+                  <EditOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onMouseOver={(e) => (e.target.style.color = "blue")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                    onClick={() => {
+                      console.log("record", record);
+                      setDataUpdate(record);
+                      setIsModalUpdateOpen(true);
+                    }}
+                  />
+                </Tooltip>
+                {/* <Popconfirm
+                  placement="left"
+                  title={`Bạn có muốn kích hoạt ${record.code} không?`}
+                  description={`Kích hoạt ${record.name}?`}
+                  onConfirm={() => activeVoucherByID(record.id)}
+                  okText="Đồng ý"
+                  cancelText="Hủy"
+                >
+                  <Tooltip title="Kích hoạt">
+                    <FontAwesomeIcon
+                      icon={faToggleOff}
+                      style={{ color: "black", transition: "color 0.3s" }}
+                      onMouseOver={(e) => (e.target.style.color = "red")}
+                      onMouseOut={(e) => (e.target.style.color = "black")}
+                    />
+                  </Tooltip>
+                </Popconfirm> */}
+              </div>
+            )}
+          </>
         );
       },
     },

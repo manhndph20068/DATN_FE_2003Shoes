@@ -10,7 +10,11 @@ import {
 } from "antd";
 import "./Table.scss";
 import { useEffect, useState } from "react";
-import { callGetListAccount, callInActiveAccount } from "../../../services/api";
+import {
+  callDoUpdateUser,
+  callGetListAccount,
+  callInActiveAccount,
+} from "../../../services/api";
 import InputSearchUser from "./InputSearchUser";
 import ModalCreateAccount from "./ModalCreateAccount";
 import {
@@ -23,6 +27,7 @@ import {
 } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import ShowDetailUser from "./ShowDetailUser";
 const StaffTable = () => {
   const [current, setCurrent] = useState(1);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -30,6 +35,8 @@ const StaffTable = () => {
   const [total, setTotal] = useState(0);
   const [listStaff, setListStaff] = useState([]);
   const [roleId, setRoleId] = useState(3);
+  const [openViewDetail, setOpenViewDetail] = useState(false);
+  const [dataViewDetail, setDataViewDetail] = useState({});
   const [filter, setFilter] = useState({
     role: 3,
     page: current - 1,
@@ -107,6 +114,27 @@ const StaffTable = () => {
     );
   };
 
+  const ActiveAccByID = async (record) => {
+    console.log("record", record);
+    const data = {
+      id: record?.id,
+      roleId: record?.roleId,
+      name: record?.name,
+      email: record?.email,
+      avatar: record?.avatar,
+      status: 1,
+      code: record?.code,
+    };
+    console.log("data", data);
+    const res = await callDoUpdateUser(data);
+    if (res.status === 0) {
+      handleFetchAllListAcc();
+      message.success(res.message);
+    } else {
+      message.error("Huy thất bại");
+    }
+  };
+
   const columns = [
     {
       title: "STT",
@@ -118,6 +146,16 @@ const StaffTable = () => {
       dataIndex: "name",
       key: "name",
       render: (text) => <a>{text}</a>,
+    },
+    {
+      title: "Ảnh đại diện",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (_, record) => (
+        <>
+          <img src={record.avatar} alt="" style={{ width: "50px" }} />
+        </>
+      ),
     },
     {
       title: "Email",
@@ -158,25 +196,51 @@ const StaffTable = () => {
                 style={{ color: "black", transition: "color 0.3s" }}
                 onMouseOver={(e) => (e.target.style.color = "blue")}
                 onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={() => {
+                  setDataViewDetail(record);
+                  setOpenViewDetail(true);
+                }}
               />
             </Tooltip>
-            <Popconfirm
-              placement="left"
-              title={`Bạn có chắc chắn muốn hủy kích hoạt tài khoản nhân viên: ${record.name}?`}
-              description={`Hủy kích hoạt nhân viên: ${record.name} ?`}
-              onConfirm={() => InactiveAccByID(record.id)}
-              okText="Đồng ý"
-              cancelText="Không"
-            >
-              <Tooltip title="Hủy kích hoạt">
-                <FontAwesomeIcon
-                  icon={faToggleOff}
-                  style={{ color: "black", transition: "color 0.3s" }}
-                  onMouseOver={(e) => (e.target.style.color = "red")}
-                  onMouseOut={(e) => (e.target.style.color = "black")}
-                />
-              </Tooltip>
-            </Popconfirm>
+
+            {record?.status === 1 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có chắc chắn muốn hủy kích hoạt tài khoản khách hàng: ${record.name}?`}
+                description={`Hủy kích hoạt khách hàng: ${record.name} ?`}
+                onConfirm={() => InactiveAccByID(record.id)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Hủy kích hoạt">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            )}
+            {record?.status === 0 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có chắc chắn muốn kích hoạt tài khoản khách hàng: ${record.name}?`}
+                description={`Kích hoạt khách hàng: ${record.name} ?`}
+                onConfirm={() => ActiveAccByID(record)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Kích hoạt">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            )}
           </div>
         );
       },
@@ -261,6 +325,11 @@ const StaffTable = () => {
         setIsModalCreateOpen={setIsModalCreateOpen}
         roleId={roleId}
         handleFetchAllListAcc={handleFetchAllListAcc}
+      />
+      <ShowDetailUser
+        openViewDetail={openViewDetail}
+        setOpenViewDetail={setOpenViewDetail}
+        dataViewDetail={dataViewDetail}
       />
     </div>
   );
