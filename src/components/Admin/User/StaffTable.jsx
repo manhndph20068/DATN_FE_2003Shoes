@@ -11,6 +11,7 @@ import {
 import "./Table.scss";
 import { useEffect, useState } from "react";
 import {
+  callDoActiveAccount,
   callDoUpdateUser,
   callGetListAccount,
   callInActiveAccount,
@@ -118,15 +119,9 @@ const StaffTable = () => {
     console.log("record", record);
     const data = {
       id: record?.id,
-      roleId: record?.roleId,
-      name: record?.name,
-      email: record?.email,
-      avatar: record?.avatar,
-      status: 1,
-      code: record?.code,
     };
     console.log("data", data);
-    const res = await callDoUpdateUser(data);
+    const res = await callDoActiveAccount(data);
     if (res.status === 0) {
       handleFetchAllListAcc();
       message.success(res.message);

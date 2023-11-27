@@ -67,45 +67,6 @@ const InputSearchOrder = (props) => {
     setFilter(newFilter);
   };
 
-  // const onFinish = (values) => {
-  //   console.log("values", values);
-
-  //   const formattedDates = values?.date?.map((item) => {
-  //     const { $d } = item;
-  //     const date = new Date($d);
-  //     return moment(date).format("YYYY-MM-DD HH:mm:ss");
-  //   });
-
-  //   const startDate = formattedDates?.[0] ?? null;
-  //   const endDate = formattedDates?.[1] ?? null;
-  //   console.log("startDate", startDate);
-  //   console.log("endDate", endDate);
-  //   const newFilter = {
-  //     ...filter,
-  //     customer: values.customer ?? null,
-  //     status: values.status ?? null,
-  //     dateFirst: startDate
-  //       ? moment(startDate).format("YYYY-MM-DDTHH:mm:ss.SSS")
-  //       : null,
-  //     dateLast: endDate
-  //       ? moment(endDate).format("YYYY-MM-DDTHH:mm:ss.SSS")
-  //       : null,
-  //     type: values.type ?? null,
-  //     priceMin: values.price?.[0] ?? null,
-  //     priceMax: values.price?.[1] ?? null,
-  //   };
-  //   this.newFilterTemp.customer = this.newFilter.customer;
-  //   this.newFilterTemp.status = this.newFilter.status;
-  //   this.newFilterTemp.dateFirst = this.newFilter.dateFirst;
-  //   this.newFilterTemp.dateLast = this.newFilter.dateLast;
-  //   this.newFilterTemp.type = this.newFilter.type;
-  //   this.newFilterTemp.priceMin = this.newFilter.priceMin;
-  //   this.newFilterTemp.priceMax = this.newFilter.priceMax;
-
-  //   console.log("newFilter", newFilter);
-  //   setFilter(newFilter);
-  // };
-
   const optionType = [
     {
       value: 2,
@@ -166,19 +127,6 @@ const InputSearchOrder = (props) => {
 
     const startDate = formattedDates?.[0] ?? null;
     const endDate = formattedDates?.[1] ?? null;
-
-    console.log("startDate", startDate);
-    console.log("endDate", endDate);
-    console.log("values", values);
-    // const dataExport = {
-    //   status: values.status ?? null,
-    //   type: values.type ?? null,
-    //   customer: values.customer ?? null,
-    //   dateFirst: startDate,
-    //   dateLast: endDate,
-    //   priceMin: values.price?.[0] ?? null,
-    //   priceMax: values.price?.[1] ?? null,
-    // };
     const newFilter = {
       ...filter,
       customer: values.customer ?? null,

@@ -146,9 +146,15 @@ const ModalUpdateVoucher = (props) => {
                     message: "Vui lòng nhập tên voucher!",
                   },
                 ]}
+                // {...(dataUpdate.status === 2 && { disabled: true })}
+                // disabled={dataUpdate?.status === 2 ? true : false}
+
                 // initialValue={dataUpdate?.name}
               >
-                <Input placeholder="Nhập tên voucher" />
+                <Input
+                  placeholder="Nhập tên voucher"
+                  disabled={dataUpdate?.status === 2 ? true : false}
+                />
               </Form.Item>
             </Col>
             <Col span={11}>
@@ -167,6 +173,7 @@ const ModalUpdateVoucher = (props) => {
                 <InputNumber
                   placeholder="Nhập số lượng voucher"
                   style={{ width: "100%" }}
+                  disabled={dataUpdate?.status === 2 ? true : false}
                 />
               </Form.Item>
             </Col>
@@ -187,6 +194,7 @@ const ModalUpdateVoucher = (props) => {
                 <InputNumber
                   placeholder="Nhập giá trị giảm"
                   style={{ width: "100%" }}
+                  disabled={dataUpdate?.status === 2 ? true : false}
                 />
               </Form.Item>
             </Col>
@@ -200,11 +208,13 @@ const ModalUpdateVoucher = (props) => {
                     message: "Vui lòng nhập giá trị tối thiểu của đơn hàng!",
                   },
                 ]}
+
                 // initialValue={dataUpdate?.minBillValue}
               >
                 <InputNumber
                   placeholder="Nhập giá trị tối thiểu của đơn hàng"
                   style={{ width: "100%" }}
+                  disabled={dataUpdate?.status === 2 ? true : false}
                 />
               </Form.Item>
             </Col>
@@ -231,6 +241,7 @@ const ModalUpdateVoucher = (props) => {
                       setTypeOfReduce(value);
                     }
                   }}
+                  disabled={dataUpdate?.status === 2 ? true : false}
                 />
               </Form.Item>
             </Col>
@@ -250,7 +261,11 @@ const ModalUpdateVoucher = (props) => {
                   placeholder="Nhập giá trị giảm tối đa"
                   max={90}
                   style={{ width: "100%" }}
-                  disabled={typeOfReduce === 0 ? true : false}
+                  disabled={
+                    dataUpdate?.status === 2 || typeOfReduce === 0
+                      ? true
+                      : false
+                  }
                 />
               </Form.Item>
             </Col>

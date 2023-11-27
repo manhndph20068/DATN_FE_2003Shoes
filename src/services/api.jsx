@@ -310,6 +310,10 @@ const callDoExportOrder = (data) => {
   return axios.post(`/api/v1/admin/order/export-order`, data);
 };
 
+const callGetDataUserById = (id) => {
+  return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
+};
+
 const callImportFileVoucher = (file) => {
   const bodyFormData = new FormData();
   bodyFormData.append("file", file);
@@ -447,6 +451,10 @@ const callInActiveAccount = (data) => {
 
 const callGetCommentByOrderIdAndShoeDetailId = (data) => {
   return axios.post("/api/v1/comment/get-one", data);
+};
+
+const callDoActiveAccount = (data) => {
+  return axios.post("/api/v1/account/kich-hoat-account", data);
 };
 
 const callDoAddComment = (data) => {
@@ -638,4 +646,6 @@ export {
   callDoUpdateUser,
   callDoInActiveVoucher,
   callDoActiveVoucher,
+  callGetDataUserById,
+  callDoActiveAccount,
 };

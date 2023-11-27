@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Popconfirm, Row, Space, Table, Tag, Tooltip } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Popconfirm,
+  Row,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+} from "antd";
 import {
   callDoActiveVoucher,
   callDoInActiveVoucher,
@@ -21,6 +31,8 @@ import ModalCreateVoucher from "./ModalCreateVoucher";
 import ModalUpdateVoucher from "./ModalUpdateVoucher";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
+import axios from "axios";
 
 const ManageVoucher = () => {
   const [current, setCurrent] = useState(1);
@@ -37,6 +49,9 @@ const ManageVoucher = () => {
     page: current,
     size: pageSize,
   });
+  const [newFilterTemp, setNewFilterTemp] = useState({});
+
+  const [form] = Form.useForm();
 
   const handleFetchAllListVoucher = async () => {
     const res = await callGetListVoucher(filter);
@@ -296,6 +311,26 @@ const ManageVoucher = () => {
     },
   ];
 
+  const handleExportUsers = async () => {
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/admin/voucher-order/export-voucher",
+      newFilterTemp,
+      {
+        responseType: "arraybuffer",
+      }
+    );
+    console.log("response", response);
+
+    const blob = new Blob([response.data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const link = document.createElement("a");
+    console.log("link", link);
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "list-order-file.xlsx";
+    link.click();
+  };
+
   const renderHeaderTable = () => {
     return (
       <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -304,7 +339,7 @@ const ManageVoucher = () => {
           <Button
             type="primary"
             icon={<ExportOutlined />}
-            // onClick={() => handleExportUsers()}
+            onClick={() => handleExportUsers()}
           >
             Export
           </Button>
@@ -373,7 +408,13 @@ const ManageVoucher = () => {
             style={{ justifyContent: "center", padding: "20px 0px 20px 0px" }}
           >
             <Col span={23}>
-              <InputSearchVoucher setFilter={setFilter} filter={filter} />
+              <InputSearchVoucher
+                setFilter={setFilter}
+                filter={filter}
+                form={form}
+                newFilterTemp={newFilterTemp}
+                setNewFilterTemp={setNewFilterTemp}
+              />
             </Col>
           </Row>
         </div>

@@ -11,8 +11,8 @@ import {
 } from "antd";
 import moment from "moment/moment";
 const InputSearchVoucher = (props) => {
-  const { setFilter, filter } = props;
-  const [form] = Form.useForm();
+  const { setFilter, filter, form, newFilterTemp, setNewFilterTemp } = props;
+  // const [form] = Form.useForm();
   const { RangePicker } = DatePicker;
 
   const onReset = () => {
@@ -39,6 +39,15 @@ const InputSearchVoucher = (props) => {
       startDate,
       endDate,
     };
+    console.log("newfilter", newFilter);
+
+    setNewFilterTemp({
+      name: newFilter?.name,
+      status: newFilter?.status,
+      startDate,
+      endDate,
+    });
+
     console.log("newFilter", newFilter);
     setFilter(newFilter);
   };

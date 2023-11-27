@@ -11,6 +11,7 @@ import {
 import "./Table.scss";
 import { useEffect, useState } from "react";
 import {
+  callDoActiveAccount,
   callDoUpdateUser,
   callGetListAccount,
   callInActiveAccount,
@@ -70,24 +71,24 @@ const CustomerTable = () => {
     }
   };
 
-  const ActiveAccByID = async (record) => {
-    console.log("id", id);
-    const data = {
-      [record.id]: id,
-    };
-    console.log("data", data);
-    // const res = await callDoUpdateUser(data);
-    // if (res.status === 0) {
-    //   handleFetchAllListAcc();
-    //   message.success(res.message);
-    // } else {
-    //   message.error("Huy thất bại");
-    // }
-  };
-
   useEffect(() => {
     handleFetchAllListAcc();
   }, [filter]);
+
+  const ActiveAccByID = async (record) => {
+    console.log("record", record);
+    const data = {
+      id: record?.id,
+    };
+    console.log("data", data);
+    const res = await callDoActiveAccount(data);
+    if (res.status === 0) {
+      handleFetchAllListAcc();
+      message.success(res.message);
+    } else {
+      message.error("Huy thất bại");
+    }
+  };
 
   const columns = [
     {
@@ -156,16 +157,35 @@ const CustomerTable = () => {
                 }}
               />
             </Tooltip>
-            {record?.status === 0 && (
+            {record?.status === 1 && (
               <Popconfirm
                 placement="left"
-                title={`Bạn có chắc chắn muốn hủy kích hoạt tài khoản khách hàng: ${record.name}?`}
-                description={`Hủy kích hoạt khách hàng: ${record.name} ?`}
+                title={`Bạn có muốn huỷ kích hoạt tài khoản khách hàng: ${record.name}?`}
+                description={`Huỷ kích hoạt khách hàng: ${record.name} ?`}
                 onConfirm={() => InactiveAccByID(record.id)}
                 okText="Đồng ý"
                 cancelText="Không"
               >
                 <Tooltip title="Hủy kích hoạt">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            )}
+            {record?.status === 0 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có muốn kích hoạt tài khoản khách hàng: ${record.name}?`}
+                description={`Kích hoạt khách hàng: ${record.name} ?`}
+                onConfirm={() => ActiveAccByID(record)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Kích hoạt">
                   <FontAwesomeIcon
                     icon={faToggleOff}
                     style={{ color: "black", transition: "color 0.3s" }}

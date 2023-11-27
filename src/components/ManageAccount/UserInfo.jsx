@@ -13,11 +13,21 @@ import { useDispatch } from "react-redux";
 // } from "../../redux/account/accountSlice";
 import { useState } from "react";
 import { useEffect } from "react";
+import { callGetDataUserById } from "../../services/api";
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
-  //   const user = useSelector((state) => state.account.user);
-  const { userAvatar, setUseravatar, setIsModalManageAcconut } = props;
+  const user = useSelector((state) => state.account.user);
+  const {
+    userAvatar,
+    setUseravatar,
+    setIsModalManageAcconut,
+    urlAvatar,
+    setUrlAvatar,
+  } = props;
+  // const [urlAvatar, setUrlAvatar] = useState(null);
+  const [fileList, setFileList] = useState([]);
+  const [base64Url, setBase64Url] = useState(null);
   const [form] = Form.useForm();
   //   const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
   //     userAvatar || user?.avatar
@@ -46,6 +56,7 @@ const UserInfo = (props) => {
   };
 
   const handleUploadAvatar = async ({ file, onSuccess, onError }) => {
+    console.log("file", file);
     //   const res = await callUpdaloadAvatar(file);
     //   if (res && res?.data) {
     //     const newAvatar = res.data.fileUploaded;
@@ -55,13 +66,45 @@ const UserInfo = (props) => {
     //   } else {
     //     onError("Error");
     //   }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setUrlAvatar(event.target.result);
+      if (file?.name !== null) {
+        setFileList([
+          {
+            name: file.name,
+            uid: file.uid,
+            size: file.size,
+            type: file.type,
+            thumbUrl: event.target.result,
+          },
+        ]);
+        onSuccess("ok");
+      } else {
+        onError("Đã có lỗi khi upload file");
+      }
+    };
+    reader.onerror = (event) => {
+      console.error("file reading error", event);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleGetDataUser = async () => {
+    console.log("user.id", user?.id);
+    const res = await callGetDataUserById(user?.id);
+    console.log("res", res);
+    if (res?.data && res?.data?.length > 0) {
+      setUrlAvatar(res?.data[0]);
+    }
   };
 
   const propsUpload = {
     maxCount: 1,
     multiple: false,
     showUploadList: false,
-    // customRequest: handleUploadAvatar,
+    fileList: fileList,
+    customRequest: handleUploadAvatar,
     onChange(info) {
       if (info.file.status !== "uploading") {
       }
@@ -73,9 +116,10 @@ const UserInfo = (props) => {
     },
   };
 
-  // useEffect(() => {
-  //   setUseravatar(user?.avatar);
-  // }, []);
+  useEffect(() => {
+    // setUseravatar(user?.avatar);
+    handleGetDataUser();
+  }, []);
 
   return (
     <div style={{ minHeight: 350 }}>
@@ -87,8 +131,8 @@ const UserInfo = (props) => {
                 <Avatar
                   size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 113, xxl: 113 }}
                   icon={<AntDesignOutlined />}
-                  shape="circle"
-                  //   src={urlAvatar}
+                  shape="square"
+                  src={urlAvatar?.avatar}
                 />
               </div>
             </Col>
@@ -121,7 +165,7 @@ const UserInfo = (props) => {
               labelCol={{ span: 24 }}
               label="Họ và tên"
               rules={[{ required: true }]}
-              //   initialValue={user?.fullName}
+              initialValue={urlAvatar?.nameAccount}
             >
               <Input />
             </Form.Item>
