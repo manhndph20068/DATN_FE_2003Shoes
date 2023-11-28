@@ -358,22 +358,22 @@ const ShoppingCounter = () => {
         status: 8,
       };
       console.log("data", data);
-      // const res = await callUpdateNewOrderAtCounter(data);
-      // if (res.status === 0) {
-      //   message.success("Thanh toán thành công!");
-      //   fetchListOrderAtCounter();
-      //   // handleGetOrderDetailById(res.data[0].id);
-      //   await callAddMethodPayment({
-      //     orderId: id,
-      //     method: typeOfMethodPayment,
-      //     total: handleCalTotalPrice() + shipPrice - discountVoucher,
-      //     note: `Nhân viên ${staffName} xác nhận thanh toán`,
-      //     status: 1,
-      //   });
-      //   window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
-      // } else {
-      //   message.error(res.mess);
-      // }
+      const res = await callUpdateNewOrderAtCounter(data);
+      if (res.status === 0) {
+        message.success("Thanh toán thành công!");
+        fetchListOrderAtCounter();
+        // handleGetOrderDetailById(res.data[0].id);
+        await callAddMethodPayment({
+          orderId: id,
+          method: typeOfMethodPayment,
+          total: handleCalTotalPrice() + shipPrice - discountVoucher,
+          note: `Nhân viên ${staffName} xác nhận thanh toán`,
+          status: 1,
+        });
+        window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
+      } else {
+        message.error(res.mess);
+      }
     }
 
     // callUpdateNewOrderAtCounter;
@@ -398,10 +398,14 @@ const ShoppingCounter = () => {
         totalWithReduce += item.price * item.quantity;
       });
 
-      return (
-        totalWithReduce -
-        totalWithReduce * (vocherSelected?.discountAmount / 100)
-      );
+      const discountValue =
+        totalWithReduce * (vocherSelected?.discountAmount / 100);
+
+      if (discountValue > maximumReductionValue) {
+        return totalWithReduce - maximumReductionValue;
+      } else {
+        return totalWithReduce - discountValue;
+      }
     } else {
       let total = 0;
       listOrderDetail?.forEach((item) => {
