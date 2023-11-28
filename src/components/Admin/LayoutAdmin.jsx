@@ -26,7 +26,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { GrUserAdmin } from "react-icons/gr";
 import { BsFillPersonFill } from "react-icons/bs";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { Content, Footer, Sider } = Layout;
 const items = [
@@ -196,19 +196,22 @@ const LayoutAdmin = () => {
               <Space>
                 <FontAwesomeIcon
                   icon={faEnvelope}
+                  beatFade
                   style={{
                     fontSize: "18px",
                     marginTop: "5px",
                     marginRight: "20px",
-                    color: "black",
+                    color: "#55cef7",
                   }}
                 />
-                <BellOutlined
+                <FontAwesomeIcon
+                  icon={faBell}
+                  shake
                   style={{
                     fontSize: "18px",
                     marginTop: "5px",
                     marginRight: "20px",
-                    color: "black",
+                    color: "#363636",
                   }}
                 />
                 <Avatar src={urlAvatar} />{" "}

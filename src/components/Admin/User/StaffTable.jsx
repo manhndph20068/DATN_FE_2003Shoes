@@ -27,7 +27,7 @@ import {
   EyeOutlined,
 } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import ShowDetailUser from "./ShowDetailUser";
 const StaffTable = () => {
   const [current, setCurrent] = useState(1);
@@ -227,12 +227,12 @@ const StaffTable = () => {
                 cancelText="Không"
               >
                 <Tooltip title="Kích hoạt">
-                  <FontAwesomeIcon
-                    icon={faToggleOff}
-                    style={{ color: "black", transition: "color 0.3s" }}
-                    onMouseOver={(e) => (e.target.style.color = "red")}
-                    onMouseOut={(e) => (e.target.style.color = "black")}
-                  />
+                  <Tooltip title="Kích hoạt">
+                    <FontAwesomeIcon
+                      icon={faToggleOn}
+                      style={{ color: "#2dca2b" }}
+                    />
+                  </Tooltip>
                 </Tooltip>
               </Popconfirm>
             )}

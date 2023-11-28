@@ -1,9 +1,9 @@
 .hi {
   background-color: #f2f2f2;
-  height: 200px;
+  height: 160px;
 }
 .menu {
-  height: 190px;
+  height: 150px;
   background-color: #ffffff;
   // border: 1px solid #1677ff;
   // box-shadow: 5px 0px 20px #1677ff, -5px 0px 20px #1677ff;
@@ -12,17 +12,16 @@
   border-bottom-left-radius: 80px;
 }
 .submenu {
-  background-color: #ffffff;
   border-radius: 30px;
   width: 90%;
-  margin-top: 30px;
-  margin-left: 70px;
+  margin-top: 2px;
+  margin-left: 4rem;
 }
 .header-container {
   height: 90px;
   background-color: #ffffff;
   // border: 1px solid #1677ff;
-  box-shadow: 1px 1px 30px 2px #5d5d5d;
+  box-shadow: 1px 1px 20px 2px #5d5d5d;
   // box-shadow: 50px 50px 100px 20px #1677ff;
   border-bottom-right-radius: 50px;
   border-bottom-left-radius: 50px;

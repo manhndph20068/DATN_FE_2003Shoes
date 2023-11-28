@@ -418,9 +418,9 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className="submenu">
+          <div className="submenu" justify="center" align="middle">
             <nav className="navbar navbar-expand-lg ">
-              <div className="container-fluid">
+              <div className="container">
                 <a
                   className="navbar-brand"
                   href="/"

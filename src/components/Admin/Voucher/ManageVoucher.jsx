@@ -30,7 +30,7 @@ import InputSearchVoucher from "./InputSearchVoucher";
 import ModalCreateVoucher from "./ModalCreateVoucher";
 import ModalUpdateVoucher from "./ModalUpdateVoucher";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import axios from "axios";
 
@@ -214,14 +214,15 @@ const ManageVoucher = () => {
                 </Tooltip>
                 <Popconfirm
                   placement="left"
-                  title={`Bạn có chắc chắn muốn xóa ${record.code} không?`}
-                  description={`Xóa voucher ${record.name}?`}
+                  title={`Bạn có chắc chắn muốn hủy kích hoạt voucher ${record.name} không?`}
+                  description={`Hủy kích hoạt voucher ${record.name}?`}
                   onConfirm={() => deleteVoucherByID(record.id)}
                   okText="Đồng ý"
                   cancelText="Hủy"
                 >
-                  <Tooltip title="Xóa">
-                    <DeleteOutlined
+                  <Tooltip title="Hủy kích hoạt">
+                    <FontAwesomeIcon
+                      icon={faToggleOff}
                       style={{ color: "black", transition: "color 0.3s" }}
                       onMouseOver={(e) => (e.target.style.color = "red")}
                       onMouseOut={(e) => (e.target.style.color = "black")}
@@ -250,7 +251,7 @@ const ManageVoucher = () => {
                 </Tooltip>
                 <Popconfirm
                   placement="left"
-                  title={`Bạn có muốn kích hoạt ${record.code} không?`}
+                  title={`Bạn có muốn kích hoạt ${record.name} không?`}
                   description={`Kích hoạt ${record.name}?`}
                   onConfirm={() => activeVoucherByID(record.id)}
                   okText="Đồng ý"
@@ -258,10 +259,8 @@ const ManageVoucher = () => {
                 >
                   <Tooltip title="Kích hoạt">
                     <FontAwesomeIcon
-                      icon={faToggleOff}
-                      style={{ color: "black", transition: "color 0.3s" }}
-                      onMouseOver={(e) => (e.target.style.color = "red")}
-                      onMouseOut={(e) => (e.target.style.color = "black")}
+                      icon={faToggleOn}
+                      style={{ color: "#2dca2b" }}
                     />
                   </Tooltip>
                 </Popconfirm>
