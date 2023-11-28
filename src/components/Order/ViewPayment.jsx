@@ -194,16 +194,8 @@ const ViewPayment = (props) => {
     });
   }, [provinceSelected, districtSelected]);
 
-  const handleSubmitOrderVnPay = async () => {
-    const orderTotal =
-      typeOfReduceVoucher === 1
-        ? Math.ceil(
-            totalPrice -
-              discountVoucher -
-              (totalPrice - discountVoucher) *
-                (vocherSelected?.discountAmount / 100)
-          )
-        : Math.ceil(totalPrice - discountVoucher) || 0;
+  const handleSubmitOrderVnPay = async (data) => {
+    const orderTotal = data?.totalMoney;
     const orderInfo = "VNPAY" + uuidv4();
     console.log("orderInfo", orderInfo);
     console.log("orderTotal", orderTotal);
@@ -282,7 +274,7 @@ const ViewPayment = (props) => {
     console.log("data", data);
     if (typePaid === 2) {
       dispatch(doInitalTempData(data));
-      handleSubmitOrderVnPay();
+      handleSubmitOrderVnPay(data);
     } else {
       if (idCart !== null) {
         console.log("data", data);
@@ -292,7 +284,7 @@ const ViewPayment = (props) => {
           await callAddMethodPayment({
             orderId: res?.data?.id,
             method: "Thanh toán khi nhận hàng",
-            total: totalPrice - discountVoucher,
+            total: data.totalMoney,
             note: `Khách hàng đặt`,
             status: 0,
           });
@@ -312,7 +304,7 @@ const ViewPayment = (props) => {
           await callAddMethodPayment({
             orderId: res?.data?.id,
             method: "Thanh toán khi nhận hàng",
-            total: totalPrice - discountVoucher,
+            total: data.totalMoney,
             note: `Khách hàng đặt`,
             status: 0,
           });

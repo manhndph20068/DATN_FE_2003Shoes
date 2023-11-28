@@ -44,8 +44,8 @@ import PaymentNow from "./components/Order/PaymentNow";
 import CheckOnlineOrder from "./pages/resultOrder/CheckOnlineOrder";
 import Properties from "./components/Admin/Properties/Properties";
 import IntroductionPage from "./pages/introduction";
-import ProductionPage from "./pages/production";
 import NewsPage from "./pages/news";
+import HomePage from "./pages/home";
 
 const Layout = () => {
   return (
@@ -105,7 +105,7 @@ export default function App() {
       errorElement: <NotFound />,
 
       children: [
-        { index: true, element: <Home /> },
+        { index: true, element: <HomePage /> },
         {
           path: "order",
           element: <OrderPage />,
@@ -124,7 +124,7 @@ export default function App() {
         },
         {
           path: "productions",
-          element: <ProductionPage />,
+          element: <Home />,
         },
         {
           path: "contact",

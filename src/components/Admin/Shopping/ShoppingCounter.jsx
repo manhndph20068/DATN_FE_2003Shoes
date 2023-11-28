@@ -281,6 +281,12 @@ const ShoppingCounter = () => {
       const ward = listWard.filter((item) => item.value === wardSelected)[0]
         .label;
 
+      const totalPrice = handleCalTotalPriceOfProd() - handleCalTotalPrice();
+      const maxReductionValue = vocherSelected?.maximumReductionValue;
+
+      const moneyReduce =
+        totalPrice > maxReductionValue ? maxReductionValue : totalPrice;
+
       const data = {
         id: id,
         idVoucher: null,
@@ -292,10 +298,8 @@ const ShoppingCounter = () => {
         address: province + ", " + district + ", " + ward + ", " + address,
         shipFee: shipPrice,
         moneyReduce:
-          vocherSelected?.reduceForm === 0
-            ? discountVoucher
-            : handleCalTotalPriceOfProd() - handleCalTotalPrice(),
-        totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
+          vocherSelected?.reduceForm === 0 ? discountVoucher : moneyReduce,
+        totalMoney: handleCalTotalPrice() + shipPrice,
         payDate:
           typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy"
             ? new Date().toISOString()
@@ -318,7 +322,7 @@ const ShoppingCounter = () => {
         await callAddMethodPayment({
           orderId: id,
           method: typeOfMethodPaymentOnlineOrder,
-          total: handleCalTotalPrice() + shipPrice - discountVoucher,
+          total: handleCalTotalPrice() + shipPrice,
           note: `Nhân viên ${staffName} xác nhận `,
           status:
             typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 1 : 0,
@@ -366,7 +370,7 @@ const ShoppingCounter = () => {
         await callAddMethodPayment({
           orderId: id,
           method: typeOfMethodPayment,
-          total: handleCalTotalPrice() + shipPrice - discountVoucher,
+          total: handleCalTotalPrice() - discountVoucher,
           note: `Nhân viên ${staffName} xác nhận thanh toán`,
           status: 1,
         });
@@ -765,11 +769,7 @@ const ShoppingCounter = () => {
                               {Intl.NumberFormat("vi-VN", {
                                 style: "currency",
                                 currency: "VND",
-                              }).format(
-                                handleCalTotalPrice() -
-                                  discountVoucher +
-                                  shipPrice
-                              )}
+                              }).format(handleCalTotalPrice() + shipPrice)}
                             </span>
                           </div>
                         </>

@@ -421,13 +421,13 @@ const Header = () => {
           <div className="submenu" justify="center" align="middle">
             <nav className="navbar navbar-expand-lg ">
               <div className="container">
-                <a
+                <Link
                   className="navbar-brand"
-                  href="/"
+                  to="/"
                   style={{ fontSize: "16px" }}
                 >
                   Trang chủ
-                </a>
+                </Link>
                 <button
                   className="navbar-toggler"
                   type="button"
@@ -444,18 +444,18 @@ const Header = () => {
                   id="navbarNavAltMarkup"
                 >
                   <div className="navbar-nav">
-                    <a className="nav-link " href="introduction">
+                    <Link className="nav-link " to="/introduction">
                       Giới Thiệu
-                    </a>
-                    <a className="nav-link" href="news">
+                    </Link>
+                    <Link className="nav-link" to="/news">
                       Tin Tức
-                    </a>
-                    <a className="nav-link" href="productions">
+                    </Link>
+                    <Link className="nav-link" to="/productions">
                       Sản Phẩm
-                    </a>
-                    <a className="nav-link " href="contact">
+                    </Link>
+                    <Link className="nav-link " to="/contact">
                       Liên Hệ
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
