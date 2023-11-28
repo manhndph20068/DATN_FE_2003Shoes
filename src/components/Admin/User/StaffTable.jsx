@@ -277,7 +277,7 @@ const StaffTable = () => {
     }
   };
   return (
-    <div style={{ padding: "1.7rem" }}>
+    <div className="staff" style={{ padding: "1.7rem" }}>
       <div style={{ paddingBottom: "1.5rem" }}>
         <p style={{ fontSize: "15px" }}>
           <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />

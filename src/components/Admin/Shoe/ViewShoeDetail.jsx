@@ -80,13 +80,13 @@ const ViewBookDetail = (props) => {
   return (
     <>
       <Drawer
-        title="Basic Drawer"
+        title="Thông tin chi tiết"
         placement="right"
         width={"50vw"}
         onClose={onClose}
         open={openViewDetail}
       >
-        <Descriptions title="User Info" bordered column={2}>
+        <Descriptions title="Thông tin chi tiết giày" bordered column={2}>
           <Descriptions.Item label="id">{dataViewDetail.id}</Descriptions.Item>
           <Descriptions.Item label="Tên Giày">
             {dataViewDetail.nameShoe}

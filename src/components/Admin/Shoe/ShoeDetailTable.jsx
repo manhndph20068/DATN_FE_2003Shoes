@@ -29,6 +29,7 @@ import ShoeDetailModalUpdate from "./ShoeDetailModalUpdate";
 import ImportShoes from "./ImportShoe";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import "./Shoe.scss";
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -227,6 +228,7 @@ const ShoeDetailTable = () => {
           </Button> */}
 
           <Button
+            className="shoes-button"
             type="primary"
             icon={<ImportOutlined />}
             onClick={() => {
@@ -248,6 +250,7 @@ const ShoeDetailTable = () => {
 
           <Tooltip title="Refresh Data Table">
             <Button
+              className="shoes-button"
               shape="circle"
               icon={<ReloadOutlined />}
               onClick={() => {

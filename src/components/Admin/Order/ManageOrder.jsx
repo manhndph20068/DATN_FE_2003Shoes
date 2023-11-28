@@ -9,7 +9,7 @@ import {
   FolderOpenOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-
+import "./Order.scss";
 const ManageOrder = () => {
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(10);

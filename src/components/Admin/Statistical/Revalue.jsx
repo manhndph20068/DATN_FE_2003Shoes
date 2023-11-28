@@ -4,7 +4,6 @@ import { Bar, DualAxes } from "@ant-design/plots";
 import { DatePicker, Form, Row, Select } from "antd";
 import dayjs from "dayjs";
 import { callGetRevalueByYear, callGetTop5Prod } from "../../../services/api";
-
 const Revalue = (props) => {
   const { data, setData } = props;
   const [year, setYear] = useState("2023");
@@ -89,9 +88,12 @@ const Revalue = (props) => {
                       //   )}
                     />
                   </Form.Item>
-                  <Form.Item>
+                  <Form.Item placeholder="Tất cả">
                     <Select
-                      placeholder="Select type"
+                      style={{
+                        marginTop: "0px",
+                        width: "100px",
+                      }}
                       optionFilterProp="children"
                       onChange={onChangeType}
                       value={type}

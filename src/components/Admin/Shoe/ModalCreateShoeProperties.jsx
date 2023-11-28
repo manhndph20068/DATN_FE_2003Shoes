@@ -33,7 +33,7 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import ModalCreateShoeTableItems from "./ModalCreateShoeTableItems";
-
+import "./Shoe.scss";
 const ModalCreateShoeProperties = (props) => {
   const [nameCategoryOptions, setNameCategoryOptions] = useState([]);
   const [addNameCategory, setAddNameCategory] = useState(null);
@@ -475,6 +475,7 @@ const ModalCreateShoeProperties = (props) => {
                       }
                     >
                       <Button
+                        className="button-properties"
                         type="text"
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
@@ -534,6 +535,7 @@ const ModalCreateShoeProperties = (props) => {
                       }
                     >
                       <Button
+                        className="button-properties"
                         type="text"
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
@@ -593,6 +595,7 @@ const ModalCreateShoeProperties = (props) => {
                       }
                     >
                       <Button
+                        className="button-properties"
                         type="text"
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
@@ -653,6 +656,7 @@ const ModalCreateShoeProperties = (props) => {
                       }
                     >
                       <Button
+                        className="button-properties"
                         type="text"
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}
@@ -714,6 +718,7 @@ const ModalCreateShoeProperties = (props) => {
                       }
                     >
                       <Button
+                        className="button-properties"
                         type="text"
                         icon={<PlusOutlined />}
                         style={{ gap: 3 }}

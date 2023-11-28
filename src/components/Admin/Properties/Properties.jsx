@@ -20,6 +20,7 @@ import {
 import ModalCreateProperties from "./ModalCreateProperties";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
+import "./Properties.scss";
 const Properties = () => {
   const [listData, setListData] = useState([]);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -133,6 +134,7 @@ const Properties = () => {
         <i></i>
         <span style={{ display: "flex", gap: 15 }}>
           <Button
+            className="button-properties"
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
@@ -153,7 +155,10 @@ const Properties = () => {
 
   return (
     <>
-      <div style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}>
+      <div
+        style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}
+        className="button-properties"
+      >
         <p style={{ fontSize: "15px" }}>
           <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
           <span>Quản lý sản phẩm </span>
@@ -172,11 +177,11 @@ const Properties = () => {
       <div style={{ padding: "25px" }}>
         <div style={{ marginBottom: "25px" }}>
           <Radio.Group onChange={(e) => onChange(e)} value={currentProperties}>
-            <Radio value={1}>Category</Radio>
-            <Radio value={2}>Brand</Radio>
-            <Radio value={3}>Sole</Radio>
-            <Radio value={4}>Size</Radio>
-            <Radio value={5}>Color</Radio>
+            <Radio value={1}>Loại Giày</Radio>
+            <Radio value={2}>Hãng Giày</Radio>
+            <Radio value={3}>Đế Giày</Radio>
+            <Radio value={4}>Kích Cỡ</Radio>
+            <Radio value={5}>Màu Sắc</Radio>
           </Radio.Group>
         </div>
         <div className="table">

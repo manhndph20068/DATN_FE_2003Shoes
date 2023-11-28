@@ -67,7 +67,7 @@ const CustomerTable = () => {
       handleFetchAllListAcc();
       message.success(res.message);
     } else {
-      message.error("Huy thất bại");
+      message.error("Hủy thất bại");
     }
   };
 
@@ -220,7 +220,7 @@ const CustomerTable = () => {
     }
   };
   return (
-    <div style={{ padding: "1.7rem" }}>
+    <div className="customer" style={{ padding: "1.7rem" }}>
       <div style={{ paddingBottom: "1.5rem" }}>
         <p style={{ fontSize: "15px" }}>
           <UserOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
