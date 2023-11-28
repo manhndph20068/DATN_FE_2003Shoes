@@ -350,7 +350,7 @@ const ShoppingCounter = () => {
         shipFee: null,
         moneyReduce:
           vocherSelected?.reduceForm === 0 ? discountVoucher : moneyReduce,
-        totalMoney: handleCalTotalPrice() - discountVoucher,
+        totalMoney: handleCalTotalPrice(),
         payDate: new Date().toISOString(),
         shipDate: null,
         desiredDate: null,
@@ -365,7 +365,7 @@ const ShoppingCounter = () => {
       const res = await callUpdateNewOrderAtCounter(data);
       if (res.status === 0) {
         message.success("Thanh toán thành công!");
-        fetchListOrderAtCounter();
+
         // handleGetOrderDetailById(res.data[0].id);
         await callAddMethodPayment({
           orderId: id,
@@ -374,7 +374,9 @@ const ShoppingCounter = () => {
           note: `Nhân viên ${staffName} xác nhận thanh toán`,
           status: 1,
         });
+
         window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
+        fetchListOrderAtCounter();
       } else {
         message.error(res.mess);
       }
@@ -430,7 +432,7 @@ const ShoppingCounter = () => {
   };
 
   const handleCalRefund = (value) => {
-    setRefund(value - handleCalTotalPrice() + discountVoucher);
+    setRefund(value - handleCalTotalPrice());
     console.log("value", value);
     console.log("handleCalTotalPrice", handleCalTotalPrice());
     console.log("refund", refund);
@@ -839,10 +841,7 @@ const ShoppingCounter = () => {
                                   },
                                   {
                                     validator: (rule, value) => {
-                                      if (
-                                        value <
-                                        handleCalTotalPrice() - discountVoucher
-                                      ) {
+                                      if (value < handleCalTotalPrice()) {
                                         return Promise.reject(
                                           "Số tiền khách đưa phải lớn hơn tổng giá trị đơn hàng"
                                         );
