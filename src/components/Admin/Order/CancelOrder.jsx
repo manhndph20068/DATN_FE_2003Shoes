@@ -55,8 +55,8 @@ const CancelOrder = (props) => {
           form.submit();
         }}
         onCancel={hideModal}
-        okText="Ok"
-        cancelText="Cancel"
+        okText="Đồng ý"
+        cancelText="Không"
       >
         <Divider />
         <Form
@@ -70,7 +70,9 @@ const CancelOrder = (props) => {
           <Form.Item
             label="Lý do huỷ hoá đơn"
             name="reason"
-            rules={[{ required: true, message: "Please input your reason!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập lý do hủy đơn!" },
+            ]}
           >
             <Input />
           </Form.Item>

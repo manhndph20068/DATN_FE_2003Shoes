@@ -27,7 +27,8 @@ import * as XLSX from "xlsx";
 import BookModalCreate from "./ShoeDetailModalCreate";
 import ShoeDetailModalUpdate from "./ShoeDetailModalUpdate";
 import ImportShoes from "./ImportShoe";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -173,14 +174,15 @@ const ShoeDetailTable = () => {
 
             <Popconfirm
               placement="left"
-              title={`Bạn có muốn xóa ${record.category}?`}
-              description={`Xóa giày ${record.category} ?`}
+              title={`Bạn có muốn ngừng kinh doanh kích hoạt ${record.category}?`}
+              description={`Ngừng kinh doanh giày ${record.category} ?`}
               onConfirm={() => confirm(record.id)}
-              okText="Yes"
-              cancelText="No"
+              okText="Đồng ý"
+              cancelText="Không"
             >
-              <Tooltip title="Xóa">
-                <DeleteOutlined
+              <Tooltip title="Ngừng kinh doanh">
+                <FontAwesomeIcon
+                  icon={faToggleOff}
                   style={{ color: "black", transition: "color 0.3s" }}
                   onMouseOver={(e) => (e.target.style.color = "red")}
                   onMouseOut={(e) => (e.target.style.color = "black")}

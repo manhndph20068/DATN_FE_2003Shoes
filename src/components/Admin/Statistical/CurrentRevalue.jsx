@@ -59,12 +59,12 @@ const CurrentRevalue = (props) => {
                     {
                       value: 1,
                       label: "Tại quầy",
-                      style: { backgroundColor: "#3498db", color: "white" },
+                      // style: { backgroundColor: "#3498db", color: "white" },
                     },
                     {
                       value: 2,
                       label: "Online",
-                      style: { backgroundColor: "#2ecc71", color: "white" },
+                      // style: { backgroundColor: "#2ecc71", color: "white" },
                     },
                   ]}
                 />

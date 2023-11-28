@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import ModalCreateProperties from "./ModalCreateProperties";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faToggleOff } from "@fortawesome/free-solid-svg-icons";
+import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 const Properties = () => {
   const [listData, setListData] = useState([]);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
@@ -113,6 +113,13 @@ const Properties = () => {
                   onMouseOut={(e) => (e.target.style.color = "black")}
                 />
               </Tooltip>
+
+              {/* <Tooltip title="Kích hoạt">
+                <FontAwesomeIcon
+                  icon={faToggleOn}
+                  style={{ color: "#2dca2b" }}
+                />
+              </Tooltip> */}
             </Popconfirm>
           </div>
         );
