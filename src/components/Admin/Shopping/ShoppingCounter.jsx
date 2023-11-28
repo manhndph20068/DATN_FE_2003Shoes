@@ -328,6 +328,12 @@ const ShoppingCounter = () => {
       }
     }
     if (typeOfSale === 1) {
+      const totalPrice = handleCalTotalPriceOfProd() - handleCalTotalPrice();
+      const maxReductionValue = vocherSelected?.maximumReductionValue;
+
+      const moneyReduce =
+        totalPrice > maxReductionValue ? maxReductionValue : totalPrice;
+
       const data = {
         id: id,
         idVoucher: voucher,
@@ -339,10 +345,8 @@ const ShoppingCounter = () => {
         address: null,
         shipFee: null,
         moneyReduce:
-          vocherSelected?.reduceForm === 0
-            ? discountVoucher
-            : handleCalTotalPriceOfProd() - handleCalTotalPrice(),
-        totalMoney: handleCalTotalPrice() + shipPrice - discountVoucher,
+          vocherSelected?.reduceForm === 0 ? discountVoucher : moneyReduce,
+        totalMoney: handleCalTotalPrice() - discountVoucher,
         payDate: new Date().toISOString(),
         shipDate: null,
         desiredDate: null,
@@ -354,22 +358,22 @@ const ShoppingCounter = () => {
         status: 8,
       };
       console.log("data", data);
-      const res = await callUpdateNewOrderAtCounter(data);
-      if (res.status === 0) {
-        message.success("Thanh toán thành công!");
-        fetchListOrderAtCounter();
-        // handleGetOrderDetailById(res.data[0].id);
-        await callAddMethodPayment({
-          orderId: id,
-          method: typeOfMethodPayment,
-          total: handleCalTotalPrice() + shipPrice - discountVoucher,
-          note: `Nhân viên ${staffName} xác nhận thanh toán`,
-          status: 1,
-        });
-        window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
-      } else {
-        message.error(res.mess);
-      }
+      // const res = await callUpdateNewOrderAtCounter(data);
+      // if (res.status === 0) {
+      //   message.success("Thanh toán thành công!");
+      //   fetchListOrderAtCounter();
+      //   // handleGetOrderDetailById(res.data[0].id);
+      //   await callAddMethodPayment({
+      //     orderId: id,
+      //     method: typeOfMethodPayment,
+      //     total: handleCalTotalPrice() + shipPrice - discountVoucher,
+      //     note: `Nhân viên ${staffName} xác nhận thanh toán`,
+      //     status: 1,
+      //   });
+      //   window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
+      // } else {
+      //   message.error(res.mess);
+      // }
     }
 
     // callUpdateNewOrderAtCounter;
@@ -388,22 +392,28 @@ const ShoppingCounter = () => {
 
   const handleCalTotalPrice = () => {
     if (typeOfReduceVoucher === 1) {
+      // const totalPrice = handleCalTotalPriceOfProd() - handleCalTotalPrice();
+      // const maxReductionValue = vocherSelected?.maximumReductionValue;
+
+      // const moneyReduce =
+      //   totalPrice > maxReductionValue ? maxReductionValue : totalPrice;
+
       let totalWithReduce = 0;
       listOrderDetail?.forEach((item) => {
         totalWithReduce += item.price * item.quantity;
       });
-      console.log(
-        "totalWithReduce1",
+
+      return (
+        totalWithReduce -
         totalWithReduce * (vocherSelected?.discountAmount / 100)
       );
-      return totalWithReduce * (vocherSelected?.discountAmount / 100);
     } else {
       let total = 0;
       listOrderDetail?.forEach((item) => {
         total += item.price * item.quantity;
       }) ?? 0;
 
-      return total;
+      return total - discountVoucher;
     }
   };
 
@@ -804,9 +814,7 @@ const ShoppingCounter = () => {
                                   {Intl.NumberFormat("vi-VN", {
                                     style: "currency",
                                     currency: "VND",
-                                  }).format(
-                                    handleCalTotalPrice() - discountVoucher
-                                  )}
+                                  }).format(handleCalTotalPrice())}
                                 </span>
                               </div>
                             </Col>
