@@ -4,7 +4,6 @@ import {
   callGetListOrderAtCounter,
   callGetOrderDetailAtCounterById,
 } from "../../../services/api";
-
 const SearchProductInput = (props) => {
   const { listShoeDetail, activeKey, setListOrderDetail } = props;
   const [form] = Form.useForm();

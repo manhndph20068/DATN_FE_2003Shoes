@@ -336,6 +336,7 @@ const ManageVoucher = () => {
         <i>Danh sách voucher :</i>
         <span style={{ display: "flex", gap: 15 }}>
           <Button
+            className="voucherButton"
             type="primary"
             icon={<ExportOutlined />}
             onClick={() => handleExportUsers()}
@@ -344,6 +345,7 @@ const ManageVoucher = () => {
           </Button>
 
           <Button
+            className="voucherButton"
             type="primary"
             icon={<ImportOutlined />}
             onClick={() => {
@@ -354,6 +356,7 @@ const ManageVoucher = () => {
           </Button>
 
           <Button
+            className="voucherButton"
             type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
@@ -365,6 +368,7 @@ const ManageVoucher = () => {
 
           <Tooltip title="Refresh Data Table">
             <Button
+              className="voucherButton"
               shape="circle"
               icon={<ReloadOutlined />}
               onClick={() => {

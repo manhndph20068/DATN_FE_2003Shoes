@@ -5,7 +5,6 @@ import {
   callGetOrderDetailAtCounterById,
   callUpdateOrderDetailAtCounter,
 } from "../../../services/api";
-
 const TableProductDetail = (props) => {
   const {
     listOrderDetail,

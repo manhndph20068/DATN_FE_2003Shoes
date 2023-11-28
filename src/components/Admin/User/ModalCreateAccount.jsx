@@ -14,7 +14,7 @@ import {
 import { callAddNewAcc } from "../../../services/api";
 import { UploadOutlined } from "@ant-design/icons";
 import { useState } from "react";
-
+import "./Table.scss";
 const ModalCreateAccount = (props) => {
   const {
     isModalCreateOpen,
@@ -107,6 +107,7 @@ const ModalCreateAccount = (props) => {
           Modal
         </Button> */}
       <Modal
+        className="modal-create-account"
         title="Thêm mới tài khoản"
         open={isModalCreateOpen}
         onOk={() => form.submit()}

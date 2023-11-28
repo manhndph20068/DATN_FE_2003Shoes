@@ -26,7 +26,7 @@ const InputSearchShoe = (props) => {
   };
   return (
     <>
-      <div style={{ paddingBottom: "1.5rem" }}>
+      <div style={{ paddingBottom: "1.5rem" }} className="shoes-button">
         <p style={{ fontSize: "15px" }}>
           <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
           <span>Quản lý sản phẩm </span>

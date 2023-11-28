@@ -506,10 +506,10 @@ const ShoppingCounter = () => {
   };
 
   return (
-    <div style={{ padding: "1.5rem" }}>
+    <div className="banHang" style={{ padding: "1.5rem" }}>
       <div style={{ marginBottom: 16 }}>
-        <Button onClick={addNewOrder}>
-          <ShoppingOutlined style={{ marginBottom: "8px" }} /> Tạo Hoá Đơn
+        <Button onClick={addNewOrder} className="buttonShopping">
+          <ShoppingOutlined /> Tạo Hoá Đơn
         </Button>
       </div>
       <div
@@ -555,7 +555,7 @@ const ShoppingCounter = () => {
                         <Input value={pane?.id} />
                       </Form.Item>
                       <Form.Item
-                        label="Hình thức bán hàng"
+                        label="Hình thức bán hàng:"
                         name="typeOfSale"
                         rules={[
                           {
@@ -786,7 +786,7 @@ const ShoppingCounter = () => {
                           >
                             <Col span={11}>
                               <Form.Item
-                                label="Hình thức thanh toán"
+                                label="Hình thức thanh toán:"
                                 // style={{ fontSize: "3rem" }}
                                 name="typeOfMethodPayment"
                                 labelCol={{ span: 24 }}
@@ -826,7 +826,7 @@ const ShoppingCounter = () => {
                           >
                             <Col span={11}>
                               <Form.Item
-                                label="Số tiền khách đưa"
+                                label="Số tiền khách đưa:"
                                 // style={{ fontSize: "3rem" }}
                                 name="moneyPaid"
                                 labelCol={{ span: 24 }}
@@ -885,7 +885,7 @@ const ShoppingCounter = () => {
                             </Col>
                           </Row>
                           <Form.Item
-                            label="Voucher"
+                            label="Voucher:"
                             name="voucher"
                             labelCol={{ span: 24 }}
                             labelAlign="left"
@@ -909,7 +909,6 @@ const ShoppingCounter = () => {
                                       }}
                                     >
                                       <span>Mã vc: {item.code}</span>
-
                                       <span>
                                         Giá trị giảm:{" "}
                                         {item.reduceForm === 0 ? (
@@ -936,7 +935,7 @@ const ShoppingCounter = () => {
                             </Select>
                           </Form.Item>
                           <Form.Item
-                            label="Ghi chú"
+                            label="Ghi chú:"
                             name="note"
                             labelCol={{ span: 24 }}
                             labelAlign="left"
@@ -969,6 +968,7 @@ const ShoppingCounter = () => {
                     </span>
                     <span>
                       <Button
+                        className="buttonShopping"
                         type="primary"
                         icon={<QrcodeOutlined />}
                         onClick={() => handleScanQr()}

@@ -19,13 +19,13 @@ const ShowDetailUser = (props) => {
         Open
       </Button> */}
       <Drawer
-        title="Basic Drawer"
+        title="Thông tin chi tiết"
         placement="right"
         onClose={onClose}
         open={openViewDetail}
         width={"40%"}
       >
-        <Descriptions title="User Info" column={2} bordered>
+        <Descriptions title="Thông tin tài khoản" column={2} bordered>
           <Descriptions.Item label="Tên">
             {dataViewDetail?.name}
           </Descriptions.Item>

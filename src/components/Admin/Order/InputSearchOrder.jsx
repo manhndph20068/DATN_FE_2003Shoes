@@ -284,6 +284,7 @@ const InputSearchOrder = (props) => {
               style={{ textAlign: "right" }}
             >
               <Button
+                className="orderButton"
                 type="primary"
                 htmlType="button"
                 onClick={() => handleExportData()}

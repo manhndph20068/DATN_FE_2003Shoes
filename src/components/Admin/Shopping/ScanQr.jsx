@@ -6,7 +6,6 @@ import {
   callGetOrderDetailAtCounterById,
   callListShoeDetailAtCounter,
 } from "../../../services/api";
-
 const ScanQrCode = (props) => {
   const {
     openScanQr,

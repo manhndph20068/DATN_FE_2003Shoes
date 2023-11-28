@@ -8,6 +8,7 @@ import StatusOfOrder from "./StatusOfOrder";
 import Revalue from "./Revalue";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import CurrentRevalue from "./CurrentRevalue";
+// import "./Statistical.scss";
 const StatisticalChart = () => {
   const [dataProductsSoldDuringTheYear, setDataProductsSoldDuringTheYear] =
     useState([]);
@@ -27,6 +28,12 @@ const StatisticalChart = () => {
           }}
         >
           <div>
+            <CurrentRevalue />
+          </div>
+          <div style={{ marginTop: "60px" }}>
+            <CurrentRevalue />
+          </div>
+          <div style={{ marginTop: "60px" }}>
             <CurrentRevalue />
           </div>
         </div>

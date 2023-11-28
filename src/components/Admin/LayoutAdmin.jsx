@@ -161,6 +161,7 @@ const LayoutAdmin = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
+        className="menuAdmin"
       >
         <div
           style={{
@@ -222,8 +223,8 @@ const LayoutAdmin = () => {
                   style={{
                     marginLeft: "10px",
                     color: "black",
-                    marginTop: "10px",
                     marginRight: "20px",
+                    marginBottom: "5px",
                   }}
                 />
               </Space>

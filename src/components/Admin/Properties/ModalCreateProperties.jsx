@@ -108,8 +108,8 @@ const ModalCreateProperties = (props) => {
         onOk={() => form.submit()}
         maskClosable={false}
         onCancel={hideModal}
-        okText="Ok"
-        cancelText="Cancel"
+        okText="Đồng ý"
+        cancelText="Hủy"
       >
         <Form
           form={form}

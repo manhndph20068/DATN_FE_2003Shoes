@@ -139,7 +139,10 @@ const CreateShoeDetail = () => {
 
   return (
     <>
-      <div style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}>
+      <div
+        style={{ paddingLeft: "1.5rem", paddingTop: "20px" }}
+        className="shoes-button"
+      >
         <p style={{ fontSize: "15px" }}>
           <AppstoreOutlined style={{ fontSize: "14px", marginRight: "5px" }} />
           <span>Quản lý sản phẩm </span>
