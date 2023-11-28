@@ -244,10 +244,15 @@ const ViewPayment = (props) => {
 
     const data = {
       idVoucher: voucher ?? null,
+      specificAddress: address,
+      ward: wardSelected,
+      district: districtSelected,
+      province: provinceSelected,
       idAccount: id,
+      phoneNumber: phone,
       email: email,
       customerName: username,
-      phoneNumber: phone,
+      maximumReductionValue: vocherSelected?.maximumReductionValue,
       address: province + ", " + district + ", " + ward + ", " + address,
       shipFee: shipPrice,
       moneyReduce:
@@ -257,20 +262,24 @@ const ViewPayment = (props) => {
                 (vocherSelected?.discountAmount / 100)
             )
           : discountVoucher || 0,
-      totalMoney:
-        typeOfReduceVoucher === 1
-          ? Math.ceil(
-              totalPrice -
-                discountVoucher -
-                (totalPrice - discountVoucher) *
-                  (vocherSelected?.discountAmount / 100)
-            )
-          : Math.ceil(totalPrice - discountVoucher) || 0,
+      totalMoney: 0,
       note: "Đơn khách đặt",
       shoeDetailListRequets: detailOrder,
     };
 
-    console.log("values", values);
+    if (
+      data.moneyReduce > data.maximumReductionValue &&
+      typeOfReduceVoucher === 1
+    ) {
+      data.moneyReduce = data.maximumReductionValue;
+    }
+
+    data.totalMoney =
+      typeOfReduceVoucher === 1
+        ? Math.ceil(totalPrice - data.moneyReduce)
+        : Math.ceil(totalPrice - data.moneyReduce) || 0;
+
+    console.log("data", data);
     if (typePaid === 2) {
       dispatch(doInitalTempData(data));
       handleSubmitOrderVnPay();
@@ -723,22 +732,18 @@ const ViewPayment = (props) => {
                 >
                   <span>Voucher giảm giá: </span>
                   <span style={{ fontSize: "1rem" }}>
-                    {/* {Intl.NumberFormat("vi-VN", {
+                    {Intl.NumberFormat("vi-VN", {
                       style: "currency",
                       currency: "VND",
-                    }).format(discountVoucher || 0)} */}
-                    {typeOfReduceVoucher === 1
-                      ? Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(
-                          (totalPrice - discountVoucher) *
-                            (vocherSelected?.discountAmount / 100)
-                        )
-                      : Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(discountVoucher || 0)}
+                    }).format(
+                      typeOfReduceVoucher === 1
+                        ? Math.min(
+                            (totalPrice - discountVoucher) *
+                              (vocherSelected?.discountAmount / 100),
+                            vocherSelected?.maximumReductionValue || 0
+                          )
+                        : discountVoucher || 0
+                    )}
                   </span>
                 </div>
                 <div className="order-tong">
@@ -749,11 +754,22 @@ const ViewPayment = (props) => {
                       currency: "VND",
                     }).format(
                       typeOfReduceVoucher === 1
-                        ? totalPrice -
-                            discountVoucher -
-                            (totalPrice - discountVoucher) *
-                              (vocherSelected?.discountAmount / 100)
-                        : totalPrice - discountVoucher || 0
+                        ? Math.max(
+                            totalPrice -
+                              (Math.min(
+                                (totalPrice - discountVoucher) *
+                                  (vocherSelected?.discountAmount / 100),
+                                vocherSelected?.maximumReductionValue || 0
+                              ) > vocherSelected?.maximumReductionValue
+                                ? vocherSelected?.maximumReductionValue
+                                : Math.min(
+                                    (totalPrice - discountVoucher) *
+                                      (vocherSelected?.discountAmount / 100),
+                                    vocherSelected?.maximumReductionValue || 0
+                                  )),
+                            0
+                          )
+                        : Math.max(totalPrice - discountVoucher, 0)
                     )}
                   </span>
                 </div>

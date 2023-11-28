@@ -46,7 +46,7 @@ const PaymentNow = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalMoneyOfProds, setTotalMoneyOfProds] = useState(0);
   const [shipPrice, setShipPrice] = useState(0);
-  const [nextStep, setNextStep] = useState(0);
+  // const [nextStep, setNextStep] = useState(0);
   const [listProvince, setListProvince] = useState([]);
   const [provinceSelected, setProvinceSelected] = useState(201);
   const [listDistrict, setListDistrict] = useState([]);
@@ -101,7 +101,7 @@ const PaymentNow = () => {
       prodPaidNow.quantity * prodPaidNow.detail.priceInput + shipPrice
     );
     setTotalMoneyOfProds(prodPaidNow.quantity * prodPaidNow.detail.priceInput);
-  }, [nextStep, shipPrice]);
+  }, [shipPrice]);
 
   useEffect(() => {
     async function getDataProvince(url = "") {
@@ -229,12 +229,45 @@ const PaymentNow = () => {
       },
     ];
 
+    // const data = {
+    //   idVoucher: voucher ?? null,
+    //   idAccount: id,
+    //   email: email,
+    //   customerName: username,
+    //   phoneNumber: phone,
+    //   address: province + ", " + district + ", " + ward + ", " + address,
+    //   shipFee: shipPrice,
+    //   moneyReduce:
+    //     typeOfReduceVoucher === 1
+    //       ? Math.ceil(
+    //           (totalPrice - discountVoucher) *
+    //             (vocherSelected?.discountAmount / 100)
+    //         )
+    //       : discountVoucher || 0,
+    //   totalMoney:
+    //     typeOfReduceVoucher === 1
+    //       ? Math.ceil(
+    //           totalPrice -
+    //             discountVoucher -
+    //             (totalPrice - discountVoucher) *
+    //               (vocherSelected?.discountAmount / 100)
+    //         )
+    //       : Math.ceil(totalPrice - discountVoucher) || 0,
+    //   note: "Đơn khách đặt",
+    //   shoeDetailListRequets: detailOrder,
+    // };
+
     const data = {
       idVoucher: voucher ?? null,
+      specificAddress: address,
+      ward: wardSelected,
+      district: districtSelected,
+      province: provinceSelected,
+      phoneNumber: phone,
       idAccount: id,
       email: email,
       customerName: username,
-      phoneNumber: phone,
+      maximumReductionValue: vocherSelected?.maximumReductionValue,
       address: province + ", " + district + ", " + ward + ", " + address,
       shipFee: shipPrice,
       moneyReduce:
@@ -244,20 +277,24 @@ const PaymentNow = () => {
                 (vocherSelected?.discountAmount / 100)
             )
           : discountVoucher || 0,
-      totalMoney:
-        typeOfReduceVoucher === 1
-          ? Math.ceil(
-              totalPrice -
-                discountVoucher -
-                (totalPrice - discountVoucher) *
-                  (vocherSelected?.discountAmount / 100)
-            )
-          : Math.ceil(totalPrice - discountVoucher) || 0,
+      totalMoney: 0,
       note: "Đơn khách đặt",
       shoeDetailListRequets: detailOrder,
     };
 
-    console.log("values", values);
+    if (
+      data.moneyReduce > data.maximumReductionValue &&
+      typeOfReduceVoucher === 1
+    ) {
+      data.moneyReduce = data.maximumReductionValue;
+    }
+
+    data.totalMoney =
+      typeOfReduceVoucher === 1
+        ? Math.ceil(totalPrice - data.moneyReduce)
+        : Math.ceil(totalPrice - data.moneyReduce) || 0;
+
+    console.log("data", data);
 
     if (typePaid === 2) {
       console.log("data", data);
@@ -712,8 +749,11 @@ const PaymentNow = () => {
                     currency: "VND",
                   }).format(
                     typeOfReduceVoucher === 1
-                      ? (totalPrice - discountVoucher) *
-                          (vocherSelected?.discountAmount / 100)
+                      ? Math.min(
+                          (totalPrice - discountVoucher) *
+                            (vocherSelected?.discountAmount / 100),
+                          vocherSelected?.maximumReductionValue || 0
+                        )
                       : discountVoucher || 0
                   )}
                 </span>
@@ -726,11 +766,22 @@ const PaymentNow = () => {
                     currency: "VND",
                   }).format(
                     typeOfReduceVoucher === 1
-                      ? totalPrice -
-                          discountVoucher -
-                          (totalPrice - discountVoucher) *
-                            (vocherSelected?.discountAmount / 100)
-                      : totalPrice - discountVoucher || 0
+                      ? Math.max(
+                          totalPrice -
+                            (Math.min(
+                              (totalPrice - discountVoucher) *
+                                (vocherSelected?.discountAmount / 100),
+                              vocherSelected?.maximumReductionValue || 0
+                            ) > vocherSelected?.maximumReductionValue
+                              ? vocherSelected?.maximumReductionValue
+                              : Math.min(
+                                  (totalPrice - discountVoucher) *
+                                    (vocherSelected?.discountAmount / 100),
+                                  vocherSelected?.maximumReductionValue || 0
+                                )),
+                          0
+                        )
+                      : Math.max(totalPrice - discountVoucher, 0)
                   )}
                 </span>
               </div>
