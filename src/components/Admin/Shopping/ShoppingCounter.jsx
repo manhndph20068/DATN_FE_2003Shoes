@@ -392,12 +392,7 @@ const ShoppingCounter = () => {
 
   const handleCalTotalPrice = () => {
     if (typeOfReduceVoucher === 1) {
-      // const totalPrice = handleCalTotalPriceOfProd() - handleCalTotalPrice();
-      // const maxReductionValue = vocherSelected?.maximumReductionValue;
-
-      // const moneyReduce =
-      //   totalPrice > maxReductionValue ? maxReductionValue : totalPrice;
-
+      let maximumReductionValue = vocherSelected?.maximumReductionValue;
       let totalWithReduce = 0;
       listOrderDetail?.forEach((item) => {
         totalWithReduce += item.price * item.quantity;

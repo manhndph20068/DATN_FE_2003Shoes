@@ -263,6 +263,7 @@ const PaymentNow = () => {
       ward: wardSelected,
       district: districtSelected,
       province: provinceSelected,
+      phoneNumber: phone,
       idAccount: id,
       email: email,
       customerName: username,

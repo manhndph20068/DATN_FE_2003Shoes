@@ -249,6 +249,7 @@ const ViewPayment = (props) => {
       district: districtSelected,
       province: provinceSelected,
       idAccount: id,
+      phoneNumber: phone,
       email: email,
       customerName: username,
       maximumReductionValue: vocherSelected?.maximumReductionValue,
