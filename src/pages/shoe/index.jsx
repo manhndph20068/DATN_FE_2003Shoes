@@ -90,7 +90,6 @@ const ShoePage = (props) => {
       );
       console.log("res ViewDetail", res);
       if (res?.data && res?.status === 0) {
-        console.log("step 2");
         const size = res.data.map((item) => item.size);
 
         const sizeUnique = size.filter(
@@ -126,43 +125,43 @@ const ShoePage = (props) => {
     getShoeById();
   }, [id]);
 
-  useEffect(() => {
-    const fetchAllShoeCustom = async () => {
-      let res = await callListShoeDetailCustom(
-        shoeData.nameShoe,
-        null,
-        sizeSelected
-      );
+  // useEffect(() => {
+  //   const fetchAllShoeCustom = async () => {
+  //     let res = await callListShoeDetailCustom(
+  //       shoeData.nameShoe,
+  //       null,
+  //       sizeSelected
+  //     );
 
-      console.log("step 3");
-      console.log("res fetchAllShoeCustom", res);
-      console.log("shoeData.nameShoe", shoeData.nameShoe);
-      console.log("sizeSelected", sizeSelected);
-      console.log("shoeData.id", res?.data);
-      console.log("shoeData step 3", shoeData);
+  //     console.log("step 3");
+  //     console.log("res fetchAllShoeCustom", res);
+  //     console.log("shoeData.nameShoe", shoeData.nameShoe);
+  //     console.log("sizeSelected", sizeSelected);
+  //     console.log("shoeData.id", res?.data);
+  //     console.log("shoeData step 3", shoeData);
 
-      const idToFind = +id;
-      console.log("idToFind", idToFind);
+  //     const idToFind = +id;
+  //     console.log("idToFind", idToFind);
 
-      const matchingItem = res.data.find(
-        (item) => item.id === idToFind && item.size === sizeSelected
-      );
-      console.log("matchingItem", matchingItem);
+  //     const matchingItem = res.data.find(
+  //       (item) => item.id === idToFind && item.size === sizeSelected
+  //     );
+  //     console.log("matchingItem", matchingItem);
 
-      if (matchingItem) {
-        navigate(
-          `/shoe/${convertSlug(shoeData.nameShoe)}?id=${matchingItem.id}`
-        );
-      } else {
-        navigate(
-          `/shoe/${convertSlug(shoeData.nameShoe)}?id=${res?.data[0]?.id}`
-        );
-      }
-    };
-    if (shoeData.nameShoe !== undefined && sizeSelected !== undefined) {
-      fetchAllShoeCustom();
-    }
-  }, [sizeSelected, shoeData.nameShoe]);
+  //     if (matchingItem) {
+  //       navigate(
+  //         `/shoe/${convertSlug(shoeData.nameShoe)}?id=${matchingItem.id}`
+  //       );
+  //     } else {
+  //       navigate(
+  //         `/shoe/${convertSlug(shoeData.nameShoe)}?id=${res?.data[0]?.id}`
+  //       );
+  //     }
+  //   };
+  //   if (shoeData.nameShoe !== undefined && sizeSelected !== undefined) {
+  //     fetchAllShoeCustom();
+  //   }
+  // }, [sizeSelected, shoeData.nameShoe]);
 
   // useEffect(() => {
   //   const fetchAllShoeCustom = async () => {
