@@ -2,6 +2,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import ViewDetail from "../../components/Shoe/ViewDetail";
 import {
   callGetBookById,
+  callGetColorByName,
+  callGetListSizeOfShoeById,
+  callGetShoeByName,
   callGetShoeDetailById,
   callListShoeDetailCustom,
   callListShoeDetailHomePage,
@@ -16,6 +19,9 @@ const ShoePage = (props) => {
   const [sizeOfShoe, setSizeOfShoe] = useState([]);
   const [colorSelected, setColorSelected] = useState(null);
   const [sizeSelected, setSizeSelected] = useState(null);
+  const [shoeId, setShoeId] = useState(null);
+  const [colorId, setColorId] = useState(null);
+  const [listShoeDetailGetById, setListShoeDetailGetById] = useState([]);
 
   let param = new URLSearchParams(location.search);
   let id = +param.get("id");
@@ -96,14 +102,51 @@ const ShoePage = (props) => {
           (item, index) => size.indexOf(item) === index
         );
 
-        setSizeOfShoe(sizeUnique);
+        // setSizeOfShoe(sizeUnique);
 
         setSizeSelected(shoeData.size);
       }
     };
 
     fetchAllShoeCustom();
+    handleGetShoeByName();
+    handleGetColorByName();
   }, [shoeData.nameShoe, shoeData.color]);
+
+  useEffect(() => {
+    handleGetListShoeByShoeId();
+  }, [shoeId, colorId]);
+
+  const handleGetShoeByName = async () => {
+    console.log("shoeData?.shoe", shoeData?.nameShoe);
+    const res = await callGetShoeByName(shoeData?.nameShoe);
+    if (res.status === 0) {
+      setShoeId(res.data.id);
+    }
+  };
+
+  const handleGetColorByName = async () => {
+    console.log("shoeData?.shoe", shoeData?.color);
+    const res = await callGetColorByName(shoeData?.color);
+    if (res.status === 0) {
+      setColorId(res.data.id);
+    }
+  };
+
+  const handleGetListShoeByShoeId = async () => {
+    const data = {
+      idShoe: shoeId,
+      idColor: colorId,
+    };
+    console.log("data", data);
+    const res = await callGetListSizeOfShoeById(data);
+    if (res.status === 0) {
+      setListShoeDetailGetById(res.data);
+      const size = res.data.map((item) => item.nameOfSize);
+      console.log("size", size);
+      setSizeOfShoe(size);
+    }
+  };
 
   useEffect(() => {
     const getShoeById = async () => {
@@ -193,6 +236,9 @@ const ShoePage = (props) => {
         colorSelected={colorSelected}
         setSizeSelected={setSizeSelected}
         sizeSelected={sizeSelected}
+        shoeId={shoeId}
+        convertSlug={convertSlug}
+        listShoeDetailGetById={listShoeDetailGetById}
       />
     </>
   );

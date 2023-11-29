@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import {
   callAddToCartAtViewPageItemWithAccount,
   callGetListCartDetailById,
+  callGetListSizeOfShoeById,
   callListShoeDetailHomePage,
 } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,13 +22,17 @@ import RateComponent from "./RateComponent";
 
 const ViewDetail = (props) => {
   const [currentQuantity, setCurrentQuantity] = useState(1);
+
   const {
     shoeData,
     colorOfShoe,
     setColorSelected,
     setSizeSelected,
+    shoeId,
     colorSelected,
     sizeOfShoe,
+    convertSlug,
+    listShoeDetailGetById,
   } = props;
   const images = shoeData?.items ?? [];
   const [form] = Form.useForm();
@@ -35,16 +40,32 @@ const ViewDetail = (props) => {
   const navigate = useNavigate();
   const idCart = useSelector((state) => state.account.idCart);
 
+  // const handleGetListShoeByShoeId = async () => {
+  //   const res = await callGetListSizeOfShoeById(shoeId);
+  //   if (res.status === 0) {
+  //     setListShoeDetailGetById(res.data);
+  //   }
+  // };
+
   const handleChangeFilter = (changedValues, values) => {
     console.log(">>> check handleChangeFilter", changedValues, values);
     console.log(">>> shoeData", shoeData);
-    // if (values.size !== null) {
-    //   form.setFieldsValue({
-    //     size: values.size,
-    //   });
-    //   setSizeSelected(values.size);
-    //   setCurrentQuantity(1);
-    // }
+    console.log(">>> shoeId", shoeId);
+    console.log(">>> listShoeDetailGetById", listShoeDetailGetById);
+    const tranferData = listShoeDetailGetById.find(
+      (item) => item.nameOfSize === values.size
+    );
+    console.log(">>> tranferData", tranferData);
+    if (tranferData.shoeDetailId) {
+      form.setFieldsValue({
+        size: values.size,
+      });
+      // setSizeSelected(values.size);
+      setCurrentQuantity(1);
+      navigate(
+        `/shoe/${convertSlug(shoeData.nameShoe)}?id=${tranferData.shoeDetailId}`
+      );
+    }
 
     // setColorSelected(changedValues.color);
   };
@@ -125,6 +146,10 @@ const ViewDetail = (props) => {
     );
     navigate("/order-now");
   };
+
+  // useEffect(() => {
+  //   handleGetListShoeByShoeId();
+  // }, [shoeId]);
 
   return (
     <>
