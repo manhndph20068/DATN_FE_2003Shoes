@@ -55,7 +55,7 @@ const Footer = () => {
                         src="/src/assets/logoMatPhong.png"
                         className="img-fluid"
                         alt="logo"
-                        style={{ width: "150px", height: "80px" }}
+                        style={{ width: "200px", height: "120px" }}
                       />
                     </a>
                   </div>

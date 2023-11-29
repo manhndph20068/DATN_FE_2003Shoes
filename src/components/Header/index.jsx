@@ -152,7 +152,7 @@ const Header = () => {
   }
 
   const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/5.jpg`;
-  const urlLogo = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/logo.jpg`;
+  const urlLogo = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/logo.png`;
 
   const fetchListShoeDetailAtCounter = async () => {
     const res = await callListShoeDetailAtCounter();

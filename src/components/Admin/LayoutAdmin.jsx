@@ -168,10 +168,11 @@ const LayoutAdmin = () => {
             height: 32,
             margin: 16,
             textAlign: "center",
-            marginBottom: "30px",
+            marginBottom: "50px",
+            marginTop: "10px",
           }}
         >
-          <img src="/src/assets/logo.jpg" alt="" width="60%" height="50px" />
+          <img src="/src/assets/logo.png" alt="" width="70%" height="70px" />
         </div>
         <Menu
           defaultSelectedKeys={[activeMenu]}
