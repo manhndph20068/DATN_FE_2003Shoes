@@ -37,13 +37,14 @@ const ViewDetail = (props) => {
 
   const handleChangeFilter = (changedValues, values) => {
     console.log(">>> check handleChangeFilter", changedValues, values);
-    if (values.size !== null) {
-      form.setFieldsValue({
-        size: values.size,
-      });
-      setSizeSelected(values.size);
-      setCurrentQuantity(1);
-    }
+    console.log(">>> shoeData", shoeData);
+    // if (values.size !== null) {
+    //   form.setFieldsValue({
+    //     size: values.size,
+    //   });
+    //   setSizeSelected(values.size);
+    //   setCurrentQuantity(1);
+    // }
 
     // setColorSelected(changedValues.color);
   };

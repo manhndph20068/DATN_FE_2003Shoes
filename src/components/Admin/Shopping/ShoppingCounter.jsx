@@ -131,7 +131,8 @@ const ShoppingCounter = () => {
     } else {
       if (!localStorage.getItem("reloaded")) {
         localStorage.setItem("reloaded", true);
-        window.location.reload();
+        setListOrderAtCounter([]);
+        window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${res.data[0].id}`;
       } else {
         localStorage.removeItem("reloaded");
       }
