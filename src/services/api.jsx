@@ -163,6 +163,18 @@ const callGetCartByAccountId = (id) => {
   return axios.get(`/api/v1/cart/find-cart/${id}`);
 };
 
+const callGetShoeByName = (name) => {
+  return axios.get(`/api/v1/admin/shoe/getShoeByName/${name}`);
+};
+
+const callGetListSizeOfShoeById = (data) => {
+  return axios.post(`/api/v1/shoe-detail/getListSizeOfShoeById`, data);
+};
+
+const callGetColorByName = (name) => {
+  return axios.get(`/api/v1/color/getColorByName/${name}`);
+};
+
 const callGetListCartDetailById = (id) => {
   const data = {
     idCart: id,
@@ -648,4 +660,7 @@ export {
   callDoActiveVoucher,
   callGetDataUserById,
   callDoActiveAccount,
+  callGetShoeByName,
+  callGetListSizeOfShoeById,
+  callGetColorByName,
 };
