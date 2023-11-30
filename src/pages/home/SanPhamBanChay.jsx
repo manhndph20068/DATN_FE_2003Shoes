@@ -49,7 +49,7 @@ const SanPhamBanChay = (props) => {
                       }}
                     />
                     <p>{item?.code.toUpperCase()}</p>
-                    <p>
+                    <p style={{ fontWeight: "bold" }}>
                       {" "}
                       {Intl.NumberFormat("vi-VN", {
                         style: "currency",

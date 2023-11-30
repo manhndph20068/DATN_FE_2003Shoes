@@ -54,7 +54,12 @@ const DanhGia = () => {
                         }}
                       >
                         <span>
-                          <div className="user-name">{item?.nameAccount}</div>
+                          <div
+                            className="user-name"
+                            style={{ fontWeight: "bold" }}
+                          >
+                            {item?.nameAccount}
+                          </div>
                         </span>
                         <span>
                           <div className="date">{item?.date}</div>
