@@ -489,6 +489,18 @@ const callGetAddressByID = (id) => {
   return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
 };
 
+const callGetTop4BestSale = (id) => {
+  return axios.get(`/api/v1/shoe-detail/getListTop4BestSales`);
+};
+
+const callGetTop4News = (id) => {
+  return axios.get(`/api/v1/shoe-detail/getListTop4News`);
+};
+
+const callGetTop3Comment = (id) => {
+  return axios.get(`/api/v1/comment/top-3`);
+};
+
 const callDeletetUser = (_id) => {
   return axios.delete(`/api/v1/user/${_id}`);
 };
@@ -663,4 +675,7 @@ export {
   callGetShoeByName,
   callGetListSizeOfShoeById,
   callGetColorByName,
+  callGetTop4BestSale,
+  callGetTop4News,
+  callGetTop3Comment,
 };
