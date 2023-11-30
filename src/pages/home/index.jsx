@@ -15,7 +15,7 @@ import NoiBat from "./NoiBat";
 import CachDong from "./CachDong";
 import DanhGia from "./DanhGia";
 import ThuongHieu from "./ThuongHieu";
-import TinTuc from "./TinTuc";
+import TopMauGiay from "./TopMauGiay";
 // const contentStyle = {
 //   height: "160px",
 //   color: "#fff",
@@ -49,7 +49,7 @@ const HomePage = () => {
         {/* Cac thuong hieu */}
         <ThuongHieu></ThuongHieu>
         {/* Tin tuc */}
-        <TinTuc></TinTuc>
+        <TopMauGiay></TopMauGiay>
       </div>
     </>
   );

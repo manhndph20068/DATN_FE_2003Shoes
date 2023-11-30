@@ -1,0 +1,18 @@
+// .col-2 img {
+//   width: 100px;
+//   height: 100px;
+//   transition: filter 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Thêm transition để có hiệu ứng mượt mà */
+// }
+
+// .col-2 img:hover {
+//   filter: grayscale(0%) brightness(70%) sepia(100%) hue-rotate(0deg)
+//     saturate(500%);
+//   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Thêm box shadow màu đỏ khi hover */
+// }
+.cardGiayNenCo:hover {
+  //   box-shadow: 0px 5px 5px 5px rgb(232, 207, 207);
+  box-shadow: 0px 2px 2px 2px rgb(94, 187, 241);
+}
+.cardGiayNenCo {
+  height: 500px;
+}
