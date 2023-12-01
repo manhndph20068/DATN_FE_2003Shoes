@@ -8,7 +8,12 @@ import {
   faTag,
   faShoePrints,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 const TopMauGiay = () => {
+  const navigate = useNavigate();
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <>
       <div
@@ -28,6 +33,10 @@ const TopMauGiay = () => {
                 backgroundColor: "#33CCFF",
                 color: "#666666",
                 borderRadius: "50px",
+              }}
+              onClick={() => {
+                navigate("/productions");
+                scrollToTop();
               }}
             >
               Xem thêm

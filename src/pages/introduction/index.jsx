@@ -11,7 +11,9 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import "./introduction.scss";
+import { useNavigate } from "react-router-dom";
 const IntroductionPage = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -78,7 +80,14 @@ const IntroductionPage = () => {
               </div>
               {/* button */}
               <div className="row" style={{ marginTop: "10px" }}>
-                <Button className="buttonXemCuaHang">Xem Ngay Cửa Hàng</Button>
+                <Button
+                  className="buttonXemCuaHang"
+                  onClick={() => {
+                    navigate("/productions");
+                  }}
+                >
+                  Xem Ngay Cửa Hàng
+                </Button>
               </div>
             </div>
           </div>

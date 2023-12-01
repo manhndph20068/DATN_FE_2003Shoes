@@ -117,6 +117,7 @@ const ShoppingCounter = () => {
   };
 
   const fetchListOrderAtCounter = async () => {
+    localStorage.removeItem("reloaded");
     const res = await callGetListOrderAtCounter();
     if (res?.data?.length > 0) {
       setListOrderAtCounter(res.data);
@@ -129,6 +130,7 @@ const ShoppingCounter = () => {
       form.setFieldValue("code", code);
       // setActiveKey(String(activeKey));
     } else {
+      console.log("vao elserr");
       if (!localStorage.getItem("reloaded")) {
         localStorage.setItem("reloaded", true);
         setListOrderAtCounter([]);
