@@ -497,6 +497,18 @@ const callGetTop4News = (id) => {
   return axios.get(`/api/v1/shoe-detail/getListTop4News`);
 };
 
+const callGetMonthlyRevenue = (type) => {
+  return axios.get(
+    `/api/v1/statistical/so-luong-hoa-don-theo-thang?typeBanHang=${type}`
+  );
+};
+
+const callGetYearlyRevenue = (type) => {
+  return axios.get(
+    `/api/v1/statistical/so-luong-hoa-don-theo-nam?typeBanHang=${type}`
+  );
+};
+
 const callGetTop3Comment = (id) => {
   return axios.get(`/api/v1/comment/top-3`);
 };
@@ -763,4 +775,6 @@ export {
   callDoUpdateSole,
   callDoActiveShoeDetail,
   callDoInActiveShoeDetail,
+  callGetMonthlyRevenue,
+  callGetYearlyRevenue,
 };
