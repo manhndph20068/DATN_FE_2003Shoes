@@ -8,7 +8,12 @@ import {
   faTag,
   faShoePrints,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 const NoiBat = () => {
+  const navigate = useNavigate();
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <>
       <div className="container" style={{ marginTop: "100px" }}>
@@ -25,6 +30,10 @@ const NoiBat = () => {
                 backgroundColor: "#33CCFF",
                 color: "#666666",
                 borderRadius: "50px",
+              }}
+              onClick={() => {
+                navigate("/productions");
+                scrollToTop();
               }}
             >
               Xem thêm
