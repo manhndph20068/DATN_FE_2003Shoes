@@ -22,7 +22,7 @@ const CurrentRevalue = (props) => {
     if (res?.status === 0) {
       console.log("res?.data", res?.data);
       setTotalPrice(res?.data[0].tongTien);
-      setTotalOrder(res?.data[0].soLuongHangHoa);
+      setTotalOrder(res?.data[0].soHoaDon);
     }
   };
 
