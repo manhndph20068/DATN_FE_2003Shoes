@@ -1,6 +1,17 @@
-import { Button, Table, Radio, Tag, Tooltip, Popconfirm } from "antd";
+import { Button, Table, Radio, Tag, Tooltip, Popconfirm, message } from "antd";
 import { useEffect, useState } from "react";
 import {
+  callDoActiveAccount,
+  callDoActiveBrand,
+  callDoActiveCategory,
+  callDoActiveColor,
+  callDoActiveSize,
+  callDoActiveSole,
+  callDoInActiveBrand,
+  callDoInActiveCategory,
+  callDoInActiveColor,
+  callDoInActiveSize,
+  callDoInActiveSole,
   callListShoeBrand,
   callListShoeCategory,
   callListShoeColor,
@@ -21,12 +32,15 @@ import ModalCreateProperties from "./ModalCreateProperties";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import "./Properties.scss";
+import ModalUpdateProperties from "./ModalUpdateProperties";
 const Properties = () => {
   const [listData, setListData] = useState([]);
   const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
   const [currentProperties, setCurrentProperties] = useState(1);
+  const [dataUpdate, setDataUpdate] = useState(null);
 
-  const handleGetListCategory = async () => {
+  const handleGetListProperties = async () => {
     if (currentProperties === 1) {
       const res = await callListShoeCategory();
       if (res && res.status === 0) {
@@ -59,8 +73,110 @@ const Properties = () => {
     }
   };
 
+  const InActivePropertiesByID = async (id) => {
+    const data = {
+      id: id,
+    };
+    if (currentProperties === 1) {
+      const res = await callDoInActiveCategory(data);
+      if (res && res.status === 0) {
+        message.success("Hủy kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 2) {
+      const res = await callDoInActiveBrand(data);
+      if (res && res.status === 0) {
+        message.success("Hủy kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 3) {
+      const res = await callDoInActiveSole(data);
+      if (res && res.status === 0) {
+        message.success("Hủy kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 4) {
+      const res = await callDoInActiveSize(data);
+      if (res && res.status === 0) {
+        message.success("Hủy kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 5) {
+      const res = await callDoInActiveColor(data);
+      if (res && res.status === 0) {
+        message.success("Hủy kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+  };
+
+  const ActivePropertiesByID = async (id) => {
+    const data = {
+      id: id,
+    };
+    if (currentProperties === 1) {
+      const res = await callDoActiveCategory(data);
+      if (res && res.status === 0) {
+        message.success("Kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 2) {
+      const res = await callDoActiveBrand(data);
+      if (res && res.status === 0) {
+        message.success("Kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 3) {
+      const res = await callDoActiveSole(data);
+      if (res && res.status === 0) {
+        message.success("Kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 4) {
+      const res = await callDoActiveSize(data);
+      if (res && res.status === 0) {
+        message.success("Kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+    if (currentProperties === 5) {
+      const res = await callDoActiveColor(data);
+      if (res && res.status === 0) {
+        message.success("Kích hoạt thành công");
+        handleGetListProperties();
+      } else {
+        message.error(res?.message);
+      }
+    }
+  };
+
   useEffect(() => {
-    handleGetListCategory();
+    handleGetListProperties();
   }, [currentProperties]);
 
   const columns = [
@@ -96,32 +212,64 @@ const Properties = () => {
                 style={{ color: "black", transition: "color 0.3s" }}
                 onMouseOver={(e) => (e.target.style.color = "blue")}
                 onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={() => {
+                  setIsModalUpdateOpen(true);
+                  setDataUpdate(record);
+                }}
               />
             </Tooltip>
-            <Popconfirm
-              placement="left"
-              title={`Bạn có chắc chắn muốn hủy kích hoạt thuộc tính: ${record.name}?`}
-              description={`Hủy kích hoạt thuộc tính: ${record.name} ?`}
-              onConfirm={() => InactiveAccByID(record.id)}
-              okText="Đồng ý"
-              cancelText="Không"
-            >
-              <Tooltip title="Hủy kích hoạt">
-                <FontAwesomeIcon
-                  icon={faToggleOff}
-                  style={{ color: "black", transition: "color 0.3s" }}
-                  onMouseOver={(e) => (e.target.style.color = "red")}
-                  onMouseOut={(e) => (e.target.style.color = "black")}
-                />
-              </Tooltip>
+            {record.status === 0 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có chắc chắn muốn kích hoạt thuộc tính: ${record.name}?`}
+                description={`Kích hoạt thuộc tính: ${record.name} ?`}
+                onConfirm={() => ActivePropertiesByID(record.id)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Kích hoạt">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
 
-              {/* <Tooltip title="Kích hoạt">
+                {/* <Tooltip title="Kích hoạt">
                 <FontAwesomeIcon
                   icon={faToggleOn}
                   style={{ color: "#2dca2b" }}
                 />
               </Tooltip> */}
-            </Popconfirm>
+              </Popconfirm>
+            )}
+            {record.status === 1 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có chắc chắn muốn hủy kích hoạt thuộc tính: ${record.name}?`}
+                description={`Hủy kích hoạt thuộc tính: ${record.name} ?`}
+                onConfirm={() => InActivePropertiesByID(record.id)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Hủy kích hoạt">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+
+                {/* <Tooltip title="Kích hoạt">
+                <FontAwesomeIcon
+                  icon={faToggleOn}
+                  style={{ color: "#2dca2b" }}
+                />
+              </Tooltip> */}
+              </Popconfirm>
+            )}
           </div>
         );
       },
@@ -195,6 +343,15 @@ const Properties = () => {
           isModalCreateOpen={isModalCreateOpen}
           setIsModalCreateOpen={setIsModalCreateOpen}
           currentProperties={currentProperties}
+          handleGetListProperties={handleGetListProperties}
+        />
+        <ModalUpdateProperties
+          isModalUpdateOpen={isModalUpdateOpen}
+          setIsModalUpdateOpen={setIsModalUpdateOpen}
+          currentProperties={currentProperties}
+          setDataUpdate={setDataUpdate}
+          dataUpdate={dataUpdate}
+          handleGetListProperties={handleGetListProperties}
         />
       </div>
     </>

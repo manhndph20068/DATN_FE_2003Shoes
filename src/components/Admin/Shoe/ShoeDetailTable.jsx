@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Table, Row, Col } from "antd";
+import { Table, Row, Col, Tag } from "antd";
 import {
   callListBookAdmin,
   callDeletetBook,
   callListShoeDetailAdmin,
+  callDoInActiveShoeDetail,
+  callDoActiveShoeDetail,
 } from "../../../services/api";
 import InputSearchShoe from "./InputSearchShoe";
 import ViewBookDetail from "./ViewShoeDetail";
@@ -97,6 +99,34 @@ const ShoeDetailTable = () => {
     fetchAllShoes();
   }, [current, pageSize, filter, querySort]);
 
+  const handleInActiveShoeDetail = async (id) => {
+    console.log("id", id);
+    const data = {
+      idSD: id,
+    };
+    const res = await callDoInActiveShoeDetail(data);
+    if (res.status === 0) {
+      message.success(res?.message);
+      fetchAllShoes();
+    } else {
+      message.error(res?.message);
+    }
+  };
+
+  const handleActiveShoeDetail = async (id) => {
+    console.log("id", id);
+    const data = {
+      idSD: id,
+    };
+    const res = await callDoActiveShoeDetail(data);
+    if (res.status === 0) {
+      message.success(res?.message);
+      fetchAllShoes();
+    } else {
+      message.error(res?.message);
+    }
+  };
+
   const columns = [
     {
       title: "Id",
@@ -132,11 +162,7 @@ const ShoeDetailTable = () => {
       dataIndex: "brand",
       sorter: true,
     },
-    {
-      title: "Loại giày",
-      dataIndex: "category",
-      sorter: true,
-    },
+
     {
       title: "Giá tiền",
       dataIndex: "priceInput",
@@ -151,6 +177,17 @@ const ShoeDetailTable = () => {
       title: "Số lượng",
       dataIndex: "qty",
       sorter: true,
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      sorter: true,
+      render: (_, record) => (
+        <>
+          {_ === 0 && <Tag color="red-inverse">Không hoạt động</Tag>}
+          {_ === 1 && <Tag color="green-inverse">Hoạt động</Tag>}
+        </>
+      ),
     },
     {
       title: "",
@@ -172,24 +209,44 @@ const ShoeDetailTable = () => {
                 }}
               />
             </Tooltip>
-
-            <Popconfirm
-              placement="left"
-              title={`Bạn có muốn ngừng kinh doanh kích hoạt ${record.category}?`}
-              description={`Ngừng kinh doanh giày ${record.category} ?`}
-              onConfirm={() => confirm(record.id)}
-              okText="Đồng ý"
-              cancelText="Không"
-            >
-              <Tooltip title="Ngừng kinh doanh">
-                <FontAwesomeIcon
-                  icon={faToggleOff}
-                  style={{ color: "black", transition: "color 0.3s" }}
-                  onMouseOver={(e) => (e.target.style.color = "red")}
-                  onMouseOut={(e) => (e.target.style.color = "black")}
-                />
-              </Tooltip>
-            </Popconfirm>
+            {record.status === 1 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có muốn ngừng kinh doanh kích hoạt ${record.category}?`}
+                description={`Ngừng kinh doanh giày ${record.category} ?`}
+                onConfirm={() => handleInActiveShoeDetail(record.id)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Ngừng kinh doanh">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            )}
+            {record.status === 0 && (
+              <Popconfirm
+                placement="left"
+                title={`Bạn có muốn kích hoạt ${record.category}?`}
+                description={`Kích hoạt giày ${record.category} ?`}
+                onConfirm={() => handleActiveShoeDetail(record.id)}
+                okText="Đồng ý"
+                cancelText="Không"
+              >
+                <Tooltip title="Kinh doanh">
+                  <FontAwesomeIcon
+                    icon={faToggleOff}
+                    style={{ color: "black", transition: "color 0.3s" }}
+                    onMouseOver={(e) => (e.target.style.color = "red")}
+                    onMouseOut={(e) => (e.target.style.color = "black")}
+                  />
+                </Tooltip>
+              </Popconfirm>
+            )}
           </div>
         );
       },

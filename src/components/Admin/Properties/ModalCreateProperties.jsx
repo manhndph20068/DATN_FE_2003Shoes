@@ -21,13 +21,14 @@ import {
 } from "../../../services/api";
 
 const ModalCreateProperties = (props) => {
-  const { isModalCreateOpen, setIsModalCreateOpen, currentProperties } = props;
+  const {
+    isModalCreateOpen,
+    setIsModalCreateOpen,
+    currentProperties,
+    handleGetListProperties,
+  } = props;
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
-
-  const showModal = () => {
-    setIsModalCreateOpen(true);
-  };
 
   const hideModal = () => {
     setIsModalCreateOpen(false);
@@ -41,6 +42,7 @@ const ModalCreateProperties = (props) => {
         message.success("Thêm mới thành công");
         setIsModalCreateOpen(false);
         form.resetFields();
+        handleGetListProperties();
       } else {
         message.error("Thêm mới thất bại");
         setIsModalCreateOpen(false);
@@ -53,6 +55,7 @@ const ModalCreateProperties = (props) => {
         message.success("Thêm mới thành công");
         setIsModalCreateOpen(false);
         form.resetFields();
+        handleGetListProperties();
       } else {
         message.error("Thêm mới thất bại");
         setIsModalCreateOpen(false);
@@ -65,6 +68,7 @@ const ModalCreateProperties = (props) => {
         message.success("Thêm mới thành công");
         setIsModalCreateOpen(false);
         form.resetFields();
+        handleGetListProperties();
       } else {
         message.error("Thêm mới thất bại");
         setIsModalCreateOpen(false);
@@ -77,6 +81,7 @@ const ModalCreateProperties = (props) => {
         message.success("Thêm mới thành công");
         setIsModalCreateOpen(false);
         form.resetFields();
+        handleGetListProperties();
       } else {
         message.error("Thêm mới thất bại");
         setIsModalCreateOpen(false);
@@ -89,6 +94,7 @@ const ModalCreateProperties = (props) => {
         message.success("Thêm mới thành công");
         setIsModalCreateOpen(false);
         form.resetFields();
+        handleGetListProperties();
       } else {
         message.error("Thêm mới thất bại");
         setIsModalCreateOpen(false);

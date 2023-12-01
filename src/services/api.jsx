@@ -509,6 +509,74 @@ const callDoInActiveVoucher = (data) => {
   return axios.post("/api/v1/admin/voucher-order/deleteVoucherOrder", data);
 };
 
+const callDoInActiveCategory = (data) => {
+  return axios.post("/api/v1/category/deleteCategory", data);
+};
+
+const callDoInActiveBrand = (data) => {
+  return axios.post("/api/v1/brand/deleteBrand", data);
+};
+
+const callDoInActiveSole = (data) => {
+  return axios.post("/api/v1/sole/deleteSole", data);
+};
+
+const callDoInActiveSize = (data) => {
+  return axios.post("/api/v1/size/deleteSize", data);
+};
+
+const callDoInActiveColor = (data) => {
+  return axios.post("/api/v1/color/deleteColor", data);
+};
+
+const callDoActiveCategory = (data) => {
+  return axios.post("/api/v1/category/activeCategory", data);
+};
+
+const callDoActiveBrand = (data) => {
+  return axios.post("/api/v1/brand/activeBrand", data);
+};
+
+const callDoActiveSole = (data) => {
+  return axios.post("/api/v1/sole/activeSole", data);
+};
+
+const callDoActiveSize = (data) => {
+  return axios.post("/api/v1/size/activeSize", data);
+};
+
+const callDoActiveColor = (data) => {
+  return axios.post("/api/v1/color/activeColor", data);
+};
+
+const callDoUpdateCategory = (data) => {
+  return axios.post("/api/v1/category/updateCategory", data);
+};
+
+const callDoUpdateBrand = (data) => {
+  return axios.post("/api/v1/brand/updateBrand", data);
+};
+
+const callDoUpdateSole = (data) => {
+  return axios.post("/api/v1/sole/updateSole", data);
+};
+
+const callDoUpdateSize = (data) => {
+  return axios.post("/api/v1/size/updateSize", data);
+};
+
+const callDoUpdateColor = (data) => {
+  return axios.post("/api/v1/color/updateColor", data);
+};
+
+const callDoActiveShoeDetail = (data) => {
+  return axios.post("/api/v1/shoe-detail/activeShoeDetail", data);
+};
+
+const callDoInActiveShoeDetail = (data) => {
+  return axios.post("/api/v1/shoe-detail/inActiveShoeDetail", data);
+};
+
 const callDoActiveVoucher = (data) => {
   return axios.post(
     "/api/v1/admin/voucher-order/updateStatusVoucherOrderCancelFromWait",
@@ -678,4 +746,21 @@ export {
   callGetTop4BestSale,
   callGetTop4News,
   callGetTop3Comment,
+  callDoInActiveCategory,
+  callDoInActiveBrand,
+  callDoInActiveColor,
+  callDoInActiveSize,
+  callDoInActiveSole,
+  callDoActiveCategory,
+  callDoActiveBrand,
+  callDoActiveColor,
+  callDoActiveSize,
+  callDoActiveSole,
+  callDoUpdateCategory,
+  callDoUpdateBrand,
+  callDoUpdateColor,
+  callDoUpdateSize,
+  callDoUpdateSole,
+  callDoActiveShoeDetail,
+  callDoInActiveShoeDetail,
 };
