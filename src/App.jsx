@@ -46,6 +46,7 @@ import Properties from "./components/Admin/Properties/Properties";
 import IntroductionPage from "./pages/introduction";
 import NewsPage from "./pages/news";
 import HomePage from "./pages/home";
+import VoucherPage from "./pages/voucher";
 
 const Layout = () => {
   return (
@@ -133,6 +134,10 @@ export default function App() {
         {
           path: "news",
           element: <NewsPage />,
+        },
+        {
+          path: "vouchers",
+          element: <VoucherPage />,
         },
         {
           path: "shoe/:slug",
@@ -244,6 +249,7 @@ export default function App() {
       window.location.pathname === "/news" ||
       window.location.pathname === "/productions" ||
       window.location.pathname === "/contact" ||
+      window.location.pathname === "/vouchers" ||
       window.location.pathname === "/order" ||
       window.location.pathname === "/order-now" ||
       window.location.pathname === "/order-success" ||

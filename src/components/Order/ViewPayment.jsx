@@ -372,7 +372,8 @@ const ViewPayment = (props) => {
     };
     const res = await callGetVouchersByTotalMoney(data);
     if (res?.status === 0) {
-      setListVoucher(res?.data);
+      const listVoucherActive = res?.data?.filter((item) => item?.status === 1);
+      setListVoucher(listVoucherActive);
     }
   };
 

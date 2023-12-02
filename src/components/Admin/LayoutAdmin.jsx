@@ -29,101 +29,6 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const { Content, Footer, Sider } = Layout;
-const items = [
-  {
-    label: <Link to="/admin">Thống Kê</Link>,
-    key: "dashboard",
-    icon: <AreaChartOutlined className="iconMenu" />,
-  },
-  {
-    label: <Link to="/admin/shopping-counter">Bán Hàng</Link>,
-    key: "counter",
-    icon: <ShoppingCartOutlined className="iconMenu" />,
-  },
-  {
-    label: <span>Quản Lý Tài Khoản</span>,
-    key: "user",
-    icon: <UserOutlined className="iconMenu" />,
-    children: [
-      {
-        label: <Link to="/admin/admin-table">Admin </Link>,
-        key: "admin-table",
-        icon: <GrUserAdmin className="iconMenuAccount" />,
-      },
-      {
-        label: <Link to="/admin/staff-table">Nhân Viên </Link>,
-        key: "staff-table",
-        icon: <TeamOutlined className="iconMenuAccount" />,
-      },
-      {
-        label: <Link to="/admin/customer-table">Khách Hàng </Link>,
-        key: "customer-table",
-        icon: <BsFillPersonFill className="iconMenuAccount" />,
-      },
-    ],
-  },
-  // {
-  //   label: <Link to="/admin/shoe">Quản Lý Sản Phẩm</Link>,
-  //   key: "shoe",
-  //   icon: <AppstoreOutlined />,
-  //   children: [
-  //     {
-  //       label: <Link to="/admin/shoe/create">Tạo sản phẩm mới</Link>,
-  //       key: "Create",
-  //       icon: <AppstoreAddOutlined />,
-  //     },
-  //   ],
-  // },
-  {
-    label: <span>Quản Lý Sản Phẩm</span>,
-    key: "shoe",
-    icon: <AppstoreOutlined className="iconMenu" />,
-    children: [
-      {
-        label: (
-          <Tooltip title="Danh sách sản phẩm">
-            <Link to="/admin/shoe">Danh sách sản phẩm</Link>
-          </Tooltip>
-        ),
-        key: "shoe",
-        icon: <SnippetsOutlined className="iconMenu" />,
-      },
-      {
-        label: (
-          <Tooltip title="Tạo mới sản phẩm">
-            <Link to="/admin/shoe/create">Tạo mới sản phẩm</Link>
-          </Tooltip>
-        ),
-        key: "Create",
-        icon: <AppstoreAddOutlined className="iconMenu" />,
-      },
-      {
-        label: (
-          <Tooltip title="Quản lý thuộc tính sản phẩm">
-            <Link to="/admin/shoe/properties">Quản lý thuộc tính sản phẩm</Link>
-          </Tooltip>
-        ),
-        key: "Properties",
-        icon: <ClusterOutlined className="iconMenu" />,
-      },
-    ],
-  },
-  {
-    label: <Link to="/admin/order">Quản Lý Đơn Hàng</Link>,
-    key: "order",
-    icon: <FileDoneOutlined className="iconMenu" />,
-  },
-  {
-    label: <Link to="/admin/manage-voucher">Quản Lý Voucher</Link>,
-    key: "voucher",
-    icon: <TagsOutlined className="iconMenu" />,
-  },
-  // {
-  //   label: <Link to="/admin/statistics">Statistics</Link>,
-  //   key: "statistics",
-  //   icon: <AreaChartOutlined />,
-  // },
-];
 
 const LayoutAdmin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -132,6 +37,106 @@ const LayoutAdmin = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const itemsAdmin = [
+    {
+      label: <Link to="/admin">Thống Kê</Link>,
+      key: "dashboard",
+      icon: <AreaChartOutlined className="iconMenu" />,
+    },
+    {
+      label: <Link to="/admin/shopping-counter">Bán Hàng</Link>,
+      key: "counter",
+      icon: <ShoppingCartOutlined className="iconMenu" />,
+    },
+    {
+      label: <span>Quản Lý Tài Khoản</span>,
+      key: "user",
+      icon: <UserOutlined className="iconMenu" />,
+      children: [
+        {
+          label: <Link to="/admin/admin-table">Admin </Link>,
+          key: "admin-table",
+          icon: <GrUserAdmin className="iconMenuAccount" />,
+        },
+        {
+          label: <Link to="/admin/staff-table">Nhân Viên </Link>,
+          key: "staff-table",
+          icon: <TeamOutlined className="iconMenuAccount" />,
+        },
+        {
+          label: <Link to="/admin/customer-table">Khách Hàng </Link>,
+          key: "customer-table",
+          icon: <BsFillPersonFill className="iconMenuAccount" />,
+        },
+      ],
+    },
+    {
+      label: <span>Quản Lý Sản Phẩm</span>,
+      key: "shoe",
+      icon: <AppstoreOutlined className="iconMenu" />,
+      children: [
+        {
+          label: (
+            <Tooltip title="Danh sách sản phẩm">
+              <Link to="/admin/shoe">Danh sách sản phẩm</Link>
+            </Tooltip>
+          ),
+          key: "shoe",
+          icon: <SnippetsOutlined className="iconMenu" />,
+        },
+        {
+          label: (
+            <Tooltip title="Tạo mới sản phẩm">
+              <Link to="/admin/shoe/create">Tạo mới sản phẩm</Link>
+            </Tooltip>
+          ),
+          key: "Create",
+          icon: <AppstoreAddOutlined className="iconMenu" />,
+        },
+        {
+          label: (
+            <Tooltip title="Quản lý thuộc tính sản phẩm">
+              <Link to="/admin/shoe/properties">
+                Quản lý thuộc tính sản phẩm
+              </Link>
+            </Tooltip>
+          ),
+          key: "Properties",
+          icon: <ClusterOutlined className="iconMenu" />,
+        },
+      ],
+    },
+    {
+      label: <Link to="/admin/order">Quản Lý Đơn Hàng</Link>,
+      key: "order",
+      icon: <FileDoneOutlined className="iconMenu" />,
+    },
+    {
+      label: <Link to="/admin/manage-voucher">Quản Lý Voucher</Link>,
+      key: "voucher",
+      icon: <TagsOutlined className="iconMenu" />,
+    },
+    // {
+    //   label: <Link to="/admin/statistics">Statistics</Link>,
+    //   key: "statistics",
+    //   icon: <AreaChartOutlined />,
+    // },
+  ];
+
+  const itemsStaff = [
+    {
+      label: <Link to="/admin/shopping-counter">Bán Hàng</Link>,
+      key: "counter",
+      icon: <ShoppingCartOutlined className="iconMenu" />,
+    },
+
+    {
+      label: <Link to="/admin/order">Quản Lý Đơn Hàng</Link>,
+      key: "order",
+      icon: <FileDoneOutlined className="iconMenu" />,
+    },
+  ];
 
   const itemsDropdown = [
     {
@@ -177,7 +182,7 @@ const LayoutAdmin = () => {
         <Menu
           defaultSelectedKeys={[activeMenu]}
           mode="inline"
-          items={items}
+          items={user?.role?.name === "ROLE_ADMIN" ? itemsAdmin : itemsStaff}
           onClick={(e) => setActiveMenu(e.key)}
         />
       </Sider>

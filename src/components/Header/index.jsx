@@ -37,6 +37,7 @@ const Header = () => {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const user = useSelector((state) => state.account.user);
   const cart = useSelector((state) => state.order.cart);
+  const role = useSelector((state) => state.account.user.role.name);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [form] = Form.useForm();
@@ -144,7 +145,7 @@ const Header = () => {
       key: "logout",
     },
   ];
-  if (user?.role?.name === "ROLE_ADMIN") {
+  if (user?.role?.name === "ROLE_ADMIN" || user?.role?.name === "ROLE_STAFF") {
     items.unshift({
       label: <Link to="/admin">Trang quản trị</Link>,
       key: "admin",
@@ -455,6 +456,9 @@ const Header = () => {
                     </Link>
                     <Link className="nav-link " to="/contact">
                       Liên Hệ
+                    </Link>
+                    <Link className="nav-link " to="/vouchers">
+                      Vouchers
                     </Link>
                   </div>
                 </div>

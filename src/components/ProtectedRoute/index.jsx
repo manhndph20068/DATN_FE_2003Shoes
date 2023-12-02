@@ -6,7 +6,13 @@ const RoleBaseRoute = (props) => {
   const role = useSelector((state) => state.account.user.role.name);
   console.log("role", role);
   return (
-    <>{role === "ROLE_ADMIN" ? <>{props.children}</> : <NotPermitted />}</>
+    <>
+      {role === "ROLE_ADMIN" || "ROLE_STAFF" ? (
+        <>{props.children}</>
+      ) : (
+        <NotPermitted />
+      )}
+    </>
   );
 };
 
