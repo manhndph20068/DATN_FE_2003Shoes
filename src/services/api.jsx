@@ -408,7 +408,9 @@ const callBestSaleProdByYear = (nam) => {
 };
 
 const callGetRevalueCurrent = (type) => {
-  return axios.get(`/api/v1/statistical/doanhthutheongay?typeBanHang=${type}`);
+  return axios.get(
+    `/api/v1/statistical/so-luong-hoa-don-theo-ngay?typeBanHang=${type}`
+  );
 };
 
 const callGetRevalueByYear = (year, type) => {

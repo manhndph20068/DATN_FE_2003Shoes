@@ -23,8 +23,12 @@ const NewsPage = () => {
             borderRadius: "30px",
           }}
         >
+          <div className="row" style={{ marginTop: "20px" }}>
+            <h5>Tin Sneaker</h5>
+            <hr style={{ width: "95px", marginLeft: "15px" }} />
+          </div>
           <div className="row">
-            <Row gutter={16} style={{ marginTop: "40px" }}>
+            <Row gutter={16} style={{ marginTop: "0px" }}>
               <Col span={4}>
                 <Card
                   bordered={false}
