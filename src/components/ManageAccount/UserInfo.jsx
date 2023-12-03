@@ -11,7 +11,7 @@ import {
   callUpdateInforAccount,
 } from "../../services/api";
 import { doAddIdCart, doLogin } from "../../redux/account/accountSlice";
-
+import "./ManageAccount.scss";
 const UserInfo = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.account.user);
@@ -134,7 +134,9 @@ const UserInfo = (props) => {
             <Col span={24}>
               <div style={{ textAlign: "center" }}>
                 <Upload {...propsUpload}>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  <Button className="iconAccount" icon={<UploadOutlined />}>
+                    Chọn ảnh
+                  </Button>
                 </Upload>
               </div>
             </Col>
@@ -159,11 +161,15 @@ const UserInfo = (props) => {
               name="fullName"
               labelCol={{ span: 24 }}
               label="Họ và tên"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true, message: "Họ và tên không được để trống" },
+              ]}
             >
-              <Input />
+              <Input placeholder="Nhập họ và tên" />
             </Form.Item>
-            <Button htmlType="submit">Submit</Button>
+            <Button htmlType="submit" className="buttonAccount">
+              Cập nhật
+            </Button>
           </Form>
         </Col>
       </Row>
