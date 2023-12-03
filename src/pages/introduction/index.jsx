@@ -278,7 +278,11 @@ const IntroductionPage = () => {
                   class="form-control"
                   id="exampleFormControlTextarea1"
                   rows="3"
-                  style={{ marginTop: "10px", borderRadius: "50px" }}
+                  style={{
+                    marginTop: "10px",
+                    borderRadius: "50px",
+                    resize: "none",
+                  }}
                 ></textarea>
                 <Button className="buttonGui">Gửi</Button>
               </div>
