@@ -500,7 +500,7 @@ const ViewPayment = (props) => {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input placeholder="Nhập tên người nhận" />
                 </Form.Item>
 
                 <Form.Item
@@ -515,7 +515,10 @@ const ViewPayment = (props) => {
                     },
                   ]}
                 >
-                  <Input style={{ width: "100%" }} />
+                  <Input
+                    style={{ width: "100%" }}
+                    placeholder="Nhập số điện thoại"
+                  />
                 </Form.Item>
 
                 {idCart === null && (
@@ -533,7 +536,10 @@ const ViewPayment = (props) => {
                         },
                       ]}
                     >
-                      <Input style={{ width: "100%" }} />
+                      <Input
+                        style={{ width: "100%" }}
+                        placeholder="Nhập email "
+                      />
                     </Form.Item>
                   </>
                 )}
@@ -621,7 +627,7 @@ const ViewPayment = (props) => {
                     },
                   ]}
                 >
-                  <TextArea rows={3} />
+                  <TextArea rows={3} placeholder="Nhập địa chỉ cụ thể" />
                 </Form.Item>
 
                 <Form.Item

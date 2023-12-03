@@ -499,7 +499,7 @@ const PaymentNow = () => {
                       },
                     ]}
                   >
-                    <Input />
+                    <Input placeholder="Nhập tên người nhận" />
                   </Form.Item>
                 </Col>
                 <Col span={11}>
@@ -515,7 +515,10 @@ const PaymentNow = () => {
                       },
                     ]}
                   >
-                    <Input style={{ width: "100%" }} />
+                    <Input
+                      style={{ width: "100%" }}
+                      placeholder="Nhập số điện thoại"
+                    />
                   </Form.Item>
                 </Col>
               </Row>
@@ -535,7 +538,7 @@ const PaymentNow = () => {
                       },
                     ]}
                   >
-                    <Input style={{ width: "100%" }} />
+                    <Input style={{ width: "100%" }} placeholder="Nhập email" />
                   </Form.Item>
                 </>
               )}
@@ -622,7 +625,7 @@ const PaymentNow = () => {
                   },
                 ]}
               >
-                <TextArea rows={3} />
+                <TextArea rows={3} placeholder="Nhập địa chỉ" />
               </Form.Item>
 
               <Form.Item
