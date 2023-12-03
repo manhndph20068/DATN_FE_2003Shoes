@@ -21,7 +21,17 @@ import {
   clearCart,
   doInitalCartWithAccount,
 } from "../../redux/order/orderSlice";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTicket,
+  faPhoneVolume,
+  faTag,
+  faShoePrints,
+  faLocationDot,
+  faEnvelope,
+} from "@fortawesome/free-solid-svg-icons";
+import "./login.scss";
 const LoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -70,51 +80,95 @@ const LoginPage = () => {
 
   return (
     <div>
-      <div className="form-register">
-        <h3 style={{ textAlign: "center" }}>Login</h3>
-        <Divider />
-        <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600, margin: "auto" }}
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
-          autoComplete="off"
+      <div
+        style={{
+          backgroundColor: "rgb(242, 242, 242)",
+          paddingTop: "60px",
+          paddingBottom: "140px",
+        }}
+      >
+        <div
+          className="container"
+          style={{
+            backgroundColor: "white",
+            width: "850px",
+            height: "400px",
+            borderRadius: "30px",
+          }}
         >
-          <Form.Item
-            label="Email"
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: "Email không đúng định dạng!",
-                type: "email",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <div className="row">
+            <h3 style={{ textAlign: "center", marginTop: "10px" }}>
+              Đăng Nhập
+            </h3>
+          </div>
+          <div className="row" style={{ marginTop: "10px" }}>
+            <div className="col-6">
+              <img
+                src="/src/assets/logo2003Shoes.png"
+                alt="anh"
+                style={{ width: "400px" }}
+              />
+            </div>
+            <div className="col-6">
+              <div
+                className="form-register"
+                style={{ marginTop: "80px", marginRight: "50px" }}
+              >
+                {/* <Divider /> */}
+                <Form
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  style={{ maxWidth: 600, margin: "auto" }}
+                  initialValues={{ remember: true }}
+                  onFinish={onFinish}
+                  autoComplete="off"
+                >
+                  <Form.Item
+                    label="Email"
+                    name="username"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Email không đúng định dạng!",
+                        type: "email",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Nhập email" />
+                  </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Pasword không được để trống!",
-              },
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
+                  <Form.Item
+                    label="Mật khẩu"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Mật khẩu không được để trống!",
+                      },
+                    ]}
+                  >
+                    <Input.Password placeholder="Nhập mật khẩu" />
+                  </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit" loading={isLoading}>
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
+                  <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button
+                      className="buttonLogin"
+                      type="primary"
+                      htmlType="submit"
+                      loading={isLoading}
+                    >
+                      Đăng nhập
+                    </Button>
+                  </Form.Item>
+                  <p style={{ marginLeft: "70px" }}>
+                    Bạn chưa có tài khoản vui lòng: <a href="">Đăng ký !</a>
+                  </p>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -35,54 +35,108 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="form-register">
-      <h3 style={{ textAlign: "center" }}>Đăng kí</h3>
-      <Divider />
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600, margin: "auto" }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        autoComplete="off"
+    <div>
+      <div
+        style={{
+          backgroundColor: "rgb(242, 242, 242)",
+          paddingTop: "60px",
+          paddingBottom: "140px",
+        }}
       >
-        <Form.Item
-          label="Fullname"
-          name="fullName"
-          rules={[{ required: true, message: "Tên không được để trống!" }]}
+        <div
+          className="container"
+          style={{
+            backgroundColor: "white",
+            width: "850px",
+            height: "400px",
+            borderRadius: "30px",
+          }}
         >
-          <Input />
-        </Form.Item>
+          <div className="row">
+            <h3 style={{ textAlign: "center", marginTop: "10px" }}>Đăng Ký </h3>
+          </div>
+          <div className="row" style={{ marginTop: "10px" }}>
+            <div className="col-6">
+              <img
+                src="/src/assets/logo2003Shoes.png"
+                alt="anh"
+                style={{ width: "400px" }}
+              />
+            </div>
+            <div className="col-6">
+              <div
+                className="form-register"
+                style={{ marginTop: "50px", marginRight: "50px" }}
+              >
+                {/* <Divider /> */}
+                <Form
+                  name="basic"
+                  labelCol={{ span: 8 }}
+                  wrapperCol={{ span: 16 }}
+                  style={{ maxWidth: 600, margin: "auto" }}
+                  initialValues={{ remember: true }}
+                  onFinish={onFinish}
+                  autoComplete="off"
+                >
+                  <Form.Item
+                    label="Họ và tên"
+                    name="fullName"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Họ và tên không được để trống!",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Nhập họ và tên" />
+                  </Form.Item>
 
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Email không được để trống!",
-              // type: "email",
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Email không được để trống!",
+                        // type: "email",
+                      },
+                    ]}
+                  >
+                    <Input placeholder="Nhập email" />
+                  </Form.Item>
 
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Pasword không được để trống!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
+                  <Form.Item
+                    label="Mật khẩu"
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Mật khẩu không được để trống!",
+                      },
+                    ]}
+                  >
+                    <Input.Password placeholder="Nhập mật khẩu" />
+                  </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit" loading={isLoading}>
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
+                  <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button
+                      className="buttonRegister"
+                      type="primary"
+                      htmlType="submit"
+                      loading={isLoading}
+                    >
+                      Đăng Ký
+                    </Button>
+                  </Form.Item>
+                  <p style={{ marginLeft: "140px" }}>
+                    Bạn đã có tài khoản ? <a href="">Đăng nhập</a>
+                  </p>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

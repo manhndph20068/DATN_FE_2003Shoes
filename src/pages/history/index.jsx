@@ -27,7 +27,7 @@ const OrderHistory = () => {
 
   const columns = [
     {
-      title: "Ma don hang",
+      title: "Mã đơn hàng",
       dataIndex: "code",
       key: "code",
     },
@@ -118,9 +118,15 @@ const OrderHistory = () => {
     },
   ];
   return (
-    <div style={{ padding: "5rem" }}>
-      <Table dataSource={listOrder} columns={columns} />
-    </div>
+    <>
+      <div style={{ backgroundColor: "rgb(242, 242, 242)" }}>
+        <div>
+          <div style={{ padding: "3rem" }}>
+            <Table dataSource={listOrder} columns={columns} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 export default OrderHistory;

@@ -166,17 +166,17 @@ const OrderPage = () => {
     {
       title: "Đặt hàng",
       status: "finish",
-      icon: <ShoppingCartOutlined />,
+      icon: <ShoppingCartOutlined className="iconOrder" />,
     },
     {
       title: "Thanh Toán",
       status: "finish",
-      icon: <SolutionOutlined />,
+      icon: <SolutionOutlined className="iconOrder" />,
     },
     {
       title: "Done",
       status: "wait",
-      icon: <SmileOutlined />,
+      icon: <SmileOutlined className="iconOrder" />,
     },
   ];
 
