@@ -145,9 +145,15 @@ const Header = () => {
       key: "logout",
     },
   ];
-  if (user?.role?.name === "ROLE_ADMIN" || user?.role?.name === "ROLE_STAFF") {
+  if (user?.role?.name === "ROLE_ADMIN") {
     items.unshift({
       label: <Link to="/admin">Trang quản trị</Link>,
+      key: "admin",
+    });
+  }
+  if (user?.role?.name === "ROLE_STAFF") {
+    items.unshift({
+      label: <Link to="/admin/shopping-counter">Trang quản trị</Link>,
       key: "admin",
     });
   }
