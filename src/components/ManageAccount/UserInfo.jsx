@@ -1,16 +1,7 @@
 import { AntDesignOutlined, UploadOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Form, Input, Row, Upload, message } from "antd";
 import { useSelector } from "react-redux";
-// import {
-//   callFetchAccount,
-//   callUpdaloadAvatar,
-//   callUpdateUserInfor,
-// } from "../../services/api";
 import { useDispatch } from "react-redux";
-// import {
-//   doUpdateUserInfoAtion,
-//   doUploadAvatarAtion,
-// } from "../../redux/account/accountSlice";
 import { useState } from "react";
 import { useEffect } from "react";
 import {
@@ -36,11 +27,7 @@ const UserInfo = (props) => {
   const [fileList, setFileList] = useState([]);
   const [base64Url, setBase64Url] = useState(null);
   const [form] = Form.useForm();
-  // const urlAvatar =
-  //   `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${userAvatar}` ??
-  //   user?.avatar;
 
-  //   const userEmail = user?.email;
   console.log("dataUser", dataUser);
 
   const fetchAccount = async () => {
@@ -72,15 +59,6 @@ const UserInfo = (props) => {
 
   const handleUploadAvatar = async ({ file, onSuccess, onError }) => {
     console.log("file", file);
-    // const res = await callUpdaloadAvatar(file);
-    // if (res && res?.data) {
-    //   const newAvatar = res.data.fileUploaded;
-    //   // dispatch(doUploadAvatarAtion(newAvatar));
-    //   setUseravatar(newAvatar);
-    //   onSuccess("Ok");
-    // } else {
-    //   onError("Error");
-    // }
     const reader = new FileReader();
     reader.onload = (event) => {
       setUrlAvatar(event.target.result);
@@ -185,23 +163,6 @@ const UserInfo = (props) => {
             >
               <Input />
             </Form.Item>
-
-            {/* <Form.Item
-              name="phone"
-              labelCol={{ span: 24 }}
-              //   initialValue={user?.phone}
-              label="Số điện thoại"
-              rules={[
-                {
-                  required: true,
-                  pattern: new RegExp(/^0\d{9}$/),
-                  message: "Số điện thoại không hợp lệ !",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item> */}
-
             <Button htmlType="submit">Submit</Button>
           </Form>
         </Col>
