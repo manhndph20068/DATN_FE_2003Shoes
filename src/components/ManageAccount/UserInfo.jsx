@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import { callGetDataUserById } from "../../services/api";
-
+import "./ManageAccount.scss";
 const UserInfo = (props) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.account.user);
@@ -139,7 +139,9 @@ const UserInfo = (props) => {
             <Col span={24}>
               <div style={{ textAlign: "center" }}>
                 <Upload {...propsUpload}>
-                  <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                  <Button className="iconAccount" icon={<UploadOutlined />}>
+                    Tải ảnh lên
+                  </Button>
                 </Upload>
               </div>
             </Col>
@@ -164,10 +166,12 @@ const UserInfo = (props) => {
               name="fullName"
               labelCol={{ span: 24 }}
               label="Họ và tên"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true, message: "Họ tên không được để trống !" },
+              ]}
               initialValue={urlAvatar?.nameAccount}
             >
-              <Input />
+              <Input placeholder="Nhập họ và tên" />
             </Form.Item>
 
             <Form.Item
@@ -183,11 +187,15 @@ const UserInfo = (props) => {
                 },
               ]}
             >
-              <Input />
+              <Input placeholder="Nhập số điện thoại" />
             </Form.Item>
 
-            <Button onClick={() => form.submit()} htmlType="submit">
-              Submit
+            <Button
+              className="buttonAccount"
+              onClick={() => form.submit()}
+              htmlType="submit"
+            >
+              Cập nhật
             </Button>
           </Form>
         </Col>

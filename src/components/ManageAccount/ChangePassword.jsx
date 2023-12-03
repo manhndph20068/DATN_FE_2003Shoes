@@ -59,9 +59,14 @@ const ChangePassword = (props) => {
           name="oldpass"
           label="Mật khẩu cũ"
           labelCol={{ span: 5 }}
-          rules={[{ required: true }]}
+          rules={[
+            { required: true, message: "Mật khẩu cũ không được để trống !" },
+          ]}
         >
-          <Input.Password style={{ maxWidth: "350px" }} />
+          <Input.Password
+            placeholder="Nhập mật khẩu cũ"
+            style={{ maxWidth: "350px" }}
+          />
         </Form.Item>
 
         <Form.Item
@@ -71,15 +76,23 @@ const ChangePassword = (props) => {
           rules={[
             {
               required: true,
+              message: "Mật khẩu mới không được để trống !",
             },
           ]}
         >
-          <Input.Password style={{ maxWidth: "350px" }} />
+          <Input.Password
+            placeholder="Nhập mật khẩu mới"
+            style={{ maxWidth: "350px" }}
+          />
         </Form.Item>
 
         <div style={{ paddingLeft: "7.6rem" }}>
-          <Button onClick={() => form.submit()} htmlType="submit">
-            Submit
+          <Button
+            className="buttonAccount"
+            onClick={() => form.submit()}
+            htmlType="submit"
+          >
+            Cập nhật
           </Button>
         </div>
       </Form>
