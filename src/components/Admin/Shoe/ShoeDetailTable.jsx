@@ -95,10 +95,10 @@ const ShoeDetailTable = () => {
     };
     const res = await callDoInActiveShoeDetail(data);
     if (res.status === 0) {
-      message.success(res?.message);
+      message.success("Ngừng kinh doanh thành công");
       fetchAllShoes();
     } else {
-      message.error(res?.message);
+      message.error("Ngừng kinh doanh thất bại");
     }
   };
 
@@ -109,10 +109,10 @@ const ShoeDetailTable = () => {
     };
     const res = await callDoActiveShoeDetail(data);
     if (res.status === 0) {
-      message.success(res?.message);
+      message.success("Kích hoạt thành công");
       fetchAllShoes();
     } else {
-      message.error(res?.message);
+      message.error("Kích hoạt thất bại");
     }
   };
 
@@ -122,15 +122,17 @@ const ShoeDetailTable = () => {
       dataIndex: "id",
       render: (text, record, index) => {
         return (
-          <a
-            href="#"
-            onClick={() => {
-              setOpenViewDetail(true);
-              setDataViewDetail(record);
-            }}
-          >
-            {record.id}
-          </a>
+          <Tooltip title="Xem chi tiết">
+            <a
+              href="#"
+              onClick={() => {
+                setOpenViewDetail(true);
+                setDataViewDetail(record);
+              }}
+            >
+              {record.id}
+            </a>
+          </Tooltip>
         );
       },
     },
@@ -228,10 +230,8 @@ const ShoeDetailTable = () => {
               >
                 <Tooltip title="Kinh doanh">
                   <FontAwesomeIcon
-                    icon={faToggleOff}
-                    style={{ color: "black", transition: "color 0.3s" }}
-                    onMouseOver={(e) => (e.target.style.color = "red")}
-                    onMouseOut={(e) => (e.target.style.color = "black")}
+                    icon={faToggleOn}
+                    style={{ color: "#2dca2b" }}
                   />
                 </Tooltip>
               </Popconfirm>

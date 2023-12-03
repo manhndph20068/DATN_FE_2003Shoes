@@ -173,7 +173,7 @@ const ModalUpdateVoucher = (props) => {
                 <InputNumber
                   placeholder="Nhập số lượng voucher"
                   style={{ width: "100%" }}
-                  disabled={dataUpdate?.status === 2 ? true : false}
+                  // disabled={dataUpdate?.status === 2 ? true : false}
                 />
               </Form.Item>
             </Col>
