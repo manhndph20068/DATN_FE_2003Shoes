@@ -157,7 +157,9 @@ const LayoutAdmin = () => {
     },
   ];
 
-  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/5.jpg`;
+  const urlAvatar =
+    user?.avatar ??
+    `${import.meta.env.VITE_BACKEND_URL}/images/avatar/no-avatar.jpg`;
 
   return (
     <Layout style={{ minHeight: "100vh" }} className="layout-admin">

@@ -54,6 +54,7 @@ const LoginPage = () => {
     if (res?.statusCode === 0) {
       localStorage.setItem("access_token", res.accessToken);
       dispatch(clearCart());
+      console.log("res.userInfo", res.userInfo);
       dispatch(doLogin(res.userInfo));
       handleGetCartByAccountId(res.userInfo.id);
       message.success(res.message);

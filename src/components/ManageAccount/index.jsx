@@ -5,33 +5,38 @@ import { useState } from "react";
 import { useEffect } from "react";
 import ChangePassword from "./ChangePassword";
 import { callGetDataUserById } from "../../services/api";
+import ManageAddress from "./ManageAddress";
 
 const ManageAccount = (props) => {
-  const user = useSelector((state) => state.account.user);
+  const user = useSelector((state) => state?.account?.user);
   const { isModalManageAcconut, setIsModalManageAcconut } = props;
-  const [userAvatar, setUseravatar] = useState(user?.avatar ?? "");
-  const [urlAvatar, setUrlAvatar] = useState(null);
+  const [userAvatar, setUseravatar] = useState(user?.avatar ?? null);
+  const [urlAvatar, setUrlAvatar] = useState(user?.avatar);
   const [isTab, setTab] = useState(1);
+  const [listAddress, setListAddress] = useState([]);
+  const [dataUser, setDataUser] = useState(null);
 
   const handleClose = () => {
     setIsModalManageAcconut(false);
-    // setUseravatar(user?.avatar);
-    setTab(items[0].key);
+    setUrlAvatar(user?.avatar);
+    setTab(0);
+    handleGetDataUser();
   };
 
   const handleGetDataUser = async () => {
     console.log("user.id", user?.id);
     const res = await callGetDataUserById(user?.id);
     console.log("res", res);
-    if (res?.data && res?.data?.length > 0) {
-      setUrlAvatar(res?.data[0]?.avatar);
+    if (res?.data) {
+      setUrlAvatar(res?.data?.avatar);
+      setDataUser(res?.data);
     }
   };
 
   useEffect(() => {
     handleGetDataUser();
     // setTab(1);
-  }, [isTab]);
+  }, [user]);
 
   const items = [
     {
@@ -45,6 +50,7 @@ const ManageAccount = (props) => {
           setTab={setTab}
           urlAvatar={urlAvatar}
           setUrlAvatar={setUrlAvatar}
+          dataUser={dataUser}
         />
       ),
     },
@@ -53,6 +59,17 @@ const ManageAccount = (props) => {
       label: "Đổi mật khẩu",
       children: (
         <ChangePassword
+          setIsModalManageAcconut={setIsModalManageAcconut}
+          isModalManageAcconut={isModalManageAcconut}
+          setTab={setTab}
+        />
+      ),
+    },
+    {
+      key: 3,
+      label: "Địa chỉ nhận hàng",
+      children: (
+        <ManageAddress
           setIsModalManageAcconut={setIsModalManageAcconut}
           isModalManageAcconut={isModalManageAcconut}
           setTab={setTab}

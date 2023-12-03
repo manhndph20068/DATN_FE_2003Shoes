@@ -13,7 +13,13 @@ import { useDispatch } from "react-redux";
 // } from "../../redux/account/accountSlice";
 import { useState } from "react";
 import { useEffect } from "react";
-import { callGetDataUserById } from "../../services/api";
+import {
+  callFetchAccount,
+  callGetCartByAccountId,
+  callGetDataUserById,
+  callUpdateInforAccount,
+} from "../../services/api";
+import { doAddIdCart, doLogin } from "../../redux/account/accountSlice";
 
 const UserInfo = (props) => {
   const dispatch = useDispatch();
@@ -24,48 +30,57 @@ const UserInfo = (props) => {
     setIsModalManageAcconut,
     urlAvatar,
     setUrlAvatar,
+    dataUser,
   } = props;
   // const [urlAvatar, setUrlAvatar] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [base64Url, setBase64Url] = useState(null);
   const [form] = Form.useForm();
-  //   const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${
-  //     userAvatar || user?.avatar
-  //   }`;
+  // const urlAvatar =
+  //   `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${userAvatar}` ??
+  //   user?.avatar;
 
   //   const userEmail = user?.email;
+  console.log("dataUser", dataUser);
+
+  const fetchAccount = async () => {
+    const res = await callFetchAccount();
+    if (res?.id) {
+      dispatch(doLogin(res));
+    }
+  };
 
   const onFinish = async (values) => {
-    //   const { phone, fullName } = values;
-    //   const res = await callUpdateUserInfor(
-    //     user?.id,
-    //     phone,
-    //     fullName,
-    //     userAvatar
-    //   );
-    //   if (res && res?.data) {
-    //     message.success("Cập nhật thông tin thành công !");
-    //     dispatch(doUpdateUserInfoAtion({ phone, fullName, avatar: userAvatar }));
-    //     localStorage.removeItem("access_token");
-    //     // await callFetchAccount();
-    //     setIsModalManageAcconut(false);
-    //     // window.location.reload(true);
-    //   } else {
-    //     message.error("Cập nhật thông tin thất bại !");
-    //   }
+    const { fullName, email } = values;
+    console.log("values", values);
+
+    console.log("avatar", fileList[0]?.name);
+    const data = {
+      id: user?.id,
+      name: fullName,
+      email: email,
+      avatar: fileList[0]?.name,
+    };
+    const res = await callUpdateInforAccount(data);
+    if (res && res?.data) {
+      message.success("Cập nhật thông tin thành công !");
+      fetchAccount();
+    } else {
+      message.error("Cập nhật thông tin thất bại !");
+    }
   };
 
   const handleUploadAvatar = async ({ file, onSuccess, onError }) => {
     console.log("file", file);
-    //   const res = await callUpdaloadAvatar(file);
-    //   if (res && res?.data) {
-    //     const newAvatar = res.data.fileUploaded;
-    //     // dispatch(doUploadAvatarAtion(newAvatar));
-    //     setUseravatar(newAvatar);
-    //     onSuccess("Ok");
-    //   } else {
-    //     onError("Error");
-    //   }
+    // const res = await callUpdaloadAvatar(file);
+    // if (res && res?.data) {
+    //   const newAvatar = res.data.fileUploaded;
+    //   // dispatch(doUploadAvatarAtion(newAvatar));
+    //   setUseravatar(newAvatar);
+    //   onSuccess("Ok");
+    // } else {
+    //   onError("Error");
+    // }
     const reader = new FileReader();
     reader.onload = (event) => {
       setUrlAvatar(event.target.result);
@@ -118,11 +133,13 @@ const UserInfo = (props) => {
 
   useEffect(() => {
     // setUseravatar(user?.avatar);
-    handleGetDataUser();
-  }, []);
+    // handleGetDataUser();
+    form.setFieldValue("email", user?.email);
+    form.setFieldValue("fullName", dataUser?.name);
+  }, [dataUser]);
 
   return (
-    <div style={{ minHeight: 350 }}>
+    <div style={{ minHeight: 300, paddingTop: "2rem" }}>
       <Row gutter={[30, 30]}>
         <Col xs={24} sm={24} md={12}>
           <Row gutter={[24, 24]}>
@@ -132,7 +149,7 @@ const UserInfo = (props) => {
                   size={{ xs: 64, sm: 64, md: 64, lg: 64, xl: 113, xxl: 113 }}
                   icon={<AntDesignOutlined />}
                   shape="square"
-                  src={urlAvatar?.avatar}
+                  src={urlAvatar}
                 />
               </div>
             </Col>
@@ -165,12 +182,11 @@ const UserInfo = (props) => {
               labelCol={{ span: 24 }}
               label="Họ và tên"
               rules={[{ required: true }]}
-              initialValue={urlAvatar?.nameAccount}
             >
               <Input />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               name="phone"
               labelCol={{ span: 24 }}
               //   initialValue={user?.phone}
@@ -184,15 +200,14 @@ const UserInfo = (props) => {
               ]}
             >
               <Input />
-            </Form.Item>
+            </Form.Item> */}
 
-            <Button onClick={() => form.submit()} htmlType="submit">
-              Submit
-            </Button>
+            <Button htmlType="submit">Submit</Button>
           </Form>
         </Col>
       </Row>
     </div>
   );
 };
+
 export default UserInfo;

@@ -6,6 +6,7 @@ import {
   callListShoeDetailAdmin,
   callDoInActiveShoeDetail,
   callDoActiveShoeDetail,
+  callGetShoeByName,
 } from "../../../services/api";
 import InputSearchShoe from "./InputSearchShoe";
 import ViewBookDetail from "./ViewShoeDetail";
@@ -16,6 +17,7 @@ import {
   PlusOutlined,
   EditOutlined,
   DeleteOutlined,
+  FileSearchOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -32,6 +34,7 @@ import ImportShoes from "./ImportShoe";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faToggleOff, faToggleOn } from "@fortawesome/free-solid-svg-icons";
 import "./Shoe.scss";
+import { useNavigate } from "react-router-dom";
 const ShoeDetailTable = () => {
   const [listShoeDetail, setListShoeDetail] = useState([]);
   const [current, setCurrent] = useState(1);
@@ -46,6 +49,7 @@ const ShoeDetailTable = () => {
   const [isModalImportOpen, setIsModalImportOpen] = useState(false);
   const [dataUpdate, setDataUpdate] = useState({});
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
+  const navigate = useNavigate();
 
   const fetchAllShoes = async () => {
     let query = `page=${current}&pageSize=${pageSize}`;
@@ -72,21 +76,6 @@ const ShoeDetailTable = () => {
   const handleFilter = (queryFilter) => {
     console.log("queryFilter", queryFilter);
     setFilter(queryFilter);
-  };
-
-  const confirm = async (id) => {
-    const res = await callDeletetBook(id);
-    console.log(res);
-    if (res?.data) {
-      message.success("Xóa thành công");
-      await fetchAllShoes();
-      setCurrent(1);
-    } else {
-      notification.error({
-        message: "Error",
-        description: "Something Wrong!",
-      });
-    }
   };
 
   useEffect(() => {
@@ -247,6 +236,26 @@ const ShoeDetailTable = () => {
                 </Tooltip>
               </Popconfirm>
             )}
+            <Tooltip title="Thông tin bản ghi">
+              <FileSearchOutlined
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  transition: "color 0.3s",
+                }}
+                onMouseOver={(e) => (e.target.style.color = "blue")}
+                onMouseOut={(e) => (e.target.style.color = "black")}
+                onClick={async () => {
+                  console.log("record", record);
+                  const res = await callGetShoeByName(record?.nameShoe);
+                  if (res.status === 0) {
+                    navigate(`/admin/shoe/${res?.data?.id}`);
+                  } else {
+                    message.error(res?.message);
+                  }
+                }}
+              />
+            </Tooltip>
           </div>
         );
       },

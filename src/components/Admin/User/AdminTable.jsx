@@ -30,6 +30,7 @@ const AdminTable = () => {
   const [roleId, setRoleId] = useState(1);
   const [openViewDetail, setOpenViewDetail] = useState(false);
   const [dataViewDetail, setDataViewDetail] = useState({});
+  const [selectedRowKey, setSelectedRowKey] = useState(null);
   const [filter, setFilter] = useState({
     role: 1,
     page: current - 1,
@@ -219,6 +220,22 @@ const AdminTable = () => {
       </div>
     );
   };
+
+  const rowSelection = {
+    type: "radio",
+    columnTitle: null,
+    selectedRowKeys: selectedRowKey ? [selectedRowKey] : [],
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRowKey(selectedRowKeys[0]);
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+    columnWidth: 0,
+    renderCell: () => "",
+  };
   return (
     <div className="admin" style={{ padding: "1.7rem" }}>
       <div style={{ paddingBottom: "1.5rem" }}>
@@ -246,6 +263,7 @@ const AdminTable = () => {
       </div>
       <div className="table-list-order">
         <Table
+          rowSelection={rowSelection}
           columns={columns}
           title={renderHeaderTable}
           onChange={onChange}
@@ -256,6 +274,20 @@ const AdminTable = () => {
             total: total,
             showSizeChanger: true,
           }}
+          onRow={(record) => ({
+            onClick: () => {
+              if (selectedRowKey === record.key) {
+                // If the clicked row is already selected, deselect it
+                setSelectedRowKey(null);
+                rowSelection.onChange([], []);
+              } else {
+                // Otherwise, select the clicked row
+                setSelectedRowKey(record.key);
+                rowSelection.onChange([record.key], [record]);
+              }
+            },
+            style: record.key === selectedRowKey ? { fontWeight: "bold" } : {},
+          })}
         />
       </div>
       <ModalCreateAccount

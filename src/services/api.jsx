@@ -323,7 +323,7 @@ const callDoExportOrder = (data) => {
 };
 
 const callGetDataUserById = (id) => {
-  return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
+  return axios.get(`/api/v1/account/get-one-account/${id}`);
 };
 
 const callImportFileVoucher = (file) => {
@@ -598,6 +598,14 @@ const callDoActiveVoucher = (data) => {
   );
 };
 
+const callUpdateInforAccount = (data) => {
+  return axios.post(`/api/v1/account/update-account`, data);
+};
+
+const callGetListVersionOfShoeById = (id) => {
+  return axios.get(`/api/v1/shoe-detail/getListVersionOfShoe/${id}`);
+};
+
 const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);
@@ -779,4 +787,6 @@ export {
   callDoInActiveShoeDetail,
   callGetMonthlyRevenue,
   callGetYearlyRevenue,
+  callGetListVersionOfShoeById,
+  callUpdateInforAccount,
 };

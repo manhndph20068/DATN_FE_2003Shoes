@@ -5,6 +5,7 @@ const initialState = {
     id: "",
     name: "",
     email: "",
+    avatar: "",
     role: {
       id: null,
       name: "",
@@ -31,6 +32,7 @@ export const accountSlice = createSlice({
         id: "",
         name: "",
         email: "",
+        avatar: "",
         role: {
           id: null,
           name: "",

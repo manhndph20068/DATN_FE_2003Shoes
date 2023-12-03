@@ -47,6 +47,7 @@ import IntroductionPage from "./pages/introduction";
 import NewsPage from "./pages/news";
 import HomePage from "./pages/home";
 import VoucherPage from "./pages/voucher";
+import ShoeVersion from "./components/Admin/ShoeVersion/ShoeVersion";
 
 const Layout = () => {
   return (
@@ -206,8 +207,19 @@ export default function App() {
         },
         {
           path: "shoe",
-          element: <ShoeDetailTable />,
+          // element: <ShoeDetailTable />,
+          children: [
+            {
+              index: true,
+              element: <ShoeDetailTable />,
+            },
+            {
+              path: ":id",
+              element: <ShoeVersion />,
+            },
+          ],
         },
+
         {
           path: "shoe/create",
           element: <CreateShoeDetail />,

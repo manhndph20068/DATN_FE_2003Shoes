@@ -152,7 +152,10 @@ const Header = () => {
     });
   }
 
-  const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/5.jpg`;
+  // const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/5.jpg`;
+  const urlAvatar =
+    user?.avatar ??
+    `${import.meta.env.VITE_BACKEND_URL}/images/avatar/no-avatar.jpg`;
   const urlLogo = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/logo.png`;
 
   const fetchListShoeDetailAtCounter = async () => {

@@ -36,7 +36,7 @@ const ChangePassword = (props) => {
   }, [isModalManageAcconut, form]);
 
   return (
-    <div style={{ paddingLeft: "3rem", minHeight: 200 }}>
+    <div style={{ paddingLeft: "3rem", minHeight: 300, paddingTop: "2rem" }}>
       <Form
         form={form}
         name="control-hooks"
