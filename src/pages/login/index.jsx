@@ -14,7 +14,7 @@ import {
   callGetListCartDetailById,
   callLogin,
 } from "../../services/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { doAddIdCart, doLogin } from "../../redux/account/accountSlice";
 import {
@@ -162,7 +162,8 @@ const LoginPage = () => {
                     </Button>
                   </Form.Item>
                   <p style={{ marginLeft: "70px" }}>
-                    Bạn chưa có tài khoản vui lòng: <a href="">Đăng ký !</a>
+                    Bạn chưa có tài khoản vui lòng:{" "}
+                    <Link to={"/register"}>Đăng ký !</Link>
                   </p>
                 </Form>
               </div>

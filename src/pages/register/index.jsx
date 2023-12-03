@@ -11,7 +11,7 @@ import {
   message,
 } from "antd";
 import { callRegister } from "../../services/api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -129,7 +129,7 @@ const RegisterPage = () => {
                     </Button>
                   </Form.Item>
                   <p style={{ marginLeft: "140px" }}>
-                    Bạn đã có tài khoản ? <a href="">Đăng nhập</a>
+                    Bạn đã có tài khoản ? <Link to={"/login"}>Đăng nhập</Link>
                   </p>
                 </Form>
               </div>
