@@ -43,7 +43,7 @@ const YearlyRevanue = (props) => {
 
   return (
     <>
-      <div className="statistical">
+      <div className="statisticalYear">
         <div className="type">
           <Form>
             <Row style={{ display: "flex", gap: 10 }}>

@@ -42,7 +42,7 @@ const MonthlyRevenue = (props) => {
 
   return (
     <>
-      <div className="statistical">
+      <div className="statisticalMonth">
         <div className="type">
           <Form>
             <Row style={{ display: "flex", gap: 10 }}>
