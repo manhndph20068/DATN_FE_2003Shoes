@@ -17,7 +17,9 @@ const VoucherPage = () => {
     });
     console.log("res handleGetListVoucher", res);
     if (res?.status === 0) {
-      const listVoucherActive = res?.data?.filter((item) => item?.status === 1);
+      const listVoucherActive = res?.data?.filter(
+        (item) => item?.status === 1 && item?.quantity > 0
+      );
       setListVoucher(listVoucherActive);
     } else {
     }

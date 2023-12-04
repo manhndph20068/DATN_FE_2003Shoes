@@ -48,6 +48,7 @@ import NewsPage from "./pages/news";
 import HomePage from "./pages/home";
 import VoucherPage from "./pages/voucher";
 import ShoeVersion from "./components/Admin/ShoeVersion/ShoeVersion";
+import AdminStaffRoute from "./components/ProtectedRoute/AdminStaffRoute";
 
 const Layout = () => {
   return (
@@ -105,9 +106,11 @@ export default function App() {
       path: "/",
       element: <Layout />,
       errorElement: <NotFound />,
-
       children: [
-        { index: true, element: <HomePage /> },
+        {
+          index: true,
+          element: <HomePage />,
+        },
         {
           path: "order",
           element: <OrderPage />,

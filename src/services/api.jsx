@@ -606,6 +606,10 @@ const callGetListVersionOfShoeById = (id) => {
   return axios.get(`/api/v1/shoe-detail/getListVersionOfShoe/${id}`);
 };
 
+const callGetListAddressById = (id) => {
+  return axios.get(`/api/v1/address/address-by-account-id/${id}`);
+};
+
 const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);
@@ -789,4 +793,5 @@ export {
   callGetYearlyRevenue,
   callGetListVersionOfShoeById,
   callUpdateInforAccount,
+  callGetListAddressById,
 };

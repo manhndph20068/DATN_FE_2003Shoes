@@ -28,6 +28,9 @@ import { GrUserAdmin } from "react-icons/gr";
 import { BsFillPersonFill } from "react-icons/bs";
 import { faEnvelope, faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { doLogout } from "../../redux/account/accountSlice";
+import { callLogout } from "../../services/api";
+import { clearCart } from "../../redux/order/orderSlice";
 const { Content, Footer, Sider } = Layout;
 
 const LayoutAdmin = () => {
@@ -138,11 +141,24 @@ const LayoutAdmin = () => {
     },
   ];
 
+  const Logout = async () => {
+    localStorage.removeItem("access_token");
+    let res = await callLogout();
+    localStorage.removeItem("access_token");
+    console.log("resLogout", res);
+    if (res?.statusCode === 0) {
+      message.success(res.message);
+      dispatch(doLogout());
+      dispatch(clearCart());
+      navigate("/");
+    }
+  };
+
   const itemsDropdown = [
-    {
-      label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
-      key: "account",
-    },
+    // {
+    //   label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
+    //   key: "account",
+    // },
     {
       label: (
         <Link to={"/"} style={{ cursor: "pointer" }}>
@@ -152,7 +168,11 @@ const LayoutAdmin = () => {
       key: "home",
     },
     {
-      label: <label style={{ cursor: "pointer" }}>Đăng xuất</label>,
+      label: (
+        <label onClick={() => Logout()} style={{ cursor: "pointer" }}>
+          Đăng xuất
+        </label>
+      ),
       key: "logout",
     },
   ];
