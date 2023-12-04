@@ -1,4 +1,4 @@
-import { Tag } from "antd";
+import { Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { callGetListAddressById } from "../../services/api";
@@ -9,7 +9,9 @@ const ManageAddress = () => {
 
   const handleGetListAddress = async () => {
     const res = await callGetListAddressById(user?.id);
-    console.log("res0000000000", res);
+    if (res?.status === 0) {
+      setDataAddress(res?.data);
+    }
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const ManageAddress = () => {
   ];
   return (
     <div style={{ paddingLeft: "3rem", minHeight: 300, paddingTop: "2rem" }}>
-      {/* <Table dataSource={dataSource} columns={columns} /> */}
+      <Table dataSource={dataAddress} columns={columns} />
     </div>
   );
 };

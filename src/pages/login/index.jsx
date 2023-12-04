@@ -68,7 +68,13 @@ const LoginPage = () => {
       dispatch(doLogin(res.userInfo));
       handleGetCartByAccountId(res.userInfo.id);
       message.success(res.message);
-      navigate("/");
+      if (res.userInfo?.role?.name === "ROLE_ADMIN") {
+        navigate("/admin");
+      } else if (res.userInfo?.role?.name === "ROLE_STAFF") {
+        navigate("/admin/shopping-counter");
+      } else {
+        navigate("/");
+      }
       // window.location.reload();
     } else {
       notification.error({
