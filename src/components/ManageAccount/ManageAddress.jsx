@@ -5,12 +5,22 @@ import { callGetListAddressById } from "../../services/api";
 
 const ManageAddress = () => {
   const [dataAddress, setDataAddress] = useState([]);
+  const [selectedRowKey, setSelectedRowKey] = useState(null);
   const user = useSelector((state) => state.account.user);
+  const [defaultAddressRowKey, setDefaultAddressRowKey] = useState(null);
 
   const handleGetListAddress = async () => {
     const res = await callGetListAddressById(user?.id);
     if (res?.status === 0) {
+      let index = 1;
+      res.data.forEach((item) => {
+        item.key = index++;
+      });
       setDataAddress(res?.data);
+
+      setDefaultAddressRowKey(
+        res?.data.find((item) => item.defaultAddress === "1")?.key
+      );
     }
   };
 
@@ -25,58 +35,59 @@ const ManageAddress = () => {
       key: "index",
     },
     {
-      title: "Mã",
-      dataIndex: "code",
-      key: "code",
+      title: "province",
+      dataIndex: "province",
+      key: "province",
     },
     {
-      title: "Tên",
-      dataIndex: "name",
-      key: "name",
+      title: "district",
+      dataIndex: "district",
+      key: "district",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: "Ảnh đại diện",
-      dataIndex: "avatar",
-      key: "avatar",
-      render: (_, record) => (
-        <>
-          <img src={record.avatar} alt="" style={{ width: "50px" }} />
-        </>
-      ),
+      title: "ward",
+      dataIndex: "ward",
+      key: "ward",
+    },
+
+    {
+      title: "specificAddress",
+      dataIndex: "specificAddress",
+      key: "specificAddress",
     },
     {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Vai trò",
-      dataIndex: "roleId",
-      key: "roleId",
-      //   render: (_, record) => (
-      //     <>
-      //       {_ === 1 && <Tag color="green-inverse">ADMIN</Tag>}
-      //       {_ === 2 && <Tag color="green-inverse">Khách Hàng</Tag>}
-      //       {_ === 3 && <Tag color="green-inverse">Nhân Viên</Tag>}
-      //     </>
-      //   ),
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "status",
-      key: "status",
-      //   render: (_, record) => (
-      //     <>
-      //       {_ === 0 && <Tag color="red-inverse">Không hoạt động</Tag>}
-      //       {_ === 1 && <Tag color="green-inverse">Hoạt động</Tag>}
-      //     </>
-      //   ),
+      title: "defaultAddress",
+      dataIndex: "defaultAddress",
+      key: "defaultAddress",
     },
   ];
+
+  const rowSelection = {
+    type: "radio",
+    selectedRowKeys: defaultAddressRowKey ? [defaultAddressRowKey] : [],
+    onChange: (selectedRowKeys, selectedRows) => {
+      setSelectedRowKey(selectedRowKeys[0]);
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+  };
+
   return (
-    <div style={{ paddingLeft: "3rem", minHeight: 300, paddingTop: "2rem" }}>
-      <Table dataSource={dataAddress} columns={columns} />
+    <div style={{ padding: "2rem 3rem 0 3rem", minHeight: 300 }}>
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={dataAddress}
+        onRow={(record) => ({
+          onClick: () => {
+            console.log("Row clicked:", record);
+          },
+        })}
+      />
     </div>
   );
 };
