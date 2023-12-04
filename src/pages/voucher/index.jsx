@@ -53,19 +53,7 @@ const VoucherPage = () => {
                 console.log("item", item);
                 return (
                   <Col lg={8} md={12} sm={24} xs={24}>
-                    <Card
-                      title={item?.code}
-                      // style={{
-                      //   // backgroundColor: "rgb(94, 187, 241)",
-                      //   // color: "white",
-                      //   border: "1px solid rgb(94, 187, 241)",
-                      //   backgroundImage: `url(/src/assets/voucher.jpg)`,
-                      //   backgroundSize: "cover",
-                      //   backgroundPosition: "center",
-                      //   // boxShadow: "10px 10px 10px rgb(94, 187, 241)",
-                      // }}
-                      className="cardVoucher"
-                    >
+                    <Card title={item?.code} className="cardVoucher">
                       <div
                         style={{
                           display: "flex",

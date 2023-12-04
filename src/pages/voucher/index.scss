@@ -4,10 +4,12 @@
 }
 .cardVoucher {
   border: 1px solid rgb(94, 187, 241);
-  background-image: url("/src/assets/voucher.jpg");
+  background-image: url("/src/assets/voucher.png");
   background-size: cover;
-  background-position: center;
 }
 .cardVoucher:hover {
   box-shadow: 5px 5px 5px rgb(94, 187, 241);
+}
+.cardVoucher .ant-card-head-title {
+  margin-left: 70px; /* Thêm margin-left cho title */
 }
