@@ -408,15 +408,21 @@ const callBestSaleProdByYear = (nam) => {
 };
 
 const callGetRevalueCurrent = (type) => {
-  return axios.get(
-    `/api/v1/statistical/so-luong-hoa-don-theo-ngay?typeBanHang=${type}`
-  );
+  return axios.get(`/api/v1/statistical/so-luong-hoa-don-theo-ngay`);
+};
+
+const callGetRevalueCurrentWithoutType = (type) => {
+  return axios.get(`/api/v1/statistical/so-luong-hoa-don-theo-ngay`);
 };
 
 const callGetRevalueByYear = (year, type) => {
   return axios.get(
     `/api/v1/statistical/doanhthutheothang?nam=${year}&typeBanHang=${type}`
   );
+};
+
+const callGetRevalueByYearWithoutType = (year, type) => {
+  return axios.get(`/api/v1/statistical/doanhthutheothang?nam=${year}`);
 };
 
 const callGetTop5Prod = (startYear, endYear) => {
@@ -488,7 +494,7 @@ const callDoUpdateUser = (data) => {
 };
 
 const callGetAddressByID = (id) => {
-  return axios.get(`/api/v1/address/addressbyaccountid/${id}`);
+  return axios.get(`/api/v1/account/addressbyaccountid/${id}`);
 };
 
 const callGetTop4BestSale = (id) => {
@@ -505,10 +511,17 @@ const callGetMonthlyRevenue = (type) => {
   );
 };
 
+const callGetMonthlyRevenueWithoutType = (type) => {
+  return axios.get(`/api/v1/statistical/so-luong-hoa-don-theo-thang`);
+};
+
 const callGetYearlyRevenue = (type) => {
   return axios.get(
     `/api/v1/statistical/so-luong-hoa-don-theo-nam?typeBanHang=${type}`
   );
+};
+const callGetYearlyRevenueWithoutType = () => {
+  return axios.get(`/api/v1/statistical/so-luong-hoa-don-theo-nam`);
 };
 
 const callGetTop3Comment = (id) => {
@@ -620,6 +633,10 @@ const callAddNewAddress = (data) => {
 
 const callDeleteAddress = (data) => {
   return axios.post(`/api/v1/address/deleteaddress`, data);
+};
+
+const callDefaultAddressById = (data) => {
+  return axios.post(`/api/v1/address/getDefautAddressByAccountId`, data);
 };
 
 const callUploadBookImg = (fileImg) => {
@@ -809,4 +826,9 @@ export {
   callUpdateDefaultAddress,
   callAddNewAddress,
   callDeleteAddress,
+  callDefaultAddressById,
+  callGetYearlyRevenueWithoutType,
+  callGetRevalueCurrentWithoutType,
+  callGetMonthlyRevenueWithoutType,
+  callGetRevalueByYearWithoutType,
 };

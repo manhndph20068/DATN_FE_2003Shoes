@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "./PaymentNow.scss";
 import {
   callAddMethodPayment,
+  callDefaultAddressById,
   callDeleteCartDetail,
   callDoOrderBuyNow,
   callDoOrderByCustomer,
@@ -10,6 +11,7 @@ import {
   callFetchAccount,
   callGetAddressByID,
   callGetCartByAccountId,
+  callGetDataUserById,
   callGetListCartDetailById,
   callGetVouchersByTotalMoney,
   callSubmitOrderVNPay,
@@ -65,6 +67,8 @@ const PaymentNow = () => {
   const dataAcc = useSelector((state) => state?.account?.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state?.account?.user);
+  console.log("user", user);
 
   const handleGetListCartDetailById = async (id) => {
     const res = await callGetListCartDetailById(id);
@@ -72,6 +76,31 @@ const PaymentNow = () => {
       dispatch(doInitalCartWithAccount(res.data));
     }
   };
+
+  const handleGetDataAccountById = async () => {
+    const data = {
+      accountId: user?.id,
+    };
+
+    const res = await callDefaultAddressById(data);
+    if (res.status === 0) {
+      form.setFieldsValue({
+        username: res?.data?.name,
+        phone: res?.data?.phoneNumber,
+        address: res?.data?.specificAddress,
+        // province: res?.data?.province,
+        // district: res?.data?.district,
+        // ward: res?.data?.ward,
+      });
+      // setProvinceSelected(res?.data?.province);
+      // setDistrictSelected(res?.data?.district);
+      // setWardSelected(res?.data?.ward);
+    }
+  };
+
+  useEffect(() => {
+    handleGetDataAccountById();
+  }, [user?.id]);
 
   // const confirmDelete = (item) => {
   //   if (idCart !== null) {

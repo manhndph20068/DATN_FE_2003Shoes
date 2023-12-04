@@ -3,24 +3,41 @@ import ReactDOM from "react-dom";
 import { Bar, DualAxes } from "@ant-design/plots";
 import { DatePicker, Form, Row, Select } from "antd";
 import dayjs from "dayjs";
-import { callGetRevalueByYear, callGetTop5Prod } from "../../../services/api";
+import {
+  callGetRevalueByYear,
+  callGetRevalueByYearWithoutType,
+  callGetTop5Prod,
+} from "../../../services/api";
 const Revalue = (props) => {
   const { data, setData } = props;
   const [year, setYear] = useState("2023");
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(null);
   const [form] = Form.useForm();
   // const { RangePicker } = DatePicker;
 
   const handleGetRevalue = async () => {
-    const res = await callGetRevalueByYear(year, type);
-    console.log(res);
-    if (res?.status === 0) {
-      console.log("res?.data", res?.data);
-      setData(res?.data);
-    }
-    if (res?.status === 4) {
-      console.log("res?.data", res?.data);
-      setData(res?.data);
+    if (type === null) {
+      const res = await callGetRevalueByYearWithoutType(year);
+      console.log(res);
+      if (res?.status === 0) {
+        console.log("res?.data", res?.data);
+        setData(res?.data);
+      }
+      if (res?.status === 4) {
+        console.log("res?.data", res?.data);
+        setData(res?.data);
+      }
+    } else {
+      const res = await callGetRevalueByYear(year, type);
+      console.log(res);
+      if (res?.status === 0) {
+        console.log("res?.data", res?.data);
+        setData(res?.data);
+      }
+      if (res?.status === 4) {
+        console.log("res?.data", res?.data);
+        setData(res?.data);
+      }
     }
   };
 
@@ -98,6 +115,10 @@ const Revalue = (props) => {
                       onChange={onChangeType}
                       value={type}
                       options={[
+                        {
+                          value: null,
+                          label: "Tất cả",
+                        },
                         {
                           value: 1,
                           label: "Tại quầy",

@@ -9,22 +9,33 @@ import {
   callGetRevalueCurrent,
   callGetTop5Prod,
   callGetYearlyRevenue,
+  callGetYearlyRevenueWithoutType,
 } from "../../../services/api";
 import "./Statistical.scss";
 const YearlyRevanue = (props) => {
   const [totalPrice, setTotalPrice] = useState(null);
-  const [type, setType] = useState(1);
+  const [type, setType] = useState(null);
   const [totalOrder, setTotalOrder] = useState(null);
   const [form] = Form.useForm();
   // const { RangePicker } = DatePicker;
 
   const handleGetRevalue = async () => {
-    const res = await callGetYearlyRevenue(type);
-    console.log(res?.data.tongTien);
-    if (res?.status === 0) {
-      console.log("res?.data", res?.data);
-      setTotalPrice(res?.data[0].tongTien);
-      setTotalOrder(res?.data[0].soHoaDon);
+    if (type === null) {
+      const res = await callGetYearlyRevenueWithoutType();
+      console.log(res?.data.tongTien);
+      if (res?.status === 0) {
+        console.log("res?.data", res?.data);
+        setTotalPrice(res?.data[0].tongTien);
+        setTotalOrder(res?.data[0].soHoaDon);
+      }
+    } else {
+      const res = await callGetYearlyRevenue(type);
+      console.log(res?.data.tongTien);
+      if (res?.status === 0) {
+        console.log("res?.data", res?.data);
+        setTotalPrice(res?.data[0].tongTien);
+        setTotalOrder(res?.data[0].soHoaDon);
+      }
     }
   };
 
@@ -58,6 +69,11 @@ const YearlyRevanue = (props) => {
                   onChange={onChangeType}
                   value={type}
                   options={[
+                    {
+                      value: null,
+                      label: "Tất cả",
+                      // style: { backgroundColor: "#2ecc71", color: "white" },
+                    },
                     {
                       value: 1,
                       label: "Tại quầy",
