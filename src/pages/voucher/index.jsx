@@ -37,7 +37,12 @@ const VoucherPage = () => {
     <div className="layout-page">
       <div
         className="voucher-page-container"
-        style={{ maxWidth: 1290, margin: "0 auto" }}
+        style={{
+          maxWidth: 1290,
+          margin: "0 auto",
+          paddingTop: "20px",
+          paddingBottom: "20px",
+        }}
       >
         <div style={{ padding: "0 1rem", margin: "0 auto" }}>
           <Row gutter={[25, 20]}>
@@ -46,7 +51,19 @@ const VoucherPage = () => {
                 console.log("item", item);
                 return (
                   <Col lg={8} md={12} sm={24} xs={24}>
-                    <Card title={item?.code}>
+                    <Card
+                      title={item?.code}
+                      // style={{
+                      //   // backgroundColor: "rgb(94, 187, 241)",
+                      //   // color: "white",
+                      //   border: "1px solid rgb(94, 187, 241)",
+                      //   backgroundImage: `url(/src/assets/voucher.jpg)`,
+                      //   backgroundSize: "cover",
+                      //   backgroundPosition: "center",
+                      //   // boxShadow: "10px 10px 10px rgb(94, 187, 241)",
+                      // }}
+                      className="cardVoucher"
+                    >
                       <div
                         style={{
                           display: "flex",
@@ -55,20 +72,32 @@ const VoucherPage = () => {
                       >
                         <span>
                           {" "}
-                          <p>Tên voucher: {item?.name}</p>
+                          <p>
+                            Tên voucher:{" "}
+                            <span>
+                              <i>{item?.name}</i>
+                            </span>
+                          </p>
                         </span>
                         <span>
                           {" "}
-                          <p>Số lượng {item?.quantity}</p>
+                          <p>
+                            Số lượng:{" "}
+                            <span style={{ fontWeight: "bold" }}>
+                              {item?.quantity}
+                            </span>
+                          </p>
                         </span>
                       </div>
 
                       <p>
                         Hoá đơn tối thiểu:{" "}
-                        {Intl.NumberFormat("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        }).format(item?.minBillValue)}
+                        <span style={{ fontWeight: "bold", color: "red" }}>
+                          {Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          }).format(item?.minBillValue)}
+                        </span>
                       </p>
                       <div
                         style={{
@@ -80,32 +109,50 @@ const VoucherPage = () => {
                           {" "}
                           <p>
                             Giá trị giảm tối đa:{" "}
-                            {Intl.NumberFormat("vi-VN", {
-                              style: "currency",
-                              currency: "VND",
-                            }).format(
-                              item?.maximumReductionValue ??
-                                item?.discountAmount
-                            )}
+                            <span
+                              style={{ fontWeight: "bold", color: "green" }}
+                            >
+                              {Intl.NumberFormat("vi-VN", {
+                                style: "currency",
+                                currency: "VND",
+                              }).format(
+                                item?.maximumReductionValue ??
+                                  item?.discountAmount
+                              )}
+                            </span>
                           </p>
                         </span>
                         <span>
                           {item?.reduceForm === 1 && (
-                            <p>Số tiền giảm: {item?.discountAmount} %</p>
+                            <p>
+                              Số tiền giảm:{" "}
+                              <span
+                                style={{ fontWeight: "bold", color: "green" }}
+                              >
+                                {item?.discountAmount} %
+                              </span>
+                            </p>
                           )}
                           {item?.reduceForm === 0 && (
                             <p>
                               Số tiền giảm:{" "}
-                              {Intl.NumberFormat("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                              }).format(item?.discountAmount)}{" "}
+                              <span
+                                style={{ fontWeight: "bold", color: "green" }}
+                              >
+                                {Intl.NumberFormat("vi-VN", {
+                                  style: "currency",
+                                  currency: "VND",
+                                }).format(item?.discountAmount)}{" "}
+                              </span>
                             </p>
                           )}
                         </span>
                       </div>
 
-                      <p>Ngày kết thúc: {item?.endDate}</p>
+                      <p>
+                        Ngày kết thúc:{" "}
+                        <span style={{ color: "red" }}>{item?.endDate}</span>
+                      </p>
                     </Card>
                   </Col>
                 );

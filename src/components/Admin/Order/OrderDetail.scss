@@ -46,3 +46,15 @@
     }
   }
 }
+.custom-table tbody {
+  background-color: rgb(51, 204, 255); /* Màu nền */
+  color: white;
+  font-size: 14px;
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgb(51, 204, 255); /* Màu nền */
+  color: black;
+  font-size: 14px;
+  border-radius: 50px !important;
+}
