@@ -86,7 +86,7 @@ const ViewDetail = (props) => {
     }
     if (type === "PLUS") {
       console.log("shoeData", shoeData);
-      if (currentQuantity - 1 >= shoeData.qty) return;
+      if (currentQuantity + 1 > shoeData.qty) return;
       setCurrentQuantity(currentQuantity + 1);
     }
   };

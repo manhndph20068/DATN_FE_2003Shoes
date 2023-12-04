@@ -610,6 +610,18 @@ const callGetListAddressById = (id) => {
   return axios.get(`/api/v1/address/address-by-account-id/${id}`);
 };
 
+const callUpdateDefaultAddress = (data) => {
+  return axios.post(`/api/v1/address/update-address-default`, data);
+};
+
+const callAddNewAddress = (data) => {
+  return axios.post(`/api/v1/address/addnewaddress`, data);
+};
+
+const callDeleteAddress = (data) => {
+  return axios.post(`/api/v1/address/deleteaddress`, data);
+};
+
 const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);
@@ -794,4 +806,7 @@ export {
   callGetListVersionOfShoeById,
   callUpdateInforAccount,
   callGetListAddressById,
+  callUpdateDefaultAddress,
+  callAddNewAddress,
+  callDeleteAddress,
 };

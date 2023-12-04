@@ -82,7 +82,7 @@ const ManageAccount = (props) => {
     <div>
       <Modal
         maskClosable={false}
-        style={{ minWidth: 700 }}
+        style={{ minWidth: 850 }}
         open={isModalManageAcconut}
         onCancel={() => handleClose()}
         footer={null}

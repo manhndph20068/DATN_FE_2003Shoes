@@ -36,12 +36,19 @@ const ChangePassword = (props) => {
   }, [isModalManageAcconut, form]);
 
   return (
-    <div style={{ paddingLeft: "3rem", minHeight: 300, paddingTop: "2rem" }}>
+    <div
+      style={{
+        paddingLeft: "7rem",
+        minHeight: 300,
+        paddingTop: "2rem",
+        // textAlign: "center",
+      }}
+    >
       <Form
         form={form}
         name="control-hooks"
         onFinish={onFinish}
-        style={{ maxWidth: 600 }}
+        style={{ maxWidth: 700 }}
       >
         <Form.Item
           name="email"
