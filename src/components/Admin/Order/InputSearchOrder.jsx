@@ -16,15 +16,13 @@ import { callDoExportOrder } from "../../../services/api";
 import axios from "axios";
 
 const InputSearchOrder = (props) => {
-  const { setFilter, filter } = props;
+  const { setFilter, filter, newFilterTemp, setNewFilterTemp } = props;
   const [form] = Form.useForm();
   const { RangePicker } = DatePicker;
 
   const onReset = () => {
     form.resetFields();
   };
-
-  const [newFilterTemp, setNewFilterTemp] = useState({});
 
   const onFinish = (values) => {
     console.log("values", values);
@@ -54,6 +52,8 @@ const InputSearchOrder = (props) => {
     };
 
     setNewFilterTemp({
+      page: newFilter?.page,
+      size: newFilter?.size,
       customer: newFilter.customer,
       status: newFilter.status,
       dateFirst: newFilter.dateFirst,

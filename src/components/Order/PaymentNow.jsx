@@ -99,7 +99,9 @@ const PaymentNow = () => {
   };
 
   useEffect(() => {
-    handleGetDataAccountById();
+    if (user?.id) {
+      handleGetDataAccountById();
+    }
   }, [user?.id]);
 
   // const confirmDelete = (item) => {

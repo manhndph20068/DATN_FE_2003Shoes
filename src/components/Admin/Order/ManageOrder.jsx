@@ -19,11 +19,15 @@ const ManageOrder = () => {
     page: current - 1,
     size: pageSize,
   });
+  const [newFilterTemp, setNewFilterTemp] = useState({
+    page: current - 1,
+    size: pageSize,
+  });
 
   const navigate = useNavigate();
 
   const handleFetchAllListOrder = async () => {
-    const res = await callGetListOrder(filter);
+    const res = await callGetListOrder(newFilterTemp);
     console.log("res", res);
     if (res.status === 0) {
       let index = 1;
@@ -40,7 +44,7 @@ const ManageOrder = () => {
 
   useEffect(() => {
     handleFetchAllListOrder();
-  }, [filter]);
+  }, [newFilterTemp]);
 
   const columns = [
     {
@@ -176,7 +180,10 @@ const ManageOrder = () => {
     console.log("params", pagination, filters, sorter, extra);
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
-      setFilter({
+      setNewFilterTemp({
+        // page: pagination.current - 1,
+        // size: pageSize,
+        ...filter,
         page: pagination.current - 1,
         size: pageSize,
       });
@@ -184,7 +191,7 @@ const ManageOrder = () => {
     if (pagination && pagination.pageSize !== pageSize) {
       setCurrent(0);
       setPageSize(pagination.pageSize);
-      setFilter({
+      setNewFilterTemp({
         page: 0,
         size: pagination.pageSize,
       });
@@ -196,7 +203,12 @@ const ManageOrder = () => {
       <div className="input-search-order" style={{ marginBottom: "2rem" }}>
         <Row>
           <Col span={24}>
-            <InputSearchOrder setFilter={setFilter} filter={filter} />
+            <InputSearchOrder
+              setFilter={setFilter}
+              filter={filter}
+              newFilterTemp={newFilterTemp}
+              setNewFilterTemp={setNewFilterTemp}
+            />
           </Col>
         </Row>
       </div>
