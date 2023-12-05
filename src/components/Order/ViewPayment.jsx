@@ -35,6 +35,7 @@ import {
 import TextArea from "antd/es/input/TextArea.js";
 import {
   callAddMethodPayment,
+  callDefaultAddressById,
   callDeleteCartDetail,
   callDoOrderByCustomer,
   callDoOrderByGuest,
@@ -70,6 +71,34 @@ const ViewPayment = (props) => {
   const idCart = useSelector((state) => state.account.idCart);
   const dispatch = useDispatch();
   const [form] = Form.useForm();
+  // const user = useSelector((state) => state?.account?.user);
+
+  const handleGetDataAccountById = async () => {
+    const data = {
+      accountId: dataAcc?.id,
+    };
+
+    const res = await callDefaultAddressById(data);
+    if (res.status === 0) {
+      form.setFieldsValue({
+        username: res?.data?.name,
+        phone: res?.data?.phoneNumber,
+        address: res?.data?.specificAddress,
+        province: res?.data?.province,
+        district: res?.data?.district,
+        ward: res?.data?.ward,
+      });
+      setProvinceSelected(res?.data?.province);
+      setDistrictSelected(res?.data?.district);
+      setWardSelected(res?.data?.ward);
+    }
+  };
+
+  useEffect(() => {
+    if (dataAcc?.id) {
+      handleGetDataAccountById();
+    }
+  }, [dataAcc?.id]);
 
   const handleDeleteCartDetail = async (idCart, idShoeDetail) => {
     const res = await callDeleteCartDetail(idCart, idShoeDetail);
@@ -581,6 +610,7 @@ const ViewPayment = (props) => {
                           message: "Quận/Huyện không được để trống!",
                         },
                       ]}
+                      initialValue={districtSelected}
                     >
                       <Select
                         showSearch
@@ -605,6 +635,7 @@ const ViewPayment = (props) => {
                       message: "Phường/Xã không được để trống!",
                     },
                   ]}
+                  initialValue={wardSelected}
                 >
                   <Select
                     showSearch

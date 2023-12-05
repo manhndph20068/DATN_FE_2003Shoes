@@ -88,13 +88,13 @@ const PaymentNow = () => {
         username: res?.data?.name,
         phone: res?.data?.phoneNumber,
         address: res?.data?.specificAddress,
-        // province: res?.data?.province,
-        // district: res?.data?.district,
-        // ward: res?.data?.ward,
+        province: res?.data?.province,
+        district: res?.data?.district,
+        ward: res?.data?.ward,
       });
-      // setProvinceSelected(res?.data?.province);
-      // setDistrictSelected(res?.data?.district);
-      // setWardSelected(res?.data?.ward);
+      setProvinceSelected(res?.data?.province);
+      setDistrictSelected(res?.data?.district);
+      setWardSelected(res?.data?.ward);
     }
   };
 
@@ -609,6 +609,7 @@ const PaymentNow = () => {
                         message: "Quận/Huyện không được để trống!",
                       },
                     ]}
+                    initialValue={districtSelected}
                   >
                     <Select
                       showSearch
@@ -632,6 +633,7 @@ const PaymentNow = () => {
                         message: "Phường/Xã không được để trống!",
                       },
                     ]}
+                    initialValue={wardSelected}
                   >
                     <Select
                       showSearch
