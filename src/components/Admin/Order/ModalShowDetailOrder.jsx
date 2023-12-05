@@ -56,7 +56,7 @@ const ModalShowDetailOrder = (props) => {
         footer={[<></>]}
       >
         <Table
-          className="custom-table"
+          className="timeLine-table"
           columns={columns}
           dataSource={historyOrder}
           pagination={false}
