@@ -49,12 +49,15 @@ const ManageVoucher = () => {
     page: current,
     size: pageSize,
   });
-  const [newFilterTemp, setNewFilterTemp] = useState({});
+  const [newFilterTemp, setNewFilterTemp] = useState({
+    page: current,
+    size: pageSize,
+  });
 
   const [form] = Form.useForm();
 
   const handleFetchAllListVoucher = async () => {
-    const res = await callGetListVoucher(filter);
+    const res = await callGetListVoucher(newFilterTemp);
     console.log("res callGetListVoucher", res);
     if (res?.data) {
       let index = 1;
@@ -69,7 +72,7 @@ const ManageVoucher = () => {
 
   useEffect(() => {
     handleFetchAllListVoucher();
-  }, [filter]);
+  }, [newFilterTemp]);
 
   const deleteVoucherByID = async (id) => {
     console.log("id", id);
@@ -388,7 +391,8 @@ const ManageVoucher = () => {
     console.log("params", pagination, filters, sorter, extra);
     if (pagination && pagination.current !== current) {
       setCurrent(pagination.current);
-      setFilter({
+      setNewFilterTemp({
+        ...filter,
         page: pagination.current,
         size: pageSize,
       });
@@ -396,7 +400,7 @@ const ManageVoucher = () => {
     if (pagination && pagination.pageSize !== pageSize) {
       setCurrent(1);
       setPageSize(pagination.pageSize);
-      setFilter({
+      setNewFilterTemp({
         page: 1,
         size: pagination.pageSize,
       });

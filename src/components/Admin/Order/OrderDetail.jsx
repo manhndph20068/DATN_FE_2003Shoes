@@ -31,6 +31,7 @@ const OrderDetail = () => {
   const [paymentMethodOrder, setPaymentMethodOrder] = useState([]);
   const [btnCancel, setBtnCancel] = useState(false);
   const [btnConfirm, setBtnConfirm] = useState(false);
+  const [btnExport, setBtnExport] = useState(false);
   const [btnWaitingForDelivery, setBtnWaitingForDelivery] = useState(false);
   const [btnDelivered, setBtnDelivered] = useState(false);
   const [btnFinished, setBtnFinished] = useState(false);
@@ -389,6 +390,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (dataOrder?.status === 0) {
       setBtnCancel(true);
@@ -396,6 +398,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 1 && dataOrder?.status === 2) {
       console.log("setBtnCancel");
@@ -404,6 +407,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 2) {
       setBtnCancel(false);
@@ -411,6 +415,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 1) {
       setBtnCancel(false);
@@ -418,6 +423,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 3) {
       setBtnCancel(true);
@@ -425,6 +431,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 4) {
       setBtnCancel(false);
@@ -432,6 +439,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 5) {
       setBtnCancel(false);
@@ -439,6 +447,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(false);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(true);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 6) {
       setBtnCancel(true);
@@ -446,6 +455,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(false);
       setBtnFinished(true);
+      setBtnExport(false);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 7) {
       setBtnCancel(true);
@@ -453,6 +463,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(false);
+      setBtnExport(false);
     }
     if (+dataOrder?.type === 1 && dataOrder?.status === 8) {
       setBtnCancel(true);
@@ -460,6 +471,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(false);
     }
     if (+dataOrder?.type === 2 && dataOrder?.status === 8) {
       setBtnCancel(true);
@@ -467,6 +479,7 @@ const OrderDetail = () => {
       setBtnWaitingForDelivery(true);
       setBtnDelivered(true);
       setBtnFinished(true);
+      setBtnExport(false);
     }
   };
 
@@ -741,6 +754,7 @@ const OrderDetail = () => {
     };
     console.log("data", data);
     callUpdateNewOrderAtCounter(data);
+
     window.location.reload();
   };
 
@@ -750,6 +764,10 @@ const OrderDetail = () => {
 
   const handleCancelOrder = () => {
     setOpenModalCancelOrder(true);
+  };
+
+  const handleExportaBillOrder = () => {
+    window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${dataOrder?.id}`;
   };
 
   return (
@@ -867,6 +885,21 @@ const OrderDetail = () => {
               disabled={btnFinished}
             >
               Hoàn thành
+            </Button>
+          </span>
+
+          <span>
+            <Button
+              type="primary"
+              onClick={() => handleExportaBillOrder()}
+              style={
+                btnExport
+                  ? { backgroundColor: "#F5F5F5" }
+                  : { backgroundColor: "purple" }
+              }
+              disabled={btnExport}
+            >
+              In hoá đơn
             </Button>
           </span>
 

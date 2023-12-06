@@ -20,6 +20,7 @@ import {
   ShoppingCartOutlined,
   SmileOutlined,
   SolutionOutlined,
+  SyncOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { useEffect, useState } from "react";
@@ -64,6 +65,7 @@ const ViewPayment = (props) => {
   const [discountVoucher, setDiscountVoucher] = useState(0);
   const [typeOfReduceVoucher, setTypeOfReduceVoucher] = useState(null);
   const [vocherSelected, setVoucherSelected] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const { setCurrentStep } = props;
 
   const cart = useSelector((state) => state.order.cart);
@@ -302,11 +304,14 @@ const ViewPayment = (props) => {
 
     console.log("data", data);
     if (typePaid === 2) {
+      setIsLoading(true);
       dispatch(doInitalTempData(data));
       handleSubmitOrderVnPay(data);
+      setIsLoading(false);
     } else {
       if (idCart !== null) {
         console.log("data", data);
+        setIsLoading(true);
         const res = await callDoOrderByCustomer(data);
         if (res?.status === 0) {
           setCurrentStep(2);
@@ -319,14 +324,19 @@ const ViewPayment = (props) => {
           });
           if (dataAcc.id !== null) {
             handleGetCartByAccountId(dataAcc.id);
+            setIsLoading(false);
           } else {
             dispatch(doDeleteItemCartAfterDoOrder());
+            setIsLoading(false);
           }
+          setIsLoading(false);
         } else {
           message.error("Đặt hàng thất bại");
+          setIsLoading(false);
         }
       } else {
         console.log("data", data);
+        setIsLoading(true);
         const res = await callDoOrderByGuest(data);
         if (res?.status === 0) {
           setCurrentStep(2);
@@ -338,8 +348,10 @@ const ViewPayment = (props) => {
             status: 0,
           });
           dispatch(doDeleteItemCartAfterDoOrder());
+          setIsLoading(false);
         } else {
           message.error("Đặt hàng thất bại");
+          setIsLoading(false);
         }
       }
     }
@@ -807,16 +819,41 @@ const ViewPayment = (props) => {
                 </div>
                 <Divider />
                 {nextStep > 0 ? (
-                  <div
-                    className="order-btn-paid"
-                    htmlType="submit"
-                    onClick={() => form.submit()}
-                  >
-                    <span className="order-btn-paid-title">
-                      Đặt Hàng(
-                      {cart?.filter((item) => item.status === 1).length ?? 0})
-                    </span>
-                  </div>
+                  isLoading === false ? (
+                    <div
+                      className="order-btn-paid"
+                      htmlType="submit"
+                      onClick={() => form.submit()}
+                    >
+                      <span className="order-btn-paid-title">
+                        Đặt Hàng(
+                        {cart?.filter((item) => item.status === 1).length ?? 0})
+                      </span>
+                    </div>
+                  ) : (
+                    <div
+                      className="order-btn-paid"
+                      htmlType="submit"
+                      onClick={() => form.submit()}
+                      style={{ backgroundColor: "gray" }}
+                    >
+                      <span className="order-btn-paid-title">
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "0.6rem",
+                          }}
+                        >
+                          <span style={{ paddingTop: "0.7rem" }}>
+                            <SyncOutlined spin />
+                          </span>
+                          <span style={{ paddingTop: "0.7rem" }}>
+                            <p> Đang xử lý</p>
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  )
                 ) : (
                   <div
                     className="order-btn-paid"

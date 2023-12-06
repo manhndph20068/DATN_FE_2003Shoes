@@ -43,6 +43,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import TextArea from "antd/es/input/TextArea";
 import { useNavigate } from "react-router-dom";
+import { SyncOutlined } from "@ant-design/icons";
 
 const PaymentNow = () => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -60,6 +61,7 @@ const PaymentNow = () => {
   const [addressAccount, setAddressAccount] = useState(null);
   const [typeOfReduceVoucher, setTypeOfReduceVoucher] = useState(null);
   const [vocherSelected, setVoucherSelected] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
   const idCart = useSelector((state) => state.account.idCart);
@@ -322,9 +324,12 @@ const PaymentNow = () => {
     if (typePaid === 2) {
       console.log("data", data);
       dispatch(doInitalTempData(data));
+      setIsLoading(true);
       handleSubmitOrderVnPay(data);
+      setIsLoading(false);
     } else {
       if (idCart !== null) {
+        setIsLoading(true);
         console.log("data", data);
         const res = await callDoOrderBuyNow(data);
         if (res?.status === 0) {
@@ -340,13 +345,18 @@ const PaymentNow = () => {
           if (dataAcc.id !== null) {
             navigate("/order-success");
             handleGetCartByAccountId(dataAcc.id);
+            setIsLoading(false);
           } else {
             dispatch(doDeleteItemCartAfterDoOrder());
+            setIsLoading(false);
           }
+          setIsLoading(false);
         } else {
           message.error("Đặt hàng thất bại");
+          setIsLoading(false);
         }
       } else {
+        setIsLoading(true);
         console.log("data", data);
         const res = await callDoOrderByGuest(data);
         if (res?.status === 0) {
@@ -359,8 +369,10 @@ const PaymentNow = () => {
           });
           dispatch(doDeleteItemCartAfterDoOrder());
           navigate("/order-success");
+          setIsLoading(false);
         } else {
           message.error("Đặt hàng thất bại");
+          setIsLoading(false);
         }
       }
     }
@@ -802,17 +814,41 @@ const PaymentNow = () => {
               </div>
               <Divider />
 
-              <div
-                className="order-btn-paid"
-                htmlType="submit"
-                onClick={() => form.submit()}
-              >
-                <span className="order-btn-paid-title">
-                  Đặt Hàng
-                  {/* (
+              {isLoading === false ? (
+                <div
+                  className="order-btn-paid"
+                  htmlType="submit"
+                  onClick={() => form.submit()}
+                >
+                  <span className="order-btn-paid-title">
+                    Đặt Hàng
+                    {/* (
                       {cart?.filter((item) => item.status === 1).length ?? 0}) */}
-                </span>
-              </div>
+                  </span>
+                </div>
+              ) : (
+                <div
+                  className="order-btn-paid"
+                  htmlType="submit"
+                  style={{ backgroundColor: "gray" }}
+                >
+                  <span className="order-btn-paid-title">
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "1rem",
+                      }}
+                    >
+                      <span style={{ paddingTop: "0.5rem" }}>
+                        <SyncOutlined spin />
+                      </span>
+                      <span style={{ paddingTop: "0.7rem" }}>
+                        <p> Đang xử lý</p>
+                      </span>
+                    </div>
+                  </span>
+                </div>
+              )}
             </Form>
           </div>
         </div>

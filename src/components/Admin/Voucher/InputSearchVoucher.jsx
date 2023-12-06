@@ -42,6 +42,8 @@ const InputSearchVoucher = (props) => {
     console.log("newfilter", newFilter);
 
     setNewFilterTemp({
+      page: newFilter?.page,
+      size: newFilter?.size,
       name: newFilter?.name,
       status: newFilter?.status,
       startDate,

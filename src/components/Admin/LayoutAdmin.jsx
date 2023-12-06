@@ -31,10 +31,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { doLogout } from "../../redux/account/accountSlice";
 import { callLogout } from "../../services/api";
 import { clearCart } from "../../redux/order/orderSlice";
+import ManageAccount from "../ManageAccount";
 const { Content, Footer, Sider } = Layout;
 
 const LayoutAdmin = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isModalManageAcconut, setIsModalManageAcconut] = useState(false);
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const user = useSelector((state) => state.account.user);
 
@@ -154,11 +156,22 @@ const LayoutAdmin = () => {
     }
   };
 
+  const handleMangeAccount = () => {
+    setIsModalManageAcconut(true);
+  };
+
   const itemsDropdown = [
-    // {
-    //   label: <label style={{ cursor: "pointer" }}>Quản lý tài khoản</label>,
-    //   key: "account",
-    // },
+    {
+      label: (
+        <label
+          style={{ cursor: "pointer" }}
+          onClick={() => handleMangeAccount()}
+        >
+          Quản lý tài khoản
+        </label>
+      ),
+      key: "account",
+    },
     {
       label: (
         <Link to={"/"} style={{ cursor: "pointer" }}>
@@ -264,6 +277,10 @@ const LayoutAdmin = () => {
         </Content>
         {/* <Footer style={{ padding: 0 }}>footer</Footer> */}
       </Layout>
+      <ManageAccount
+        isModalManageAcconut={isModalManageAcconut}
+        setIsModalManageAcconut={setIsModalManageAcconut}
+      />
     </Layout>
   );
 };
