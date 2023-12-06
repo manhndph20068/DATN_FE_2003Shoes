@@ -8,6 +8,7 @@ import {
 } from "react-icons/ai";
 import "./OrderDetail.scss";
 import {
+  callDoUpdatePaymentMethod,
   callGetListOrderHistoryById,
   callGetOrderByCode,
   callGetOrderDetailAtCounterById,
@@ -628,7 +629,7 @@ const OrderDetail = () => {
       });
   };
 
-  const handleChangeToConfirmOrder = () => {
+  const handleChangeToConfirmOrder = async () => {
     // getCodeAddress();
     console.log("dataOrder", dataOrder);
     const data = {
@@ -652,7 +653,7 @@ const OrderDetail = () => {
       status: 5,
     };
     console.log("data", data);
-    callUpdateNewOrderAtCounter(data);
+    await callUpdateNewOrderAtCounter(data);
     window.location.reload();
   };
 
@@ -719,7 +720,7 @@ const OrderDetail = () => {
           status: 7,
         };
         console.log("dâta", data);
-        callUpdateNewOrderAtCounter(data);
+        await callUpdateNewOrderAtCounter(data);
         window.location.reload();
       }
     };
@@ -727,7 +728,7 @@ const OrderDetail = () => {
     fetchData();
   };
 
-  const handleChangeToFinish = () => {
+  const handleChangeToFinish = async () => {
     console.log("dataOrder", dataOrder);
     const data = {
       id: dataOrder.id,
@@ -753,7 +754,18 @@ const OrderDetail = () => {
       status: 8,
     };
     console.log("data", data);
-    callUpdateNewOrderAtCounter(data);
+    await callUpdateNewOrderAtCounter(data);
+
+    const dataUpdatePaymentMethod = {
+      id: paymentMethodOrder?.[0]?.id,
+      orderId: dataOrder?.id,
+      method: paymentMethodOrder?.[0]?.method,
+      total: paymentMethodOrder?.[0]?.total,
+      note: paymentMethodOrder?.[0]?.note,
+      status: 1,
+    };
+
+    await callDoUpdatePaymentMethod(dataUpdatePaymentMethod);
 
     window.location.reload();
   };

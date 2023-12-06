@@ -639,6 +639,10 @@ const callDefaultAddressById = (data) => {
   return axios.post(`/api/v1/address/getDefautAddressByAccountId`, data);
 };
 
+const callDoUpdatePaymentMethod = (data) => {
+  return axios.post("/api/v1/admin/payment-method/update", data);
+};
+
 const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);
@@ -831,4 +835,5 @@ export {
   callGetRevalueCurrentWithoutType,
   callGetMonthlyRevenueWithoutType,
   callGetRevalueByYearWithoutType,
+  callDoUpdatePaymentMethod,
 };
