@@ -643,6 +643,10 @@ const callDoUpdatePaymentMethod = (data) => {
   return axios.post("/api/v1/admin/payment-method/update", data);
 };
 
+const callGetListSizeExits = (data) => {
+  return axios.post(`/api/v1/shoe-detail/getListSizeExist`, data);
+};
+
 const callUploadBookImg = (fileImg) => {
   const bodyFormData = new FormData();
   bodyFormData.append("fileImg", fileImg);
@@ -836,4 +840,5 @@ export {
   callGetMonthlyRevenueWithoutType,
   callGetRevalueByYearWithoutType,
   callDoUpdatePaymentMethod,
+  callGetListSizeExits,
 };
