@@ -21,6 +21,7 @@ import {
   DeleteOutlined,
   EditOutlined,
   ExportOutlined,
+  EyeOutlined,
   ImportOutlined,
   PlusOutlined,
   ReloadOutlined,
@@ -112,17 +113,6 @@ const ManageVoucher = () => {
       title: "Mã Voucher",
       dataIndex: "code",
       key: "code",
-      render: (_, record) => (
-        <a
-          href="#"
-          onClick={() => {
-            setOpenViewDetail(true);
-            setDataViewDetail(record);
-          }}
-        >
-          {record.code}
-        </a>
-      ),
     },
     {
       title: "Tên Voucher",
@@ -305,6 +295,19 @@ const ManageVoucher = () => {
                     />
                   </Tooltip>
                 </Popconfirm> */}
+                <Tooltip title="Chi tiết voucher">
+                  <EyeOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onClick={() => {
+                      setOpenViewDetail(true);
+                      setDataViewDetail(record);
+                    }}
+                  />
+                </Tooltip>
               </div>
             )}
           </>

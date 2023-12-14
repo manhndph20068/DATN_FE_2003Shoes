@@ -223,7 +223,6 @@ const PaymentNow = () => {
     const orderInfo = "VNPAY" + uuidv4();
     console.log("orderInfo", orderInfo);
     console.log("orderTotal", orderTotal);
-
     let res = await callSubmitOrderVNPay(orderTotal, orderInfo);
     console.log("res", res);
     if (res !== null) {
@@ -322,11 +321,11 @@ const PaymentNow = () => {
     console.log("data", data);
 
     if (typePaid === 2) {
+      setIsLoading(true);
       console.log("data", data);
       dispatch(doInitalTempData(data));
-      setIsLoading(true);
       handleSubmitOrderVnPay(data);
-      setIsLoading(false);
+      // setIsLoading(false);
     } else {
       if (idCart !== null) {
         setIsLoading(true);

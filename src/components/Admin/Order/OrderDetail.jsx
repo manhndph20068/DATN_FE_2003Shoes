@@ -594,6 +594,7 @@ const OrderDetail = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("data", data);
         if (data?.code === 200) {
           const orderCode = data?.data?.order_code;
           fetch(
@@ -622,6 +623,9 @@ const OrderDetail = () => {
             .catch((error) => {
               console.error("Error:", error);
             });
+        }
+        if (data?.code === 400) {
+          alert(data?.message);
         }
       })
       .catch((error) => {

@@ -314,14 +314,16 @@ const ShoeDetailTable = () => {
             Thêm mới
           </Button> */}
 
-          <Tooltip title="Refresh Data Table">
+          <Tooltip title="Tải lại">
             <Button
               className="shoes-button"
               shape="circle"
               icon={<ReloadOutlined />}
-              onClick={() => {
+              onClick={async () => {
                 setFilter("");
-                setQuerySort("");
+                setCurrent(1);
+                setPageSize(10);
+                await fetchAllShoes();
               }}
             />
           </Tooltip>
