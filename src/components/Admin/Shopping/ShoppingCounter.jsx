@@ -826,6 +826,57 @@ const ShoppingCounter = () => {
                               </div>
                             </Col>
                           </Row>
+                          <Form.Item
+                            label="Voucher:"
+                            name="voucher"
+                            labelCol={{ span: 24 }}
+                            labelAlign="left"
+                          >
+                            <Select
+                              style={{ width: "100%" }}
+                              allowClear
+                              onChange={(item) => {
+                                handleOnChangeVoucher(item);
+                              }}
+                              placeholder="Chọn voucher"
+                            >
+                              {listVoucher.map((item) => {
+                                return (
+                                  <Option value={item.id} label={item.name}>
+                                    <div
+                                      style={{
+                                        gap: "2rem",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        flexDirection: "row",
+                                      }}
+                                    >
+                                      <span>Mã vc: {item.code}</span>
+                                      <span>
+                                        Giá trị giảm:{" "}
+                                        {item.reduceForm === 0 ? (
+                                          Intl.NumberFormat("vi-VN", {
+                                            style: "currency",
+                                            currency: "VND",
+                                          }).format(item.discountAmount)
+                                        ) : (
+                                          <>{item.discountAmount}%</>
+                                        )}
+                                      </span>
+
+                                      <span>
+                                        Giá trị đơn tối thiểu:{" "}
+                                        {Intl.NumberFormat("vi-VN", {
+                                          style: "currency",
+                                          currency: "VND",
+                                        }).format(item.minBillValue)}
+                                      </span>
+                                    </div>
+                                  </Option>
+                                );
+                              })}
+                            </Select>
+                          </Form.Item>
                           <Row
                             style={{
                               display: "flex",
@@ -889,56 +940,7 @@ const ShoppingCounter = () => {
                               </div>
                             </Col>
                           </Row>
-                          <Form.Item
-                            label="Voucher:"
-                            name="voucher"
-                            labelCol={{ span: 24 }}
-                            labelAlign="left"
-                          >
-                            <Select
-                              style={{ width: "100%" }}
-                              allowClear
-                              onChange={(item) => {
-                                handleOnChangeVoucher(item);
-                              }}
-                            >
-                              {listVoucher.map((item) => {
-                                return (
-                                  <Option value={item.id} label={item.name}>
-                                    <div
-                                      style={{
-                                        gap: "2rem",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "row",
-                                      }}
-                                    >
-                                      <span>Mã vc: {item.code}</span>
-                                      <span>
-                                        Giá trị giảm:{" "}
-                                        {item.reduceForm === 0 ? (
-                                          Intl.NumberFormat("vi-VN", {
-                                            style: "currency",
-                                            currency: "VND",
-                                          }).format(item.discountAmount)
-                                        ) : (
-                                          <>{item.discountAmount}%</>
-                                        )}
-                                      </span>
 
-                                      <span>
-                                        Giá trị đơn tối thiểu:{" "}
-                                        {Intl.NumberFormat("vi-VN", {
-                                          style: "currency",
-                                          currency: "VND",
-                                        }).format(item.minBillValue)}
-                                      </span>
-                                    </div>
-                                  </Option>
-                                );
-                              })}
-                            </Select>
-                          </Form.Item>
                           <Form.Item
                             label="Ghi chú:"
                             name="note"

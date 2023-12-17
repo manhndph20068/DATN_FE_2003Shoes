@@ -199,7 +199,7 @@ const OrderPage = () => {
         className="order-page-container"
         style={{ maxWidth: 1290, margin: "0 auto" }}
       >
-        <div className="order-step" style={{ borderRadius: "20px" }}>
+        <div className="order-step">
           <Steps current={currentStep} items={items} />
           <style>
             {`

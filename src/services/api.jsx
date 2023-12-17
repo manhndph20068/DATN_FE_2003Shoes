@@ -410,7 +410,9 @@ const callBestSaleProdByYear = (nam) => {
 };
 
 const callGetRevalueCurrent = (type) => {
-  return axios.get(`/api/v1/statistical/so-luong-hoa-don-theo-ngay`);
+  return axios.get(
+    `/api/v1/statistical/so-luong-hoa-don-theo-ngay?typeBanHang=${type}`
+  );
 };
 
 const callGetRevalueCurrentWithoutType = (type) => {
