@@ -53,6 +53,7 @@ const callListShoeDetailAdmin = (query) => {
 };
 
 const callListShoeDetailHomePage = (
+  sort,
   current,
   page,
   category,
@@ -61,6 +62,7 @@ const callListShoeDetailHomePage = (
   maxPrice
 ) => {
   const data = {
+    sort: sort,
     page: current,
     pageSize: page,
     categoryList: category,

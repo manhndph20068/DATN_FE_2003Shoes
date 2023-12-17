@@ -32,7 +32,7 @@ const Home = () => {
   const [pageSize, setPageSize] = useState(8);
   const [total, setTotal] = useState(0);
   const [loadingProd, setLoadingProd] = useState(false);
-  const [sortQuery, setSortQuery] = useState("sort=-sold");
+  const [sortQuery, setSortQuery] = useState("-updatedAt");
   const [filterCategory, setFilterCategory] = useState([]);
   const [filterColor, setFilterColor] = useState([]);
   const navigate = useNavigate();
@@ -125,6 +125,7 @@ const Home = () => {
   const fetchAllShoeHomePage = async () => {
     setLoadingProd(true);
     let res = await callListShoeDetailHomePage(
+      sortQuery,
       current,
       pageSize,
       filterCategory,
@@ -145,26 +146,21 @@ const Home = () => {
   useEffect(() => {
     setCurrent(1);
     fetchAllShoeHomePage();
-  }, [filterCategory, filterColor]);
+  }, [filterCategory, filterColor, sortQuery]);
 
   const items = [
     {
-      key: "sort=-sold",
-      label: `Phổ biến`,
-      children: <></>,
-    },
-    {
-      key: "sort=-updatedAt",
+      key: "-updatedAt",
       label: `Hàng Mới`,
       children: <></>,
     },
     {
-      key: "sort=price",
+      key: "price",
       label: `Giá Thấp Đến Cao`,
       children: <></>,
     },
     {
-      key: "sort=-price",
+      key: "-price",
       label: `Giá Cao Đến Thấp`,
       children: <></>,
     },
@@ -383,6 +379,7 @@ const Home = () => {
                 items={items}
                 onChange={(value) => {
                   setSortQuery(value);
+                  console.log(">>> check value", value);
                 }}
                 style={{ overflowX: "auto" }}
               />
