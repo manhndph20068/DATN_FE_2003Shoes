@@ -30,6 +30,8 @@ import {
   callGetListCartDetailById,
   callUpdateCartDetailStatus,
 } from "../../services/api.jsx";
+import { BiArrowBack } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 const ViewOrder = (props) => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -38,6 +40,7 @@ const ViewOrder = (props) => {
   const cart = useSelector((state) => state.order.cart);
   const idCart = useSelector((state) => state.account.idCart);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleAddToCartWithAccount = async (idCart, idShoeDetail, qty) => {
     const res = await callAddToCartAtCartPageWithAccount(
@@ -165,7 +168,18 @@ const ViewOrder = (props) => {
     <>
       <Row gutter={[20, 20]} style={{ justifyContent: "space-between" }}>
         <Col lg={17} md={15} xs={24} className="order-left-content">
-          <div className="header-content">sd</div>
+          <div
+            className="header-content"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              navigate("/productions");
+            }}
+          >
+            <span style={{ margin: "0px 3px 0 0" }}>
+              <BiArrowBack />
+            </span>
+            <span>Trang mua hàng</span>
+          </div>
           {cart?.length && nextStep > 0 ? (
             cart.map((item, index) => {
               return (

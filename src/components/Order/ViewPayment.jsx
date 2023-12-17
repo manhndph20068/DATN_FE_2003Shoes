@@ -465,7 +465,7 @@ const ViewPayment = (props) => {
       <Row gutter={[20, 20]} style={{ justifyContent: "space-between" }}>
         <Col lg={15} md={15} xs={24} className="order-left-content">
           <div className="header-content" style={{ textAlign: "center" }}>
-            <span style={{ margin: "3px 3px 0 0" }}>
+            <span style={{ margin: "0px 3px 0 0" }}>
               <BiArrowBack />
             </span>
             <span
