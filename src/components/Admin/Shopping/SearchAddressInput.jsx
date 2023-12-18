@@ -203,7 +203,7 @@ const SearchAddressInput = (props) => {
           },
         ]}
       >
-        <TextArea rows={2} width="100%" />
+        <TextArea rows={2} width="100%" placeholder="Nhập địa chỉ cụ thể" />
       </Form.Item>
     </>
   );

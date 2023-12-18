@@ -330,6 +330,7 @@ const ShoppingCounter = () => {
           status:
             typeOfMethodPaymentOnlineOrder === "Thanh toán tại quầy" ? 1 : 0,
         });
+        window.location.reload();
       } else {
         message.error(res.mess);
       }
@@ -378,8 +379,12 @@ const ShoppingCounter = () => {
           status: 1,
         });
 
-        window.location.href = `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`;
+        window.open(
+          `http://localhost:8080/api/v1/admin/order/generate-hoa-don-report/${id}`,
+          "_blank"
+        );
         fetchListOrderAtCounter();
+        window.location.reload();
       } else {
         message.error(res.mess);
       }
@@ -607,7 +612,7 @@ const ShoppingCounter = () => {
                                   },
                                 ]}
                               >
-                                <Input />
+                                <Input placeholder="Nhập tên khách hàng" />
                               </Form.Item>
                             </Col>
                             <Col span={11}>
@@ -615,6 +620,7 @@ const ShoppingCounter = () => {
                                 label="Số điện thoại"
                                 name="phone"
                                 labelCol={{ span: 24 }}
+                                placeholder="Nhập số điện thoại"
                                 rules={[
                                   {
                                     required: true,
@@ -623,7 +629,10 @@ const ShoppingCounter = () => {
                                   },
                                 ]}
                               >
-                                <Input style={{ width: "100%" }} />
+                                <Input
+                                  style={{ width: "100%" }}
+                                  placeholder="Nhập số điện thoại"
+                                />
                               </Form.Item>
                             </Col>
                           </Row>
@@ -659,6 +668,7 @@ const ShoppingCounter = () => {
                                 name="typeOfMethodPaymentOnlineOrder"
                                 labelCol={{ span: 24 }}
                                 labelAlign="left"
+                                placeholder="Chọn hình thức thanh toán"
                                 rules={[
                                   {
                                     required: true,
@@ -719,6 +729,7 @@ const ShoppingCounter = () => {
                               onChange={(item) => {
                                 handleOnChangeVoucher(item);
                               }}
+                              placeholder="Chọn voucher"
                             >
                               {listVoucher.map((item) => {
                                 return (
@@ -760,7 +771,10 @@ const ShoppingCounter = () => {
                             labelCol={{ span: 24 }}
                             labelAlign="left"
                           >
-                            <Input style={{ width: "100%" }} />
+                            <Input
+                              style={{ width: "100%" }}
+                              placeholder="Ghi chú"
+                            />
                           </Form.Item>
                           <Divider />
                           <div
@@ -887,6 +901,7 @@ const ShoppingCounter = () => {
                               <Form.Item
                                 label="Số tiền khách đưa:"
                                 // style={{ fontSize: "3rem" }}
+                                placeholder="Nhập số tiền khách đưa"
                                 name="moneyPaid"
                                 labelCol={{ span: 24 }}
                                 labelAlign="left"
@@ -911,6 +926,7 @@ const ShoppingCounter = () => {
                                 <InputNumber
                                   min={0}
                                   style={{ width: "100%" }}
+                                  placeholder="Nhập số tiền"
                                   formatter={(value) =>
                                     `${value}`.replace(
                                       /\B(?=(\d{3})+(?!\d))/g,
@@ -947,7 +963,10 @@ const ShoppingCounter = () => {
                             labelCol={{ span: 24 }}
                             labelAlign="left"
                           >
-                            <Input style={{ width: "100%" }} />
+                            <Input
+                              style={{ width: "100%" }}
+                              placeholder="Ghi chú"
+                            />
                           </Form.Item>
                         </>
                       )}
