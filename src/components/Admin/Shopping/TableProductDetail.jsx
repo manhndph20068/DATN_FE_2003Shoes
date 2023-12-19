@@ -51,6 +51,8 @@ const TableProductDetail = (props) => {
       if (res.status === 0) {
         fetchListOrderDetail();
         message.success("Cập nhật thành công");
+      } else {
+        message.error("Số lượng sản phẩm không đủ");
       }
     }
   };

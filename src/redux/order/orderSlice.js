@@ -26,21 +26,26 @@ export const orderSlice = createSlice({
           status: item.status,
         });
       } else {
-        cart[isExistIndex].quantity += +item.quantity;
-        if (cart[isExistIndex].quantity > item.detail.quantity) {
-          cart[isExistIndex].quantity = item.detail.quantity;
+        if (cart[isExistIndex].quantity + item.quantity <= item.detail.qty) {
+          cart[isExistIndex].quantity += +item.quantity;
+          message.success("Thêm sản phẩm vào giỏ hàng thành công!");
+        } else if (
+          cart[isExistIndex].quantity + item.quantity >
+          item.detail.qty
+        ) {
+          cart[isExistIndex].quantity = item.detail.qty;
+          message.error("Số lượng tồn không đủ!");
         }
       }
       state.cart = cart;
-      message.success("Thêm sản phẩm vào giỏ hàng thành công!");
     },
     doUpdateCartAction: (state, action) => {
       let cart = state.cart;
       const item = action.payload;
       let isExistIndex = cart.findIndex((c) => c.id === item.id);
       console.log("item doUpdateCartAction", item);
+      console.log("cart", cart);
       if (isExistIndex === -1) {
-        console.log("add");
         cart.push({
           quantity: item.quantity,
           detail: item.detail,
@@ -51,8 +56,11 @@ export const orderSlice = createSlice({
         console.log("udpate");
         cart[isExistIndex].quantity = +item.quantity;
         cart[isExistIndex].status = +item.status;
-        if (cart[isExistIndex].quantity > cart[isExistIndex].detail.quantity) {
-          cart[isExistIndex].quantity = cart[isExistIndex].detail.quantity;
+        // console.log("cart[isExistIndex].quantity", cart[isExistIndex].quantity);
+        // console.log("item", +item.detail.detail.qty);
+        if (cart[isExistIndex].quantity > +item.detail.detail.qty) {
+          console.log("ko them trung");
+          cart[isExistIndex].quantity = +item.detail.detail.qty;
         }
       }
       state.cart = cart;

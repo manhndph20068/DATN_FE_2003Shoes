@@ -541,6 +541,11 @@ const ViewPayment = (props) => {
                       required: true,
                       message: "Tên người nhận không được để trống!",
                     },
+
+                    {
+                      pattern: /^[^\s]*$/,
+                      message: "Không được nhập khoảng trắng!",
+                    },
                   ]}
                 >
                   <Input placeholder="Nhập tên người nhận" />
@@ -555,6 +560,11 @@ const ViewPayment = (props) => {
                       required: true,
                       message: "Số điện thoại không được để trống!",
                       pattern: new RegExp(/^0\d{9}$/),
+                    },
+
+                    {
+                      pattern: /^[^\s]*$/,
+                      message: "Không được nhập khoảng trắng!",
                     },
                   ]}
                 >
@@ -574,8 +584,13 @@ const ViewPayment = (props) => {
                       rules={[
                         {
                           required: true,
-                          message: "Email không được để trống!",
+                          message: "Email không đúng định dạng!",
                           type: "email",
+                        },
+
+                        {
+                          pattern: /^[^\s]*$/,
+                          message: "Không được nhập khoảng trắng!",
                         },
                       ]}
                     >

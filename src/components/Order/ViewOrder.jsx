@@ -7,6 +7,7 @@ import {
   Row,
   Steps,
   Checkbox,
+  message,
 } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -80,8 +81,15 @@ const ViewOrder = (props) => {
     console.log("idCart", idCart);
     console.log("idShoeDetail", item.detail.id);
     if (value < 0 || !value) {
+      message.error("Số lượng không đủ");
       return;
     }
+
+    if (value > item.detail.qty) {
+      message.error("Số lượng không đủ");
+      return;
+    }
+
     if (idCart !== null) {
       if (!isNaN(value)) {
         handleAddToCartWithAccount(idCart, +item.detail.id, +value);

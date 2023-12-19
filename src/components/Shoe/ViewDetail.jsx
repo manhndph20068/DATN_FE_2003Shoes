@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Form, Radio, Row, Rate } from "antd";
+import { Checkbox, Col, Divider, Form, Radio, Row, Rate, message } from "antd";
 import "./ViewDetail.scss";
 import ImageGallery from "react-image-gallery";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
@@ -107,6 +107,10 @@ const ViewDetail = (props) => {
     );
     if (res?.status === 0) {
       handleGetListCartDetailById(idCart);
+      message.success("Thêm vào giỏ hàng thành công");
+    } else if (res?.status === 1) {
+      // alert(res?.message);
+      message.error("Thêm vào giỏ hàng thất bại");
     }
   };
 

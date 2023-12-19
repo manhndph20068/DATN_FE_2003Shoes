@@ -72,7 +72,13 @@ const ModalCreateShoeName = (props) => {
           <Form.Item
             label="Tên giày"
             name="shoeName"
-            rules={[{ required: true, message: "Vui lòng nhập tên giày!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập tên giày!" },
+              {
+                pattern: /^(?!\s*$).+/,
+                message: "Không được nhập khoảng trắng!",
+              },
+            ]}
           >
             <Input />
           </Form.Item>

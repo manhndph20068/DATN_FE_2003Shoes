@@ -31,6 +31,8 @@ const SearchProductInput = (props) => {
       form.resetFields(["itemShoeDetailSelect"]);
       console.log("activeKey");
       message.success("Thêm thành công");
+    } else if (res.status === 3) {
+      message.error("Sản phẩm đã hết hàng");
     }
   };
 

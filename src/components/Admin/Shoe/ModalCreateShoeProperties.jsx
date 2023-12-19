@@ -79,7 +79,8 @@ const ModalCreateShoeProperties = (props) => {
   const fetchNameBrand = async () => {
     const res = await callListShoeBrand();
     if (res?.data && res.data.length > 0) {
-      const newOption = res.data.map((item) => {
+      const filteredData = res.data.filter((item) => item.status !== 0);
+      const newOption = filteredData.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -92,7 +93,8 @@ const ModalCreateShoeProperties = (props) => {
   const fetchNameSole = async () => {
     const res = await callListShoeSole();
     if (res?.data && res.data.length > 0) {
-      const newOption = res.data.map((item) => {
+      const filteredData = res.data.filter((item) => item.status !== 0);
+      const newOption = filteredData.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -105,7 +107,8 @@ const ModalCreateShoeProperties = (props) => {
   const fetchNameColor = async () => {
     const res = await callListShoeColor();
     if (res?.data && res.data.length > 0) {
-      const newOption = res.data.map((item) => {
+      const filteredData = res.data.filter((item) => item.status !== 0);
+      const newOption = filteredData.map((item) => {
         return {
           value: item.id,
           label: item.name,
@@ -118,7 +121,8 @@ const ModalCreateShoeProperties = (props) => {
   const fetchNameSize = async () => {
     const res = await callListShoeSize();
     if (res?.data && res.data.length > 0) {
-      const newOption = res.data.map((item) => {
+      const filteredData = res.data.filter((item) => item.status !== 0);
+      const newOption = filteredData.map((item) => {
         return {
           value: item.id,
           label: item.name,

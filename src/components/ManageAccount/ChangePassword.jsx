@@ -68,6 +68,10 @@ const ChangePassword = (props) => {
           labelCol={{ span: 5 }}
           rules={[
             { required: true, message: "Mật khẩu cũ không được để trống !" },
+            {
+              pattern: /^[^\s]*$/,
+              message: "Không được nhập khoảng trắng!",
+            },
           ]}
         >
           <Input.Password
@@ -84,6 +88,10 @@ const ChangePassword = (props) => {
             {
               required: true,
               message: "Mật khẩu mới không được để trống !",
+            },
+            {
+              pattern: /^[^\s]*$/,
+              message: "Không được nhập khoảng trắng!",
             },
           ]}
         >

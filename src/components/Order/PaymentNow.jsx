@@ -541,6 +541,10 @@ const PaymentNow = () => {
                         required: true,
                         message: "Tên người nhận không được để trống!",
                       },
+                      {
+                        pattern: /^[^\s]*$/,
+                        message: "Không được nhập khoảng trắng!",
+                      },
                     ]}
                   >
                     <Input placeholder="Nhập tên người nhận" />
@@ -554,8 +558,8 @@ const PaymentNow = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Số điện thoại không được để trống!",
-                        pattern: new RegExp(/^0\d{9}$/),
+                        message: "Số điện thoại không đúng định dạng!",
+                        pattern: new RegExp(/^0[1-9]\d{8}$/),
                       },
                     ]}
                   >
@@ -577,8 +581,12 @@ const PaymentNow = () => {
                     rules={[
                       {
                         required: true,
-                        message: "Email không được để trống!",
+                        message: "Email không đúng định dạng!",
                         type: "email",
+                      },
+                      {
+                        pattern: /^[^\s]*$/,
+                        message: "Không được nhập khoảng trắng!",
                       },
                     ]}
                   >
@@ -686,6 +694,7 @@ const PaymentNow = () => {
                   onChange={(item) => {
                     handleOnChangeVoucher(item);
                   }}
+                  placeholder="Chọn voucher"
                 >
                   {listVoucher.map((item) => {
                     return (

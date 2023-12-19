@@ -150,6 +150,10 @@ const ModalCreateAccount = (props) => {
                     required: true,
                     message: "Please input your email!",
                   },
+                  {
+                    pattern: /^(?!\s*$).+/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
                 ]}
               >
                 <Input style={{ width: "100%" }} />

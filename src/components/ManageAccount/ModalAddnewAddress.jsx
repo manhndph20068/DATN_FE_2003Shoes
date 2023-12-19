@@ -190,6 +190,10 @@ const ModalAddnewAddress = (props) => {
                 required: true,
                 message: "Tên không được để trống!",
               },
+              {
+                pattern: /^[^\s]*$/,
+                message: "Không được nhập khoảng trắng!",
+              },
             ]}
           >
             <Input />
@@ -203,6 +207,10 @@ const ModalAddnewAddress = (props) => {
                 required: true,
                 message: "Số điện thoại không được để trống!",
                 pattern: new RegExp(/^0\d{9}$/),
+              },
+              {
+                pattern: /^[^\s]*$/,
+                message: "Không được nhập khoảng trắng!",
               },
             ]}
           >

@@ -163,6 +163,10 @@ const UserInfo = (props) => {
               label="Họ và tên"
               rules={[
                 { required: true, message: "Họ và tên không được để trống" },
+                {
+                  pattern: /^[^\s]*$/,
+                  message: "Không được nhập khoảng trắng!",
+                },
               ]}
             >
               <Input placeholder="Nhập họ và tên" />
