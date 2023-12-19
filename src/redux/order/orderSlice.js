@@ -25,6 +25,7 @@ export const orderSlice = createSlice({
           id: item.id,
           status: item.status,
         });
+        message.success("Thêm sản phẩm vào giỏ hàng thành công!");
       } else {
         if (cart[isExistIndex].quantity + item.quantity <= item.detail.qty) {
           cart[isExistIndex].quantity += +item.quantity;
@@ -34,7 +35,9 @@ export const orderSlice = createSlice({
           item.detail.qty
         ) {
           cart[isExistIndex].quantity = item.detail.qty;
-          message.error("Số lượng tồn không đủ!");
+          message.error(
+            `Bạn đã có ${cart[isExistIndex].quantity} sản phẩm trong giỏ hàng. Không thể thêm số lượng đã chọn vào giỏ hàng!`
+          );
         }
       }
       state.cart = cart;

@@ -190,16 +190,37 @@ const ViewOrder = (props) => {
           </div>
           {cart?.length && nextStep > 0 ? (
             cart.map((item, index) => {
+              const itemStyle = {
+                backgroundColor: item.status === 3 ? "#FFFAFA" : "none",
+              };
               return (
-                <div className="cart-item" key={`id${index}`}>
+                <div className="cart-item" key={`id${index}`} style={itemStyle}>
                   <div className="item-check-box">
-                    <Checkbox
-                      checked={item.status === 1 ? true : false}
-                      onChange={(value) => handleChangeCheckBox(value, item)}
-                    ></Checkbox>
+                    {item.status === 3 ? (
+                      <></>
+                    ) : (
+                      <Checkbox
+                        checked={item.status === 1 ? true : false}
+                        onChange={(value) => handleChangeCheckBox(value, item)}
+                      ></Checkbox>
+                    )}
                   </div>
                   <img className="item-img" src={item.detail.thumbnail} />
-                  <div className="item-name">{item.detail.code}</div>
+                  <div
+                    className="item-name"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 15,
+                    }}
+                  >
+                    <span>{item.detail.code}</span>
+                    {item.status === 3 && (
+                      <span style={{ color: "red" }}>
+                        Số lượng không khả dụng!
+                      </span>
+                    )}
+                  </div>
                   <div className="item-price">
                     {Intl.NumberFormat("vi-VN", {
                       style: "currency",
@@ -210,6 +231,7 @@ const ViewOrder = (props) => {
                     className="item-input"
                     onChange={(value) => handleChangeInput(value, item)}
                     value={item.quantity}
+                    hidden={item.status === 3 ? true : false}
                   />
                   <div className="item-total-price">
                     Tổng:

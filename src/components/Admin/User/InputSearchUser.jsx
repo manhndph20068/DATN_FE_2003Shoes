@@ -50,6 +50,12 @@ const InputSearchUser = (props) => {
                 style={{ fontWeight: "bold" }}
                 label="Tên"
                 name="fullName"
+                rules={[
+                  {
+                    pattern: /^(?!\s*$).+/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập tên hoặc mã" />
               </Form.Item>
@@ -59,6 +65,12 @@ const InputSearchUser = (props) => {
                 style={{ fontWeight: "bold" }}
                 label="Email"
                 name="email"
+                rules={[
+                  {
+                    pattern: /^[^\s]*$/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập email" />
               </Form.Item>

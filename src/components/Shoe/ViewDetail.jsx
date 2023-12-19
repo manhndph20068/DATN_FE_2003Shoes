@@ -264,6 +264,12 @@ const ViewDetail = (props) => {
                                 </Row>
                               </Radio.Group>
                             </Form.Item>
+                            <div
+                              className="category"
+                              style={{ fontSize: "1rem" }}
+                            >
+                              Số lượng tồn : {shoeData.qty}
+                            </div>
                           </Form>
                         </>
                       </div>

@@ -16,7 +16,8 @@ import { callDoExportOrder } from "../../../services/api";
 import axios from "axios";
 
 const InputSearchOrder = (props) => {
-  const { setFilter, filter, newFilterTemp, setNewFilterTemp } = props;
+  const { setFilter, filter, newFilterTemp, setNewFilterTemp, maxMoney } =
+    props;
   const [form] = Form.useForm();
   const { RangePicker } = DatePicker;
 
@@ -205,6 +206,12 @@ const InputSearchOrder = (props) => {
               style={{ fontWeight: "bold" }}
               label="Khách hàng"
               name="customer"
+              rules={[
+                {
+                  pattern: /^[^\s]*$/,
+                  message: "Không được nhập khoảng trắng!",
+                },
+              ]}
             >
               <Input
                 placeholder="Nhập tên hoặc số điện thoại"
@@ -234,9 +241,9 @@ const InputSearchOrder = (props) => {
               <Slider
                 style={{ marginLeft: "10px" }}
                 range={{ draggableTrack: true }}
-                defaultValue={[0, 10000000]}
+                defaultValue={[0, maxMoney]}
                 min={0}
-                max={10000000}
+                max={maxMoney}
                 tooltip={{
                   formatter: (value) => {
                     return Intl.NumberFormat("vi-VN", {
@@ -247,8 +254,8 @@ const InputSearchOrder = (props) => {
                 }}
                 marks={{
                   0: "0",
-                  5000000: "5,000,000",
-                  10000000: "10,000,000",
+                  [maxMoney / 2]: "5,000,000",
+                  [maxMoney]: maxMoney.toString(),
                 }}
               />
             </Form.Item>

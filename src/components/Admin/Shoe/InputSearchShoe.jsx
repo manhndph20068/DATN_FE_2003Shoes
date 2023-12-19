@@ -68,6 +68,12 @@ const InputSearchShoe = (props) => {
                 style={{ fontWeight: "bold" }}
                 label="Tên Giày"
                 name="nameShoe"
+                rules={[
+                  {
+                    pattern: /^(?!\s*$).+/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập tên giày" />
               </Form.Item>
@@ -77,6 +83,12 @@ const InputSearchShoe = (props) => {
                 style={{ fontWeight: "bold" }}
                 label="Kích cỡ"
                 name="size"
+                rules={[
+                  {
+                    pattern: /^(?!\s*$).+/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập kích cỡ" />
               </Form.Item>
@@ -86,6 +98,12 @@ const InputSearchShoe = (props) => {
                 style={{ fontWeight: "bold" }}
                 label="Thương hiệu"
                 name="brand"
+                rules={[
+                  {
+                    pattern: /^(?!\s*$).+/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
+                ]}
               >
                 <Input placeholder="Nhập thương hiệu" />
               </Form.Item>

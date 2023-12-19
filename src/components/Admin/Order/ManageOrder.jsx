@@ -15,6 +15,7 @@ const ManageOrder = () => {
   const [pageSize, setPageSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [listOrder, setListOrder] = useState([]);
+  const [maxMoney, setMaxMoney] = useState(0); // [0, 1000000
   const [filter, setFilter] = useState({
     page: current - 1,
     size: pageSize,
@@ -26,6 +27,25 @@ const ManageOrder = () => {
 
   const navigate = useNavigate();
 
+  const fetchAllListOrder = async () => {
+    const res = await callGetListOrder(newFilterTemp);
+    console.log("res", res);
+    if (res.status === 0) {
+      let index = 1;
+      res.data.forEach((item) => {
+        item.key = item.id;
+        item.index = index++;
+      });
+      const maxMoney = res.data.reduce(
+        (max, current) => (current.totalMoney > max ? current.totalMoney : max),
+        0
+      );
+      setMaxMoney(maxMoney);
+    } else {
+      message.error(res.mess);
+    }
+  };
+
   const handleFetchAllListOrder = async () => {
     const res = await callGetListOrder(newFilterTemp);
     console.log("res", res);
@@ -35,6 +55,11 @@ const ManageOrder = () => {
         item.key = item.id;
         item.index = index++;
       });
+      // const maxMoney = res.data.reduce(
+      //   (max, current) => (current.totalMoney > max ? current.totalMoney : max),
+      //   0
+      // );
+      // setMaxMoney(maxMoney);
       setListOrder(res.data);
       setTotal(res.total);
     } else {
@@ -204,6 +229,7 @@ const ManageOrder = () => {
         <Row>
           <Col span={24}>
             <InputSearchOrder
+              maxMoney={maxMoney}
               setFilter={setFilter}
               filter={filter}
               newFilterTemp={newFilterTemp}

@@ -135,6 +135,10 @@ const ModalCreateProperties = (props) => {
                     required: true,
                     message: "Vui lòng nhập tên !",
                   },
+                  {
+                    pattern: /^[^\s]*$/,
+                    message: "Không được nhập khoảng trắng!",
+                  },
                 ]}
               >
                 <Input placeholder="Nhập tên " />

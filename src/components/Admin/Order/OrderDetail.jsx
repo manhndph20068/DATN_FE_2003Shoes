@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import CancelOrder from "./CancelOrder";
+import ModalUpdateInforCustomer from "./ModalUpdateInforCustomer";
 
 const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
@@ -46,6 +47,8 @@ const OrderDetail = () => {
   const [openModalShowOrderDetail, setOpenModalShowOrderDetail] =
     useState(false);
   const [openModalCancelOrder, setOpenModalCancelOrder] = useState(false);
+  const [openModalUpdateInforCustomer, setOpenModalUpdateInforCustomer] =
+    useState(false);
 
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
@@ -932,6 +935,13 @@ const OrderDetail = () => {
         <div className="order-infor">
           <div className="title-order">
             <p>Thông tin đơn hàng</p>
+            <Button
+              onClick={() => {
+                setOpenModalUpdateInforCustomer(true);
+              }}
+            >
+              Cập nhật thông tin
+            </Button>
           </div>
           <div className="infor-order">
             <p>Mã code: {dataOrder?.code}</p>
@@ -1046,6 +1056,15 @@ const OrderDetail = () => {
         openModalCancelOrder={openModalCancelOrder}
         setOpenModalCancelOrder={setOpenModalCancelOrder}
         dataOrder={dataOrder}
+      />
+      <ModalUpdateInforCustomer
+        openModalUpdateInforCustomer={openModalUpdateInforCustomer}
+        setOpenModalUpdateInforCustomer={setOpenModalUpdateInforCustomer}
+        dataOrder={dataOrder}
+        provinceCurrent={provinceCurrent}
+        districtCurrent={districtCurrent}
+        wardCurrent={wardCurrent}
+        handleGetOrder={handleGetOrder}
       />
     </div>
   );
