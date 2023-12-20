@@ -15,7 +15,10 @@ import {
   message,
 } from "antd";
 import TextArea from "antd/es/input/TextArea.js";
-import { callUpdateNewOrderAtCounter } from "../../../services/api";
+import {
+  callUpdateNewOrderAtCounter,
+  callUpdateOrderHistory,
+} from "../../../services/api";
 
 const ModalUpdateInforCustomer = (props) => {
   const {
@@ -26,14 +29,19 @@ const ModalUpdateInforCustomer = (props) => {
     districtCurrent,
     wardCurrent,
     handleGetOrder,
+    setProvinceCurrent,
+    setDistrictCurrent,
+    setWardCurrent,
+    handleCalTotalPrice,
   } = props;
 
   const [listProvince, setListProvince] = useState([]);
-  const [provinceSelected, setProvinceSelected] = useState(201);
+  const [provinceSelected, setProvinceSelected] = useState(null);
   const [listDistrict, setListDistrict] = useState([]);
   const [districtSelected, setDistrictSelected] = useState(null);
   const [listWard, setListWard] = useState([]);
   const [wardSelected, setWardSelected] = useState(null);
+  const [shipPrice, setShipPrice] = useState(0);
 
   const [form] = Form.useForm();
 
@@ -83,7 +91,7 @@ const ModalUpdateInforCustomer = (props) => {
     setProvinceSelected(provinceCurrent?.value);
     setDistrictSelected(districtCurrent?.value);
     setWardSelected(wardCurrent?.value);
-  }, [dataOrder, provinceCurrent, districtCurrent, wardCurrent]);
+  }, [provinceCurrent, districtCurrent, wardCurrent]);
 
   useEffect(() => {
     async function getDataProvince(url = "") {
@@ -107,10 +115,12 @@ const ModalUpdateInforCustomer = (props) => {
         };
       });
       setListProvince(listProvince);
-      setDistrictSelected(null);
-      setWardSelected(null);
+      // setDistrictSelected(null);
+      // setWardSelected(null);
       form.resetFields(["district"]);
       form.resetFields(["ward"]);
+      // setWardCurrent(null);
+      // setDistrictCurrent(null);
     });
   }, [provinceSelected]);
 
@@ -138,10 +148,13 @@ const ModalUpdateInforCustomer = (props) => {
         };
       });
       setListDistrict(listDistrict);
-      setDistrictSelected(null);
-      setWardSelected(null);
+      // setDistrictSelected(null);
+      // setWardSelected(null);
+
       form.resetFields(["ward"]);
       form.resetFields(["district"]);
+      // setWardCurrent(null);
+      // setDistrictCurrent(null);
     });
   }, [provinceSelected]);
 
@@ -172,6 +185,44 @@ const ModalUpdateInforCustomer = (props) => {
     });
   }, [provinceSelected, districtSelected]);
 
+  const getTotalPriceShip = () => {
+    async function getShipFee(url = "", data = {}) {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Token: "d57a9f98-45b8-11ee-a6e6-e60958111f48",
+        },
+        body: JSON.stringify(data),
+      });
+      return response.json();
+    }
+
+    getShipFee(
+      "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee",
+      {
+        service_id: 53320,
+        service_type_id: null,
+        to_district_id: districtSelected,
+        to_ward_code: wardSelected,
+        height: 5,
+        length: 30,
+        weight: 900,
+        width: 20,
+        insurance_value: null,
+        cod_failed_amount: 2000,
+        coupon: null,
+      }
+    ).then((data) => {
+      setShipPrice(data?.data?.total ?? 0);
+      console.log("shipPrice", shipPrice);
+    });
+  };
+
+  useEffect(() => {
+    getTotalPriceShip();
+  }, [districtSelected, wardSelected]);
+
   const onFinish = async (values) => {
     const { username, phone, address, typePaid, voucher, email } = values;
     console.log("Success:", values);
@@ -197,9 +248,9 @@ const ModalUpdateInforCustomer = (props) => {
       phoneNumber: phone ?? null,
       address:
         province + ", " + district + ", " + ward + ", " + address ?? null,
-      shipFee: dataOrder.shipFee ?? 0,
+      shipFee: shipPrice ?? 0,
       moneyReduce: dataOrder.moneyReduce ?? 0,
-      totalMoney: dataOrder.totalMoney,
+      totalMoney: handleCalTotalPrice() + shipPrice ?? 0,
       payDate: null,
       shipDate: null,
       desiredDate: null,
@@ -208,8 +259,8 @@ const ModalUpdateInforCustomer = (props) => {
       note: dataOrder?.note,
       status: dataOrder?.status,
     };
-    console.log("data", data);
-    const res = await callUpdateNewOrderAtCounter(data);
+    console.log("dataryrtyrtyty", data);
+    const res = await callUpdateOrderHistory(data);
     if (res.status === 0) {
       message.success("Cập nhật thành công");
       await handleGetOrder();
@@ -301,7 +352,7 @@ const ModalUpdateInforCustomer = (props) => {
                         message: "Tỉnh/Thành Phố không được để trống!",
                       },
                     ]}
-                    initialValue={provinceSelected}
+                    initialValue={provinceCurrent?.value}
                   >
                     <Select
                       showSearch
@@ -323,7 +374,7 @@ const ModalUpdateInforCustomer = (props) => {
                         message: "Quận/Huyện không được để trống!",
                       },
                     ]}
-                    initialValue={districtSelected}
+                    initialValue={districtCurrent?.value}
                   >
                     <Select
                       showSearch
@@ -348,7 +399,7 @@ const ModalUpdateInforCustomer = (props) => {
                     message: "Phường/Xã không được để trống!",
                   },
                 ]}
-                initialValue={wardSelected}
+                initialValue={wardCurrent?.value}
               >
                 <Select
                   showSearch

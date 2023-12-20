@@ -85,6 +85,7 @@ const Home = () => {
       // setFilter(f);
       console.log(">>> check onFinish", values);
       let res = await callListShoeDetailHomePage(
+        sortQuery,
         current,
         pageSize,
         values.category,
@@ -326,7 +327,7 @@ const Home = () => {
                   </div>
                 </Form.Item>
                 <Divider />
-                <Form.Item label="Đánh giá" labelCol={{ span: 24 }}>
+                {/* <Form.Item label="Đánh giá" labelCol={{ span: 24 }}>
                   <div>
                     <Rate
                       value={5}
@@ -367,7 +368,7 @@ const Home = () => {
                     />
                     <span className="ant-rate-text">trở lên</span>
                   </div>
-                </Form.Item>
+                </Form.Item> */}
               </Form>
             </div>
           </Col>

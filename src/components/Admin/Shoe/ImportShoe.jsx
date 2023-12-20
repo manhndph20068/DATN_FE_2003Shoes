@@ -88,7 +88,7 @@ const ImportShoes = (props) => {
 
   const handleGetFileExample = () => {
     window.location.href =
-      "http://localhost:8080/api/v1/admin/voucher-order/download-excel-template";
+      "http://localhost:8080/api/v1/shoe-detail/download-excel-template";
   };
 
   const handleGetFileError = () => {

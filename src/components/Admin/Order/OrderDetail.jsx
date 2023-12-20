@@ -15,6 +15,7 @@ import {
   callListMethodPayment,
   callUpdateNewOrderAtCounter,
   callUpdateOrderDetailAtCounter,
+  callUpdateOrderHistory,
 } from "../../../services/api";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -26,6 +27,8 @@ import moment from "moment";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import CancelOrder from "./CancelOrder";
 import ModalUpdateInforCustomer from "./ModalUpdateInforCustomer";
+import TableProductOfOrder from "./TableProductOfOrder";
+import SearchProductInput from "./SearchProductInput";
 
 const OrderDetail = () => {
   const [dataOrder, setDataOrder] = useState({});
@@ -49,6 +52,22 @@ const OrderDetail = () => {
   const [openModalCancelOrder, setOpenModalCancelOrder] = useState(false);
   const [openModalUpdateInforCustomer, setOpenModalUpdateInforCustomer] =
     useState(false);
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const calculateTotalPrice = () => {
+    return (
+      handleCalTotalPrice() +
+      (dataOrder?.shipFee || 0) -
+      (dataOrder?.moneyReduce || 0)
+    );
+  };
+
+  // Sử dụng useState để cập nhật tổng tiền khi có sự thay đổi trong dataOrder
+  useEffect(() => {
+    const calculatedPrice = calculateTotalPrice();
+    setTotalPrice(calculatedPrice);
+  }, [dataOrder, listOrderDetail]);
+  console.log("totalPriceCheck", totalPrice);
 
   let param = new URLSearchParams(location.search);
   let code = param.get("code");
@@ -57,10 +76,7 @@ const OrderDetail = () => {
 
   const handleGetOrder = async () => {
     const res = await callGetOrderByCode(code);
-    console.log("res", res);
     if (res.status === 0) {
-      console.log("res.data", res.data);
-
       setDataOrder(res.data);
       const resCallGetListOrderHistory = await callGetListOrderHistoryById(
         res.data.id
@@ -75,7 +91,6 @@ const OrderDetail = () => {
         });
         setListOrderDetail(resCallGetOrderDetail.data);
       }
-      console.log("resCallGetListOrderHistory", resCallGetListOrderHistory);
       if (resCallGetListOrderHistory.status === 0) {
         setHistoryOrder(resCallGetListOrderHistory.data);
       }
@@ -84,7 +99,6 @@ const OrderDetail = () => {
 
   const handleGetMethodPayment = async (code) => {
     const res = await callListMethodPayment(code);
-    console.log("res callListMethodPayment", res);
     if (res.status === 0) {
       setPaymentMethodOrder(res.data);
     }
@@ -211,6 +225,7 @@ const OrderDetail = () => {
     listOrderDetail?.forEach((item) => {
       total += item.price * item.quantity;
     }) ?? 0;
+
     return total;
   };
 
@@ -386,9 +401,7 @@ const OrderDetail = () => {
   }, [dataOrder]);
 
   const handleGetStatusBtn = () => {
-    console.log("dataOrder", dataOrder);
     if (dataOrder?.type === null) {
-      console.log("nulllllllll");
       setBtnCancel(true);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(true);
@@ -405,7 +418,6 @@ const OrderDetail = () => {
       setBtnExport(true);
     }
     if (+dataOrder?.type === 1 && dataOrder?.status === 2) {
-      console.log("setBtnCancel");
       setBtnCancel(true);
       setBtnConfirm(true);
       setBtnWaitingForDelivery(true);
@@ -488,7 +500,6 @@ const OrderDetail = () => {
   };
 
   const handleChangeToWaitingForDelivery = async () => {
-    console.log("dataOrder", dataOrder);
     const dataUpdate = {
       id: dataOrder.id,
       idVoucher: dataOrder?.voucherOrder?.id ?? null,
@@ -510,7 +521,6 @@ const OrderDetail = () => {
       status: 6,
     };
     const dataShoe = listOrderDetail.map((item) => {
-      console.log("item listOrderDetail", item);
       return {
         name: "Giày",
         code: item?.codeShoeDetail,
@@ -526,7 +536,6 @@ const OrderDetail = () => {
       };
     });
 
-    console.log("data", dataUpdate);
     // callUpdateNewOrderAtCounter(dataUpdate);
     const addressParts = dataOrder.address.split(", ");
     const province = addressParts[0];
@@ -565,7 +574,9 @@ const OrderDetail = () => {
       to_district_name: district,
       to_province_name: province,
       cod_amount:
-        paymentMethodOrder[0].status === 1 ? 0 : dataOrder?.totalMoney,
+        paymentMethodOrder[0].status === 1
+          ? 0
+          : handleCalTotalPrice() + dataOrder?.shipFee - dataOrder?.moneyReduce,
       content: "Theo New York Times",
       weight: 200,
       length: 1,
@@ -582,7 +593,6 @@ const OrderDetail = () => {
       pick_shift: [2],
       items: dataShoe,
     };
-    console.log("dataOrderGHN", dataOrderGHN);
     const url =
       "https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/create";
 
@@ -597,7 +607,6 @@ const OrderDetail = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
         if (data?.code === 200) {
           const orderCode = data?.data?.order_code;
           fetch(
@@ -623,9 +632,7 @@ const OrderDetail = () => {
                 window.location.reload();
               }
             })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
+            .catch((error) => {});
         }
         if (data?.code === 400) {
           alert(data?.message);
@@ -637,44 +644,54 @@ const OrderDetail = () => {
   };
 
   const handleChangeToConfirmOrder = async () => {
+    if (listOrderDetail.length === 0) {
+      message.error("Đơn hàng không có sản phẩm");
+      return;
+    } else {
+      const data = {
+        id: dataOrder.id,
+        idVoucher: dataOrder?.voucherOrder?.id ?? null,
+        idAccount: dataOrder?.account?.id ?? null,
+        code: dataOrder.code,
+        type: dataOrder.type,
+        customerName: dataOrder.customerName ?? null,
+        phoneNumber: dataOrder.phoneNumber ?? null,
+        address: dataOrder.address ?? null,
+        shipFee: dataOrder.shipFee ?? 0,
+        moneyReduce: dataOrder.moneyReduce ?? 0,
+        totalMoney: dataOrder.totalMoney,
+        payDate: null,
+        shipDate: null,
+        desiredDate: null,
+        receiveDate: null,
+        updatedBy: staffName ?? null,
+        note: "Đã xác nhận thông tin đơn hàng",
+        status: 5,
+      };
+      await callUpdateOrderHistory(data);
+
+      const dataUpdatePaymentMethod = {
+        id: paymentMethodOrder?.[0]?.id,
+        orderId: dataOrder?.id,
+        method: paymentMethodOrder?.[0]?.method,
+        total:
+          handleCalTotalPrice() + dataOrder?.shipFee - dataOrder?.moneyReduce,
+        note: `${staffName} đã xác nhận thông tin đơn hàng`,
+        status: 0,
+      };
+
+      await callDoUpdatePaymentMethod(dataUpdatePaymentMethod);
+      window.location.reload();
+    }
     // getCodeAddress();
-    console.log("dataOrder", dataOrder);
-    const data = {
-      id: dataOrder.id,
-      idVoucher: dataOrder?.voucherOrder?.id ?? null,
-      idAccount: dataOrder?.account?.id ?? null,
-      code: dataOrder.code,
-      type: dataOrder.type,
-      customerName: dataOrder.customerName ?? null,
-      phoneNumber: dataOrder.phoneNumber ?? null,
-      address: dataOrder.address ?? null,
-      shipFee: dataOrder.shipFee ?? 0,
-      moneyReduce: dataOrder.moneyReduce ?? 0,
-      totalMoney: dataOrder.totalMoney,
-      payDate: null,
-      shipDate: null,
-      desiredDate: null,
-      receiveDate: null,
-      updatedBy: staffName ?? null,
-      note: "Đã xác nhận thông tin đơn hàng",
-      status: 5,
-    };
-    console.log("data", data);
-    await callUpdateNewOrderAtCounter(data);
-    window.location.reload();
   };
 
   const handleChangeToDelivered = () => {
-    console.log("dataOrder", dataOrder);
     const addressParts = dataOrder.address.split(", ");
     const province = addressParts[0];
     const district = addressParts[1];
     const ward = addressParts[2];
     const addressDetail = addressParts[3];
-
-    console.log("provinceCurrent", provinceCurrent);
-    console.log("districtCurrent", districtCurrent);
-    console.log("wardCurrent", wardCurrent);
 
     const fetchData = async () => {
       const response = await fetch(
@@ -704,8 +721,6 @@ const OrderDetail = () => {
 
       const dataRes = await response.json();
       if (dataRes?.code === 200) {
-        console.log(dataRes);
-
         const data = {
           id: dataOrder.id,
           idVoucher: dataOrder?.voucherOrder?.id ?? null,
@@ -727,7 +742,7 @@ const OrderDetail = () => {
           status: 7,
         };
         console.log("dâta", data);
-        await callUpdateNewOrderAtCounter(data);
+        await callUpdateOrderHistory(data);
         window.location.reload();
       }
     };
@@ -736,7 +751,6 @@ const OrderDetail = () => {
   };
 
   const handleChangeToFinish = async () => {
-    console.log("dataOrder", dataOrder);
     const data = {
       id: dataOrder.id,
       idVoucher: dataOrder?.voucherOrder?.id ?? null,
@@ -760,8 +774,7 @@ const OrderDetail = () => {
       note: "Đã hoàn thành",
       status: 8,
     };
-    console.log("data", data);
-    await callUpdateNewOrderAtCounter(data);
+    await callUpdateOrderHistory(data);
 
     const dataUpdatePaymentMethod = {
       id: paymentMethodOrder?.[0]?.id,
@@ -809,7 +822,6 @@ const OrderDetail = () => {
           <PerfectScrollbar>
             <Timeline minEvents={historyOrder.length} placeholder>
               {historyOrder.map((item) => {
-                console.log("item", item);
                 return (
                   <div>
                     <TimelineEvent
@@ -935,13 +947,18 @@ const OrderDetail = () => {
         <div className="order-infor">
           <div className="title-order">
             <p>Thông tin đơn hàng</p>
-            <Button
-              onClick={() => {
-                setOpenModalUpdateInforCustomer(true);
-              }}
-            >
-              Cập nhật thông tin
-            </Button>
+            {dataOrder.id &&
+              dataOrder?.status === 4 &&
+              paymentMethodOrder?.[0]?.method ===
+                "Thanh toán khi nhận hàng" && (
+                <Button
+                  onClick={() => {
+                    setOpenModalUpdateInforCustomer(true);
+                  }}
+                >
+                  Cập nhật thông tin
+                </Button>
+              )}
           </div>
           <div className="infor-order">
             <p>Mã code: {dataOrder?.code}</p>
@@ -966,6 +983,7 @@ const OrderDetail = () => {
             )}
             {+dataOrder.type === 2 && +dataOrder.status === (7 || 8) ? (
               <>
+                <Divider />
                 <p>
                   <span style={{ color: "red", fontWeight: "bold" }}>
                     Ngày nhận dự kiến:{" "}
@@ -983,12 +1001,35 @@ const OrderDetail = () => {
             <p>Thông tin sản phẩm</p>
           </div>
           <div className="infor-order">
-            <Table
+            {dataOrder.id &&
+              dataOrder?.status === 4 &&
+              paymentMethodOrder?.[0]?.method ===
+                "Thanh toán khi nhận hàng" && (
+                <SearchProductInput
+                  activeKey={dataOrder?.id}
+                  handleGetOrder={handleGetOrder}
+                  dataOrder={dataOrder}
+                  handleCalTotalPrice={handleCalTotalPrice}
+                />
+              )}
+            {dataOrder.id && (
+              <TableProductOfOrder
+                listOrderDetail={listOrderDetail}
+                dataOrder={dataOrder}
+                handleGetOrder={handleGetOrder}
+                activeKey={dataOrder?.id}
+                totalPrice={totalPrice}
+                handleCalTotalPrice={handleCalTotalPrice}
+                paymentMethodOrder={paymentMethodOrder}
+              />
+            )}
+
+            {/* <Table
               className="custom-table"
               columns={columnOfListOrder}
               dataSource={listOrderDetail}
               pagination={false}
-            />
+            /> */}
           </div>
         </div>
 
@@ -1041,7 +1082,11 @@ const OrderDetail = () => {
                 {Intl.NumberFormat("vi-VN", {
                   style: "currency",
                   currency: "VND",
-                }).format(dataOrder?.totalMoney ?? 0)}
+                }).format(
+                  handleCalTotalPrice() +
+                    dataOrder?.shipFee -
+                    dataOrder?.moneyReduce ?? 0
+                )}
               </p>
             </div>
           </Col>
@@ -1065,6 +1110,10 @@ const OrderDetail = () => {
         districtCurrent={districtCurrent}
         wardCurrent={wardCurrent}
         handleGetOrder={handleGetOrder}
+        setProvinceCurrent={setProvinceCurrent}
+        setDistrictCurrent={setDistrictCurrent}
+        setWardCurrent={setWardCurrent}
+        handleCalTotalPrice={handleCalTotalPrice}
       />
     </div>
   );

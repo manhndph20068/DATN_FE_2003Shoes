@@ -856,27 +856,66 @@ const ShoppingCounter = () => {
                             >
                               {listVoucher.map((item) => {
                                 return (
-                                  <Option value={item.id} label={item.name}>
+                                  <Option
+                                    value={item.id}
+                                    label={item.name}
+                                    style={{
+                                      height: "auto",
+                                      minHeight: "60px",
+                                    }}
+                                  >
                                     <div
                                       style={{
-                                        gap: "2rem",
+                                        gap: "0.6rem",
                                         display: "flex",
-                                        alignItems: "center",
-                                        flexDirection: "row",
+                                        alignItems: "start",
+                                        flexDirection: "column",
+                                        padding: "2px 8px",
+                                        border: "2px dashed #d7d6d6",
+                                        borderRadius: "0.6rem",
                                       }}
                                     >
-                                      <span>Mã vc: {item.code}</span>
-                                      <span>
-                                        Giá trị giảm:{" "}
-                                        {item.reduceForm === 0 ? (
-                                          Intl.NumberFormat("vi-VN", {
-                                            style: "currency",
-                                            currency: "VND",
-                                          }).format(item.discountAmount)
-                                        ) : (
-                                          <>{item.discountAmount}%</>
-                                        )}
-                                      </span>
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          gap: "3.7rem",
+                                        }}
+                                      >
+                                        <span>Mã vc: {item.code}</span>
+                                        <span>Số lượng: {item.quantity}</span>
+                                      </div>
+
+                                      <div
+                                        style={{
+                                          display: "flex",
+                                          gap: "4rem",
+                                        }}
+                                      >
+                                        <span>
+                                          Giá trị giảm:{" "}
+                                          {item.reduceForm === 0 ? (
+                                            Intl.NumberFormat("vi-VN", {
+                                              style: "currency",
+                                              currency: "VND",
+                                            }).format(item.discountAmount)
+                                          ) : (
+                                            <>{item.discountAmount}%</>
+                                          )}
+                                        </span>
+                                        <span>
+                                          {item.reduceForm === 1 ? (
+                                            "Giá trị giảm tối đa: " +
+                                            Intl.NumberFormat("vi-VN", {
+                                              style: "currency",
+                                              currency: "VND",
+                                            }).format(
+                                              item.maximumReductionValue
+                                            )
+                                          ) : (
+                                            <></>
+                                          )}
+                                        </span>
+                                      </div>
 
                                       <span>
                                         Giá trị đơn tối thiểu:{" "}
@@ -885,6 +924,7 @@ const ShoppingCounter = () => {
                                           currency: "VND",
                                         }).format(item.minBillValue)}
                                       </span>
+                                      <span>Ngày hết hạn: {item.endDate}</span>
                                     </div>
                                   </Option>
                                 );

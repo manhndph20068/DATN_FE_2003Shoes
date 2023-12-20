@@ -233,7 +233,7 @@ const InputSearchOrder = (props) => {
             </Form.Item>
           </Col>
           <Col span={7}>
-            <Form.Item
+            {/* <Form.Item
               style={{ fontWeight: "bold" }}
               label="Khoảng giá"
               name="price"
@@ -254,11 +254,11 @@ const InputSearchOrder = (props) => {
                 }}
                 marks={{
                   0: "0",
-                  [maxMoney / 2]: "5,000,000",
-                  [maxMoney]: maxMoney.toString(),
+                  [maxMoney / 2]: [maxMoney / 2],
+                  [maxMoney]: [maxMoney],
                 }}
               />
-            </Form.Item>
+            </Form.Item> */}
           </Col>
 
           <Col span={7}>

@@ -351,7 +351,7 @@ const PaymentNow = () => {
           }
           setIsLoading(false);
         } else {
-          message.error("Đặt hàng thất bại");
+          message.error(res?.mess);
           setIsLoading(false);
         }
       } else {
@@ -370,7 +370,7 @@ const PaymentNow = () => {
           navigate("/order-success");
           setIsLoading(false);
         } else {
-          message.error("Đặt hàng thất bại");
+          message.error(res?.mess);
           setIsLoading(false);
         }
       }

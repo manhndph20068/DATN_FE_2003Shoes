@@ -316,12 +316,20 @@ const callUpdateNewOrderAtCounter = (data) => {
   return axios.post(`/api/v1/admin/order/update`, data);
 };
 
+const callUpdateOrderHistory = (data) => {
+  return axios.post(`/api/v1/admin/order/updateInformation`, data);
+};
+
 const callGetListVoucher = (data) => {
   return axios.post(`/api/v1/admin/voucher-order/get-all`, data);
 };
 
 const callDoExportOrder = (data) => {
   return axios.post(`/api/v1/admin/order/export-order`, data);
+};
+
+const callDoUpdateTien = (data) => {
+  return axios.post(`/api/v1/admin/order/updateTien`, data);
 };
 
 const callGetDataUserById = (id) => {
@@ -845,4 +853,6 @@ export {
   callGetRevalueByYearWithoutType,
   callDoUpdatePaymentMethod,
   callGetListSizeExits,
+  callUpdateOrderHistory,
+  callDoUpdateTien,
 };

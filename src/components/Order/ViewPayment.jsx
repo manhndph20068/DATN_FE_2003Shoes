@@ -331,7 +331,7 @@ const ViewPayment = (props) => {
           }
           setIsLoading(false);
         } else {
-          message.error("Đặt hàng thất bại");
+          message.error(res?.mess);
           setIsLoading(false);
         }
       } else {
@@ -350,7 +350,7 @@ const ViewPayment = (props) => {
           dispatch(doDeleteItemCartAfterDoOrder());
           setIsLoading(false);
         } else {
-          message.error("Đặt hàng thất bại");
+          message.error(res?.mess);
           setIsLoading(false);
         }
       }

@@ -205,7 +205,7 @@ const ModalCreateShoeProperties = (props) => {
         setAddNameCategory(null);
       } else {
         const res = await callCreateNewCategory(addNameCategory);
-        if (res?.data && res.data.status === 1) {
+        if (res?.status === 0) {
           fetchNameCategory();
         }
         message.success("tên loại giày");
@@ -233,7 +233,7 @@ const ModalCreateShoeProperties = (props) => {
       } else {
         const res = await callCreateNewBrand(addNameBrand);
         console.log("res", res);
-        if (res?.data && res.data.status === 0) {
+        if (res?.status === 0) {
           fetchNameBrand();
         }
         message.success("tên brand");
@@ -259,7 +259,7 @@ const ModalCreateShoeProperties = (props) => {
       } else {
         const res = await callCreateNewSole(addNameSole);
         console.log("res", res);
-        if (res?.data && res.data.status === 0) {
+        if (res?.status === 0) {
           fetchNameSole();
         }
         message.success("tên Sole");
@@ -285,7 +285,7 @@ const ModalCreateShoeProperties = (props) => {
       } else {
         const res = await callCreateNewColor(addNameColor);
         console.log("res", res);
-        if (res?.data && res.data.status === 1) {
+        if (res?.status === 0) {
           fetchNameColor();
         }
         message.success("tên Color");
@@ -316,7 +316,7 @@ const ModalCreateShoeProperties = (props) => {
         } else {
           const res = await callCreateNewSize(addNameSize);
           console.log("res", res);
-          if (res?.data && res.data.status === 1) {
+          if (res?.status === 0) {
             fetchNameSize();
           }
           message.success("tên Size");

@@ -184,6 +184,19 @@ const ManageVoucher = () => {
                   okText="Đồng ý"
                   cancelText="Hủy"
                 ></Popconfirm>
+                <Tooltip title="Chi tiết voucher">
+                  <EyeOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onClick={() => {
+                      setOpenViewDetail(true);
+                      setDataViewDetail(record);
+                    }}
+                  />
+                </Tooltip>
               </div>
             )}
 
@@ -222,6 +235,19 @@ const ManageVoucher = () => {
                     />
                   </Tooltip>
                 </Popconfirm>
+                <Tooltip title="Chi tiết voucher">
+                  <EyeOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onClick={() => {
+                      setOpenViewDetail(true);
+                      setDataViewDetail(record);
+                    }}
+                  />
+                </Tooltip>
               </div>
             )}
             {record.status === 3 && (
@@ -257,6 +283,19 @@ const ManageVoucher = () => {
                     />
                   </Tooltip>
                 </Popconfirm>
+                <Tooltip title="Chi tiết voucher">
+                  <EyeOutlined
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "color 0.3s",
+                    }}
+                    onClick={() => {
+                      setOpenViewDetail(true);
+                      setDataViewDetail(record);
+                    }}
+                  />
+                </Tooltip>
               </div>
             )}
 
